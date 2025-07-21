@@ -1,0 +1,148 @@
+complete copy of the specification for your records. Here is the full UI/UX Specification for PharmC that we created together.
+
+PharmC UI/UX Specification
+Version: 1.0
+Date: July 21, 2025
+
+1. Overall UX Goals & Principles
+Target User Personas
+The Busy Professional: Values speed and efficiency.
+
+The Patient with Mobility Challenges: Needs a simple, accessible, and stress-free interface.
+
+The Caregiver: Requires tools to manage complex tasks for others easily and without error.
+
+Usability Goals
+Ease of Learning: A new user, including one with limited technical skills, should be able to successfully submit their first prescription in under 5 minutes.
+
+Efficiency: A returning caregiver should be able to manage a refill for a dependent in under 60 seconds.
+
+Trust & Confidence: The design must feel secure and professional, giving users peace of mind that their sensitive health information is safe and their order is being handled correctly.
+
+Design Principles
+Clarity First: We will always prioritize clear, simple language and unambiguous interfaces over clever or trendy design.
+
+Progressive Disclosure: We'll show users only the information they need at each step to reduce complexity and cognitive load.
+
+Provide Constant Feedback: Every tap and click will have an immediate and clear system response, so the user always knows what's happening.
+
+Design for Trust: The visual design will be clean, professional, and transparent, reinforcing that PharmC is a reliable healthcare service.
+
+2. Information Architecture (IA)
+Site Map / Screen Inventory
+Code snippet
+
+graph TD
+    subgraph " "
+        A[Splash Page] --> B{Login / Register};
+    end
+
+    B --> C[Patient/Caregiver Portal];
+    B --> D[Doctor Portal];
+    B --> E[Pharmacist Portal];
+
+    subgraph Patient/Caregiver Portal
+        C -- Primary Nav --> C1[Dashboard];
+        C -- Primary Nav --> C2[New Prescription Flow];
+        C -- Primary Nav --> C3[Order History];
+        C -- Primary Nav --> C4[Profile Management];
+        C1 --> C1a[Order Status & Tracking];
+        C4 --> C4a[Dependent Profile Mgmt];
+    end
+
+    subgraph Doctor Portal
+        D -- Primary Nav --> D1[Dashboard/Patient List];
+        D -- Primary Nav --> D2[Submit New Prescription];
+        D -- Primary Nav --> D3[Profile];
+    end
+
+    subgraph Pharmacist Portal
+        E -- Primary Nav --> E1[Prescription Queue];
+        E -- Primary Nav --> E2[Order Fulfillment];
+        E -- Primary-Nav --> E3[Profile];
+    end
+Navigation Structure
+Primary Navigation (Patient/Caregiver): A main bottom tab bar on mobile (Dashboard, New Order, History, Profile) and a primary header navigation on the web.
+
+Primary Navigation (Doctor & Pharmacist Portals): A persistent sidebar on the web with links to their main tasks.
+
+Breadcrumb Strategy: Breadcrumbs will be used on the web portals to help users easily navigate back through complex views.
+
+3. User Flows
+Flow: New Prescription Order
+User Goal: To quickly and successfully submit a new prescription for verification and payment.
+
+Success Criteria: The user's prescription is submitted to the pharmacist queue, and the user receives clear confirmation.
+
+Flow Diagram:
+
+Code snippet
+
+graph TD
+    A[Start] --> B[User taps 'New Order'];
+    B --> C{Is user a<br>Caregiver with<br>multiple profiles?};
+    C -->|Yes| D[Select Patient Profile];
+    C -->|No| E[Choose Upload Method];
+    D --> E;
+    E --> F[Capture or Select Image];
+    F --> G[User Confirms Upload];
+    G --> H((AI OCR Processing));
+    H --> I[Show Extracted Data to User];
+    I --> J{User Choice};
+    J -->|Edit / Confirm Details| K[User Submits Confirmed Data];
+    J -->|Skip & Send Directly| L[User Submits Image Only];
+    K --> M[End: Order in Pharmacist Queue];
+    L --> M;
+Edge Cases: Handle blurry images, upload failures, and OCR failures gracefully.
+
+4. Wireframes & Mockups
+Primary Design Files: This specification will serve as the brief for high-fidelity mockups. The final designs will be created in a professional tool like Figma, and the project will be linked from here.
+
+Key Screen Layouts (Conceptual)
+Patient/Caregiver Dashboard: Header with profile switcher, a prominent "Submit a New Prescription" button, a list of active orders with their statuses, and a section for reminders.
+
+Prescription Upload Screen: A large camera viewfinder with simple controls (Take Photo, Flash, Upload from Library) and a clear image preview step.
+
+5. Component Library / Design System
+Approach: We will use a Pre-built Component Library (e.g., Material-UI, Chakra UI) and customize its theme to match our brand. This is the fastest approach for an MVP.
+
+Core Components: The library must provide consistent, accessible components for Buttons, Input Fields, Cards, and Navigation (Tab Bars/Sidebars).
+
+6. Branding & Style Guide
+Visual Identity: Modern, clean, and calming to convey professionalism and security.
+
+Color Palette: A primary blue (#2667FF) with neutral grays, and semantic colors for success (green), warning (amber), and error (red).
+
+Typography: "Inter" (from Google Fonts) for its high readability and French character support.
+
+Iconography: Feather Icons library for a clean, modern, and consistent look.
+
+Spacing & Layout: An 8-point grid system to ensure consistent spacing and alignment.
+
+7. Accessibility Requirements
+Standard: We will adhere to the Web Content Accessibility Guidelines (WCAG) 2.1 at the Level AA standard.
+
+Key Requirements: This includes ensuring high color contrast, full keyboard navigation, screen reader compatibility, large touch targets, and proper use of alt text and form labels.
+
+Testing Strategy: A mix of automated tools, manual checks, and user testing with people with disabilities.
+
+8. Responsiveness Strategy
+Breakpoints: A standard three-breakpoint system for Mobile, Tablet, and Desktop.
+
+Adaptation Patterns: The layout will adapt from a single column on mobile to a multi-column grid on larger screens. Navigation will transform from a mobile tab bar to a web sidebar/header.
+
+9. Animation & Micro-interactions
+Principles: All animation will be purposeful, quick, and consistent to enhance the user experience, not distract from it.
+
+Key Animations: Subtle effects for page transitions, button feedback, loading indicators, and success/error states.
+
+10. Performance Considerations
+Goals: Target an LCP of under 2.5 seconds on mobile, instant UI response (<100ms), and smooth 60 FPS animations.
+
+Strategies: Use of skeleton loaders during data fetching, automatic image optimization, and lazy loading of non-essential content.
+
+11. Next Steps
+Immediate Actions: Final stakeholder review, handoff to the Architect, and the start of high-fidelity visual design in Figma.
+
+Handoff Checklist: All sections required for the next phase are complete and validated.
+
