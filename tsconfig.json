@@ -31,12 +31,6 @@
     },
     {
       "path": "./packages/shared-types"
-    },
-    {
-      "path": "./packages/eslint-config"
-    },
-    {
-      "path": "./packages/tsconfig"
     }
   ]
-} 
+}

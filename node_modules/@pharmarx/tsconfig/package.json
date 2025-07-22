@@ -1,0 +1,10 @@
+{
+  "name": "@pharmarx/tsconfig",
+  "version": "1.0.0",
+  "description": "Shared TypeScript configurations for PharmaRx",
+  "files": [
+    "base.json",
+    "react.json",
+    "node.json"
+  ]
+} 

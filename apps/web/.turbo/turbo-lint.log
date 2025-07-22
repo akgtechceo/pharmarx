@@ -1,0 +1,19 @@
+[?9001h[?1004h[?25l[2J[m[H]0;npm[?25h]0;npm run lint[?25l
+> @pharmarx/web@1.0.0 lint
+> eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0[5;1H[?25h[K]0;C:\WINDOWS\system32\cmd.exe [?25l
+Oops! Something went wrong! :([8;1HESLint: 8.57.1[10;1HESLint couldn't find the config "@typescript-eslint/recommended" to extend from. Please check that the name of the config is correct.[?25h
+
+The config "@typescript-eslint/recommended" was referenced from the config file in "C:\Users\akgte\Phar
+[10;103HrmaRx\packages\eslint-config\index.js".
+
+If you still have problems, please stop by https://eslint.org/chat/help to chat with the team.
+
+⠙[K[1mnpm[22m [31merror [mLifecycle script `lint` failed with error:[K
+[1mnpm[22m [31merror [94mcode [33m2[K[m
+[1mnpm[22m [31merror [94mpath [mC:\Users\akgte\PharmaRx\apps\web[K
+[1mnpm[22m [31merror [94mworkspace [m@pharmarx/web@1.0.0[K
+[1mnpm[22m [31merror [94mlocation [mC:\Users\akgte\PharmaRx\apps\web[K
+[1mnpm[22m [31merror [mcommand failed[K
+[1mnpm[22m [31merror [94mcommand [mC:\WINDOWS\system32\cmd.exe /d /s /c eslint . --ext ts,tsx --report-unused-disable-di
+[10;103Hirectives --max-warnings 0
+⠙[K[?9001l[?1004l

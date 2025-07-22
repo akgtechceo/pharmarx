@@ -1,0 +1,16 @@
+{
+  "name": "@pharmarx/eslint-config",
+  "version": "1.0.0",
+  "description": "Shared ESLint configuration for PharmaRx",
+  "main": "./index.js",
+  "dependencies": {
+    "@typescript-eslint/eslint-plugin": "^7.8.0",
+    "@typescript-eslint/parser": "^7.8.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.6"
+  },
+  "peerDependencies": {
+    "eslint": "^8.57.0",
+    "typescript": "^5.4.0"
+  }
+} 
