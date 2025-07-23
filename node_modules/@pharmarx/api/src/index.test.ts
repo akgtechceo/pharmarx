@@ -10,7 +10,8 @@ describe('API Server', () => {
     
     expect(response.body).toEqual({
       status: 'OK',
-      timestamp: expect.any(String)
+      timestamp: expect.any(String),
+      environment: expect.any(String)
     })
   })
 

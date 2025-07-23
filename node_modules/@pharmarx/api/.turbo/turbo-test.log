@@ -1,0 +1,426 @@
+[?9001h[?1004h[?25l[2J[m[H]0;npm[?25h]0;npm run test[?25l
+> @pharmarx/api@1.0.0 test
+> vitest[5;1H[?25h[K]0;C:\WINDOWS\system32\cmd.exe ]0;node (vitest)[?25l[44m[1m
+ DEV [m [34mv3.2.4 [90mC:/Users/akgte/PharmaRx/apps/api[?2026h[m[2m[9;1H Test Files [32m[22m[1m0 passed[90m[22m (4)[m[2m
+      Tests [32m[22m[1m0 passed[90m[22m (0)[m[2m
+   Start at [22m00:19:44
+[2m   Duration [22m748ms[K[86C
+[103C[?2026l[?2026h[K[103C[10;1H[K[103C[9;1H[K[103C[8;1H[K[103C[7;1H[K[103C[6;1H[K[103C[2m
+ Test Files [32m[22m[1m0 passed[90m[22m (4)[m[2m
+      Tests [32m[22m[1m0 passed[90m[22m (0)[m[2m
+   Start at [22m00:19:44[2m
+   Duration [22m1.82s[?2026l[?2026h
+[K[103C[10;1H[K[103C[9;1H[K[103C[8;1H[K[103C[7;1H[K[103C]0;node (vitest 1)[6;1H[K[103C]0;node (vitest 2)[2m
+ Test Files [32m[22m[1m0 passed[90m[22m (4)[m[2m
+      Tests [32m[22m[1m0 passed[90m[22m (0)[m[2m
+   Start at [22m00:19:44[2m
+   Duration [22m2.96s]0;node (vitest 6)[?2026l]0;node (vitest 3)[?2026h]0;node (vitest 4)
+[K[103C[10;1H[K[103C[9;1H[K[103C[8;1H[K[103C[7;1H[K[103C[6;1H[K]0;node (vitest 5)[103C[2m
+ Test Files [32m[22m[1m0 passed[90m[22m (4)[m[2m
+      Tests [32m[22m[1m0 passed[90m[22m (0)[m[2m
+   Start at [22m00:19:44[2m
+   Duration [22m3.62s[?2026l[?2026h
+[K[103C[10;1H[K[103C[9;1H[K[103C[8;1H[K[103C[7;1H[K[103C[6;1H[K[103C[2m
+ Test Files [32m[22m[1m0 passed[90m[22m (4)[m[2m
+      Tests [32m[22m[1m0 passed[90m[22m (0)[m[2m
+   Start at [22m00:19:44[2m
+   Duration [22m4.57s[?2026l[?2026h[6;1H[K[33m[1m
+ ❯ [msrc/index.test.ts[2m [queued][22m[K
+[K[2m
+ Test Files [32m[22m[1m0 passed[90m[22m (4)[K[m[2m
+      Tests [32m[22m[1m0 passed[90m[22m (0)[K[m[2m
+   Start at [22m00:19:44[K[83C
+[2m   Duration [22m5.47s[K[86C[?2026l
+[103C[?2026h[4;1H[K[33m[1m
+ ❯ [msrc/features/database.test.ts[2m [queued][22m[K[33m[1m
+ ❯ [msrc/features/userRoutes.test.ts[2m [queued][22m[K[33m[1m
+ ❯ [msrc/index.test.ts[2m [queued][22m[K
+[K[2m
+ Test Files [32m[22m[1m0 passed[90m[22m (4)[K[m[2m
+      Tests [32m[22m[1m0 passed[90m[22m (0)[K[m[2m
+   Start at [22m00:19:44[K[83C
+[2m   Duration [22m5.58s[K[86C[?2026l
+[103C[?2026h[2;1H[K[33m[1m
+ ❯ [msrc/features/database.test.ts[2m [queued][22m[K[33m[1m
+ ❯ [msrc/features/userRoutes.test.ts[2m [queued][22m[K[33m[1m
+ ❯ [msrc/features/users.test.ts[2m [queued][22m[K[33m[1m
+ ❯ [msrc/index.test.ts[2m [queued][22m[K
+[K[2m
+ Test Files [32m[22m[1m0 passed[90m[22m (4)[K[m[2m
+      Tests [32m[22m[1m0 passed[90m[22m (0)[K[m[2m
+   Start at [22m00:19:44[K[2m
+   Duration [22m6.20s[K[86C[?2026l
+[103C[?2026h[H[K[33m[1m
+ ❯ [msrc/features/database.test.ts[2m [queued][22m[K[33m[1m
+ ❯ [msrc/features/userRoutes.test.ts[2m [queued][22m[K[33m[1m
+ ❯ [msrc/features/users.test.ts[2m [queued][22m[K[33m[1m
+ ❯ [msrc/index.test.ts[2m [queued][22m[K
+[K[2m
+ Test Files [32m[22m[1m0 passed[90m[22m (4)[K[m[2m
+      Tests [32m[22m[1m0 passed[90m[22m (0)[K[m[2m
+   Start at [22m00:19:44[K[2m
+   Duration [22m6.70s[K
+[K[103C[?2026l[?2026h[?2026l[H[K[33m[1m
+ ❯ [msrc/features/database.test.ts[2m 1/17[22m[K[33m[1m
+ ❯ [msrc/features/userRoutes.test.ts[2m [queued][22m[K[33m[1m
+ ❯ [msrc/features/users.test.ts[2m [queued][22m[K[33m[1m
+ ❯ [msrc/index.test.ts[2m [queued][22m[K
+[K[2m
+ Test Files [32m[22m[1m0 passed[90m[22m (4)[K[m[2m
+      Tests [32m[22m[1m1 passed[90m[22m (17)[K[m[2m
+   Start at [22m00:19:44[K[2m
+   Duration [22m7.06s[K
+[K[103C[?2026h[?2026l[H[K[33m[1m
+ ❯ [msrc/features/database.test.ts[2m 3/17[22m[K[33m[1m
+ ❯ [msrc/features/userRoutes.test.ts[2m [queued][22m[K[33m[1m
+ ❯ [msrc/features/users.test.ts[2m [queued][22m[K[33m[1m
+ ❯ [msrc/index.test.ts[2m [queued][22m[K
+[K[2m
+ Test Files [32m[22m[1m0 passed[90m[22m (4)[K[m[2m
+      Tests [31m[22m[1m1 failed[m[2m | [32m[22m[1m2 passed[90m[22m (17)[K[m[2m
+   Start at [22m00:19:44[K[2m
+   Duration [22m7.16s[K
+[K[103C[?2026h[K[103C[90m[Hstderr[2m | src/features/database.test.ts > DatabaseService > healthCheck > should handle database initialization errors[m[K
+Database health check failed: Error: Database initialization failed[K
+    at DatabaseService.<anonymous> [90m(C:\Users\akgte\PharmaRx\apps\api\[msrc\features\database.test.ts:222:15[90m)[K[m
+    at DatabaseService.mockCall (file:///C:/Users/akgte/PharmaRx/node_modules/[4m@vitest[24m/spy/dist/index.js:96:15)[K
+    at DatabaseService.getDb (file:///C:/Users/akgte/PharmaRx/node_modules/[4mtinyspy[24m/dist/index.js:47:103)[K
+    at DatabaseService.healthCheck [90m(C:\Users\akgte\PharmaRx\apps\api\[msrc\features\database.ts:60:23[90m)   [m
+    at [90mC:\Users\akgte\PharmaRx\apps\api\[msrc\features\database.test.ts:225:44
+    at file:///C:/Users/akgte/PharmaRx/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:155:11[K[10C
+    at file:///C:/Users/akgte/PharmaRx/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:26[K[10C
+    at file:///C:/Users/akgte/PharmaRx/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1897:20[K[9C
+    at new Promise (<anonymous>)[71C
+    at runWithTimeout (file:///C:/Users/akgte/PharmaRx/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:
+[10;103H:1863:10)[95C
+[103C
+[103C
+[33m[1m ❯ [msrc/features/database.test.ts[2m 16/17[22m[K[65C
+[33m[1m ❯ [msrc/features/userRoutes.test.ts[2m [queued][22m[K[60C
+[33m[1m ❯ [msrc/features/users.test.ts[2m [queued][22m[K[65C
+[33m[1m ❯ [msrc/index.test.ts[2m [queued][22m[K[74C
+[103C
+[2m Test Files [32m[22m[1m0 passed[90m[22m (4)[K[79C[m
+[2m      Tests [31m[22m[1m9 failed[m[2m | [32m[22m[1m7 passed[90m[22m (17)[K[67C[m
+[2m   Start at [22m00:19:44[K[83C
+[2m   Duration [22m7.38s[K[86C[?2026l
+[103C[?2026h[H [31m❯ [msrc/features/database.test.ts [2m(17 tests | [31m[22m10 failed[m[2m)[33m[22m 391[2mms[m[K
+   [32m✓ [mDatabaseService[2m > [22mgetInstance[2m > [22mshould return singleton instance [32m16[2mms[m[K
+   [32m✓ [mDatabaseService[2m > [22mgetDb[2m > [22mshould initialize Firebase and return Firestore instance [32m11[2mms[m[K[31m
+   × DatabaseService[2m > [22mgetDb[2m > [22mshould not reinitialize if already initialized [32m70[2mms[m[K[31m
+     → expected "spy" to be called at least once[K
+   × DatabaseService[2m > [22mgetDb[2m > [22mshould initialize with development settings [32m14[2mms[m[K[31m
+     → expected "spy" to be called with arguments: [ { projectId: 'test-project-dev' } ][K[m
+[K[90m
+Number of calls: [1m0[m[K
+[K[31m
+   × DatabaseService[2m > [22mgetDb[2m > [22mshould initialize with test settings [32m7[2mms[m[K[32C
+[31m     → expected "spy" to be called with arguments: [ { projectId: 'test-project' } ][19C[m
+[90m[103C[m
+[90mNumber of calls: [1m0[22m[K[85C[m
+[90m[103C[m
+[31m   × DatabaseService[2m > [22mgetDb[2m > [22mshould use default project ID if not specified in development [32m7[2mms[m       
+[31m     → expected "spy" to be called with arguments: [ { projectId: 'pharmarx-dev' } ][19C[m
+[90m[103C[m
+[90mNumber of calls: [1m0[22m[K[85C[m
+[90m[103C[m
+[31m   × DatabaseService[2m > [22mgetDb[2m > [22mshould initialize with production settings [32m4[2mms[m[K[26C
+[31m     → expected "spy" to be called at least once[55C[m
+[31m   × DatabaseService[2m > [22mgetDb[2m > [22mshould use application default credentials in production if no service a[m
+[31m[10;103Haccount key [32m5[2mms[31m[22m[K[89C[m
+[31m     → expected "spy" to be called at least once[55C[m
+[31m   × DatabaseService[2m > [22mhealthCheck[2m > [22mshould return healthy status when database is accessible [32m32[2mms[m     
+[31m     → Cannot read properties of undefined (reading 'now')[45C[m
+[31m   × DatabaseService[2m > [22mhealthCheck[2m > [22mshould return unhealthy status when database is not accessible [32m68[2mm[m
+[32m[2m[10;103Hms[22m[K[102C[m
+[31m     → expected { status: 'healthy', connected: true } to deeply equal { status: 'unhealthy', …(1) }   [m
+   [32m✓ [mDatabaseService[2m > [22mhealthCheck[2m > [22mshould handle database initialization errors [32m24[2mms[m[K[17C
+   [32m✓ [mDatabaseService[2m > [22mdisconnect[2m > [22mshould disconnect all Firebase apps [32m8[2mms[m[K[28C
+   [32m✓ [mDatabaseService[2m > [22mdisconnect[2m > [22mshould handle apps array with null values [32m3[2mms[m[K[22C
+   [32m✓ [mDatabaseService[2m > [22mdisconnect[2m > [22mshould handle empty apps array [32m12[2mms[m[K[32C
+[31m   × DatabaseService[2m > [22mdisconnect[2m > [22mshould handle app deletion errors gracefully [32m17[2mms[m[K[18C
+[31m     → promise rejected "Error: Failed to delete app" instead of resolving[29C[m
+[31m     → Failed to delete app[76C[m
+   [32m✓ [mDatabaseService[2m > [22merror handling[2m > [22mshould handle malformed service account key [32m19[2mms[m[K[15C
+[31m   × DatabaseService[2m > [22msingleton behavior[2m > [22mshould maintain singleton pattern across multiple requires [m
+[32m[10;103H 18[2mms[22m[K[99C[m
+[31m     → Database initialization failed[66C[m
+[103C
+[33m[1m ❯ [msrc/features/userRoutes.test.ts[2m [queued][22m[K[60C
+[33m[1m ❯ [msrc/features/users.test.ts[2m [queued][22m[K[65C
+[33m[1m ❯ [msrc/index.test.ts[2m [queued][22m[K[74C
+[103C
+[2m Test Files [31m[22m[1m1 failed[m[2m | [32m[22m[1m0 passed[90m[22m (4)[K[68C[m
+[2m      Tests [31m[22m[1m10 failed[m[2m | [32m[22m[1m7 passed[90m[22m (17)[K[66C[m
+[2m   Start at [22m00:19:44[K[83C
+[2m   Duration [22m7.71s[K[86C[?2026l
+[103C[?2026h[K[103C[10;1H[K[103C[9;1H[K[103C[8;1H[K[103C[7;1H[K[103C[6;1H[K[103C[5;1H[K[103C[4;1H[K[103C[3;1H[K[103C[2;1H[K[103C[33m[1m
+ ❯ [msrc/features/userRoutes.test.ts[2m [queued][33m[22m[1m
+ ❯ [msrc/features/users.test.ts[2m [queued][33m[22m[1m
+ ❯ [msrc/index.test.ts[2m [queued][7;1H Test Files [31m[22m[1m1 failed[m[2m | [32m[22m[1m0 passed[90m[22m (4)[m[2m
+      Tests [31m[22m[1m10 failed[m[2m | [32m[22m[1m7 passed[90m[22m (17)[m[2m
+   Start at [22m00:19:44[2m
+   Duration [22m8.40s[?2026l[?2026h
+[K[103C[10;1H[K[103C[9;1H[K[103C[8;1H[K[103C[7;1H[K[103C[6;1H[K[103C[5;1H[K[103C[4;1H[K[103C[3;1H[K[103C[2;1H[K[103C[33m[1m
+ ❯ [msrc/features/userRoutes.test.ts[2m [queued][33m[22m[1m
+ ❯ [msrc/features/users.test.ts[2m [queued][33m[22m[1m
+ ❯ [msrc/index.test.ts[2m [queued][7;1H Test Files [31m[22m[1m1 failed[m[2m | [32m[22m[1m0 passed[90m[22m (4)[m[2m
+      Tests [31m[22m[1m10 failed[m[2m | [32m[22m[1m7 passed[90m[22m (17)[m[2m
+   Start at [22m00:19:44[2m
+   Duration [22m9.41s[?2026l[?2026h
+[K[103C[10;1H[K[103C[9;1H[K[103C[8;1H[K[103C[7;1H[K[103C[6;1H[K[103C[5;1H[K[103C[4;1H[K[103C[3;1H[K[103C[2;1H[K[103C]0;node (vitest 4)[33m[1m
+ ❯ [msrc/features/userRoutes.test.ts[2m [queued][33m[22m[1m
+ ❯ [msrc/features/users.test.ts[2m [queued][33m[22m[1m
+ ❯ [msrc/index.test.ts[2m [queued][7;1H Test Files [31m[22m[1m1 failed[m[2m | [32m[22m[1m0 passed[90m[22m (4)[m[2m
+      Tests [31m[22m[1m10 failed[m[2m | [32m[22m[1m7 passed[90m[22m (17)[m[2m
+   Start at [22m00:19:44[2m
+   Duration [22m10.13s[?2026l]0;node (vitest 1)[?2026h[K
+[K[103C[9;1H[K[103C[7;1H[K
+[K[103C[?2026l[2;1H[K[33m[1m
+ ❯ [msrc/features/userRoutes.test.ts[2m [queued][22m[K[33m[1m
+ ❯ [msrc/features/users.test.ts[2m [queued][22m[K[33m[1m
+ ❯ [msrc/index.test.ts[2m [queued][22m[K
+[K[2m
+ Test Files [31m[22m[1m1 failed[m[2m | [32m[22m[1m0 passed[90m[22m (4)[m[2m
+      Tests [31m[22m[1m10 failed[m[2m | [32m[22m[1m7 passed[90m[22m (17)[m[2m
+   Start at [22m00:19:44[2m
+   Duration [22m11.11s[?2026h[?2026l[2;1H[K[33m[1m
+ ❯ [msrc/features/userRoutes.test.ts[2m [queued][22m[K[33m[1m
+ ❯ [msrc/features/users.test.ts[2m [queued][22m[K[33m[1m
+ ❯ [msrc/index.test.ts[2m [queued][22m[K
+[K[2m
+ Test Files [31m[22m[1m1 failed[m[2m | [32m[22m[1m0 passed[90m[22m (4)[K[m[2m
+      Tests [31m[22m[1m10 failed[m[2m | [32m[22m[1m7 passed[90m[22m (17)[K[m[2m
+   Start at [22m00:19:44[K[2m
+   Duration [22m11.50s[K
+[K[103C[?2026h[2;1H::ffff:127.0.0.1 - - [22/Jul/2025:04:19:56 +0000] "GET /health HTTP/1.1" 200 75 "-" "-"[K
+[K[33m[1m
+ ❯ [msrc/features/userRoutes.test.ts[2m [queued][22m[K[33m[1m
+ ❯ [msrc/features/users.test.ts[2m [queued][22m[K[33m[1m
+ ❯ [msrc/index.test.ts[2m 1/3[22m[K
+[K[2m
+ Test Files [31m[22m[1m1 failed[m[2m | [32m[22m[1m0 passed[90m[22m (4)[K[m[2m
+      Tests [31m[22m[1m10 failed[m[2m | [32m[22m[1m8 passed[90m[22m (20)[K[m[2m
+   Start at [22m00:19:44[K[2m
+   Duration [22m11.81s[K[85C[?2026l
+[103C[?2026h[2;1H::ffff:127.0.0.1 - - [22/Jul/2025:04:19:56 +0000] "GET /api HTTP/1.1" 200 37 "-" "-"[K
+[K[33m[1m
+ ❯ [msrc/features/userRoutes.test.ts[2m [queued][22m[K[33m[1m
+ ❯ [msrc/features/users.test.ts[2m [queued][22m[K[33m[1m
+ ❯ [msrc/index.test.ts[2m 2/3[22m[K
+[K[2m
+ Test Files [31m[22m[1m1 failed[m[2m | [32m[22m[1m0 passed[90m[22m (4)[K[m[2m
+      Tests [31m[22m[1m10 failed[m[2m | [32m[22m[1m9 passed[90m[22m (20)[K[m[2m
+   Start at [22m00:19:44[K[2m
+   Duration [22m12.03s[K[85C[?2026l[?2026h
+[7;1H                                                                                                       
+                                                                                                       
+                                                                                                       
+                                                                                                       
+[103C[90m[2;1Hstderr[2m | src/index.test.ts > API Server > should return 404 for unknown routes[m[K[90m
+undefined[K[m
+[K
+[K[33m[1m
+ ❯ [msrc/features/userRoutes.test.ts[2m [queued][22m[K[33m[1m
+ ❯ [msrc/features/users.test.ts[2m [queued][33m[22m[1m
+ ❯ [msrc/index.test.ts[2m 2/3[10;1H Test Files [31m[22m[1m1 failed[m[2m | [32m[22m[1m0 passed[90m[22m (4)[m[2m
+      Tests [31m[22m[1m10 failed[m[2m | [32m[22m[1m9 passed[90m[22m (20)[m
+[2m   Start at [22m00:19:44[K[83C
+[2m   Duration [22m12.03s[K[85C[?2026l[?2026h
+[2;1H::ffff:127.0.0.1 - - [22/Jul/2025:04:19:56 +0000] "GET /unknown-route HTTP/1.1" 500 1215 "-" "-"       
+                                                                                                       [33m[1m
+ ❯ [msrc/features/userRoutes.test.ts[2m [queued][22m                                                            [33m[1m
+ ❯ [msrc/features/users.test.ts[2m [queued][22m                                                                 [33m[1m
+ ❯ [msrc/index.test.ts[2m 2/3[22m                                                                               
+                                                                                                       [2m
+ Test Files [31m[22m[1m1 failed[m[2m | [32m[22m[1m0 passed[90m[22m (4)                                                                    [m[2m
+      Tests [31m[22m[1m10 failed[m[2m | [32m[22m[1m9 passed[90m[22m (20)                                                                  [m[2m
+   Start at [22m00:19:44                                                                                   [2m
+   Duration [22m12.03s[K[85C[?2026l
+[103C[?2026h[2;1H [31m❯ [msrc/index.test.ts [2m(3 tests | [31m[22m1 failed[m[2m)[33m[22m 452[2mms[m[K
+   [33m[2m✓[m API Server[2m > [22mshould respond to health check  [33m303[2mms[m[K
+   [32m✓ [mAPI Server[2m > [22mshould respond to API endpoint [32m46[2mms[m[K[31m
+   × API Server[2m > [22mshould return 404 for unknown routes [32m89[2mms[m[K[31m
+     → expected 404 "Not Found", got 500 "Internal Server Error"[K[m
+[K
+[K
+[K
+[K
+[K[103C[33m[1m[8;1H ❯ [msrc/features/userRoutes.test.ts[2m [queued][33m[22m[1m
+ ❯ [msrc/features/users.test.ts[2m [queued][11;1H Test Files [31m[22m[1m2 failed[m[2m | [32m[22m[1m0 passed[90m[22m (4)[m
+[2m      Tests [31m[22m[1m11 failed[m[2m | [32m[22m[1m9 passed[90m[22m (20)[K[66C[m
+[2m   Start at [22m00:19:44[K[83C
+[2m   Duration [22m12.14s[K[85C[?2026l
+[103C[K[103C[10;1H[K[103C[9;1H[K[103C[8;1H[K[103C[7;1H[K[103C[6;1H[K[103C[5;1H[K[103C[4;1H[K[103C[3;1H[K[103C[31m
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[39m[41m[1m Failed Suites 2 [31m[49m[22m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[m[41m[1m[6;1H FAIL [m src/features/userRoutes.test.ts[2m [ src/features/userRoutes.test.ts ][22m[31m[1m
+TypeError[22m: Cannot read properties of undefined (reading 'Patient')[m[36m
+ [2m❯[22m src/features/userRoutes.test.ts:[2m36:22[m
+     [90m34|     [35mconst [mvalidUserData [33m= [m{
+     [90m35|       [muid[33m: [32m'test-uid-123'[33m,[m
+     [90m36|       [mrole[33m: UserRole.Patient,[m
+       [90m|[22X[31m[22C^[K[72C[m
+     [90m37|       [memail[33m: [32m'test@example.com'[33m,[K[62C[m
+     [90m38|       [mdisplayName[33m: [32m'John Doe'[K[65C[m
+[103C
+[103C[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/14]⎯[m
+[103C
+[103C[41m[1m FAIL [m src/features/users.test.ts[2m [ src/features/users.test.ts ][22m
+[103C[31m[1mTypeError[22m: Cannot read properties of undefined (reading 'Patient')[m
+[103C[36m [2m❯[22m src/features/users.test.ts:[2m75:22[m
+[103C     [90m73|   [34mdescribe[m([32m'createUser'[33m, [m() [33m=> [m{
+     [90m74|     [35mconst [mvalidUserInput[33m: CreateUserInput = [m{[K[49C
+     [90m75|       [mrole[33m: UserRole.Patient,[K[65C[m
+       [90m|[22X[31m[22C^[K[72C[m
+     [90m76|       [memail[33m: [32m'test@example.com'[33m,[K[62C[m
+     [90m77|       [mdisplayName[33m: [32m'John Doe'[K[65C[m
+[103C
+[103C[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/14]⎯[m
+[103C
+[103C
+[31m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[39m[41m[1m Failed Tests 11 [31m[49m[22m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[m
+[103C
+[103C[41m[1m FAIL [m src/index.test.ts[2m > [22mAPI Server[2m > [22mshould return 404 for unknown routes
+[103C[31m[1mError[22m: expected 404 "Not Found", got 500 "Internal Server Error"[m
+]0;node (vitest 3)[103C[36m [2m❯[22m src/index.test.ts:[2m31:8[m
+[103C     [90m29|     [35mconst [mresponse [33m= [35mawait [34mrequest[m(app)
+     [90m30|       [33m.[35mget[m([32m'/unknown-route'[m)[K[66C
+     [90m31|       [33m.[34mexpect[m([34m404[m)[K[76C
+       [90m|        [31m^[K[86C[m
+     [90m32|[K[95C[m
+     [90m33|     [34mexpect[m(response[33m.[mbody)[33m.[34mtoEqual[m({[K[59C
+[103C[90m [2m❯[22m Test._assertStatus ../../node_modules/supertest/lib/test.js:[2m309:14[m
+[103C[90m [2m❯[22m ../../node_modules/supertest/lib/test.js:[2m365:13[m
+[103C[90m [2m❯[22m Test._assertFunction ../../node_modules/supertest/lib/test.js:[2m342:13[m
+[103C[90m [2m❯[22m Test.assert ../../node_modules/supertest/lib/test.js:[2m195:23[m
+[103C[90m [2m❯[22m localAssert ../../node_modules/supertest/lib/test.js:[2m138:14[m
+[103C[90m [2m❯[22m Server.<anonymous> ../../node_modules/supertest/lib/test.js:[2m152:11[m
+[103C
+[103C[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/14]⎯[m
+[103C
+[103C[41m[1m FAIL [m src/features/database.test.ts[2m > [22mDatabaseService[2m > [22mgetDb[2m > [22mshould not reinitialize if already ini
+[10;103Hitialized[95C
+[103C[31m[1mAssertionError[22m: expected "spy" to be called at least once[m
+[103C[36m [2m❯[22m src/features/database.test.ts:[2m91:31[m
+[103C     [90m89|       // initializeApp should not be called again[m
+     [90m90|       [34mexpect[m(admin[33m.[minitializeApp)[33m.[mnot[33m.[34mtoHaveBeenCalled[m()[33m;[K[37C[m
+     [90m91|       [34mexpect[m(admin[33m.[mfirestore)[33m.[34mtoHaveBeenCalled[m()[33m;[K[45C[m
+       [90m|[31X[31m[31C^[K[63C[m
+     [90m92|     [m})[33m;[K[87C[m
+     [90m93|[K[95C[m
+[103C
+[103C[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/14]⎯[m
+[103C
+[103C[41m[1m FAIL [m src/features/database.test.ts[2m > [22mDatabaseService[2m > [22mgetDb[2m > [22mshould initialize with development set
+[10;103Httings[98C
+[103C[31m[1mAssertionError[22m: expected "spy" to be called with arguments: [ { projectId: 'test-project-dev' } ][m
+[90m[103C[m
+[90mNumber of calls: [1m0[22m[K[85C[m
+[90m[103C[m
+[103C[36m [2m❯[22m src/features/database.test.ts:[2m100:35[m
+     [90m98|       [mdatabaseService[33m.[34mgetDb[m()[33m;[K[64C[m
+     [90m99|[K[95C[m
+    [90m100|       [34mexpect[m(admin[33m.[minitializeApp)[33m.[34mtoHaveBeenCalledWith[m({[K[38C
+       [90m|[35X[31m[35C^[K[59C[m
+    [90m101|[9X[m[9CprojectId[33m: [32m'test-project-dev'[K[57C[m
+    [90m102|       [m})[33m;[K[85C[m
+[103C
+[103C[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/14]⎯[m
+[103C
+[41m[1m FAIL [m src/features/database.test.ts[2m > [22mDatabaseService[2m > [22mgetDb[2m > [22mshould initialize with test settings  
+[103C[31m[1mAssertionError[22m: expected "spy" to be called with arguments: [ { projectId: 'test-project' } ][m
+[90m[103C[m
+[90mNumber of calls: [1m0[22m[K[85C[m
+[90m[103C[m
+[103C[36m [2m❯[22m src/features/database.test.ts:[2m115:35[m
+[103C    [90m113|       [mdatabaseService[33m.[34mgetDb[m()[33m;[m
+    [90m114|[K[95C[m
+    [90m115|       [34mexpect[m(admin[33m.[minitializeApp)[33m.[34mtoHaveBeenCalledWith[m({[K[38C
+       [90m|[35X[31m[35C^[K[59C[m
+    [90m116|[9X[m[9CprojectId[33m: [32m'test-project'[K[61C[m
+    [90m117|       [m})[33m;[K[85C[m
+[103C
+[103C[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/14]⎯[m
+[103C
+[103C[41m[1m FAIL [m src/features/database.test.ts[2m > [22mDatabaseService[2m > [22mgetDb[2m > [22mshould use default project ID if not s
+[10;103Hspecified in development[80C
+[103C[31m[1mAssertionError[22m: expected "spy" to be called with arguments: [ { projectId: 'pharmarx-dev' } ][m
+[90m[103C[m
+[90mNumber of calls: [1m0[22m[K[85C[m
+[90m[103C[m
+[36m [2m❯[22m src/features/database.test.ts:[2m130:35[m[K[64C
+[103C    [90m128|       [mdatabaseService[33m.[34mgetDb[m()[33m;[m
+    [90m129|[K[95C[m
+    [90m130|       [34mexpect[m(admin[33m.[minitializeApp)[33m.[34mtoHaveBeenCalledWith[m({[K[38C
+       [90m|[35X[31m[35C^[K[59C[m
+    [90m131|[9X[m[9CprojectId[33m: [32m'pharmarx-dev'[K[61C[m
+    [90m132|       [m})[33m;[K[85C[m
+[103C
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/14]⎯[m
+[103C
+[41m[1m FAIL [m src/features/database.test.ts[2m > [22mDatabaseService[2m > [22mgetDb[2m > [22mshould initialize with production sett
+[10;103Htings[99C
+[31m[1mAssertionError[22m: expected "spy" to be called at least once[K[46C[m
+[36m [2m❯[22m src/features/database.test.ts:[2m149:37[m[K[64C
+[103C    [90m147|       [mdatabaseService[33m.[34mgetDb[m()[33m;[m
+    [90m148|[K[95C[m
+    [90m149|       [34mexpect[m(admin[33m.[mcredential[33m.[mcert)[33m.[34mtoHaveBeenCalled[m()[33m;[K[39C[m
+       [90m|[37X[31m[37C^[K[57C[m
+    [90m150|       [34mexpect[m(admin[33m.[minitializeApp)[33m.[34mtoHaveBeenCalledWith[m({[K[38C
+    [90m151|[9X[m[9Ccredential[33m: [mexpect[33m.[34manything[m()[33m,[K[56C[m
+[103C
+[103C[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/14]⎯[m
+[103C
+[41m[1m FAIL [m src/features/database.test.ts[2m > [22mDatabaseService[2m > [22mgetDb[2m > [22mshould use application default credent
+[10;103Htials in production if no service account key[59C
+[103C[31m[1mAssertionError[22m: expected "spy" to be called at least once[m
+[36m [2m❯[22m src/features/database.test.ts:[2m168:51[m[K[64C
+[103C    [90m166|       [mdatabaseService[33m.[34mgetDb[m()[33m;[m
+    [90m167|[K[95C[m
+    [90m168|       [34mexpect[m(admin[33m.[mcredential[33m.[mapplicationDefault)[33m.[34mtoHaveBeenCalled[m()[33m;[K[25C[m
+       [90m|[51X[31m[51C^[K[43C[m
+    [90m169|       [34mexpect[m(admin[33m.[minitializeApp)[33m.[34mtoHaveBeenCalledWith[m({[K[38C
+    [90m170|[9X[m[9Ccredential[33m: [mexpect[33m.[34manything[m()[33m,[K[56C[m
+[103C
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/14]⎯[m
+[103C
+[103C[41m[1m FAIL [m src/features/database.test.ts[2m > [22mDatabaseService[2m > [22mhealthCheck[2m > [22mshould return healthy status whe
+[10;103Hen database is accessible[79C
+[103C[31m[1mTypeError[22m: Cannot read properties of undefined (reading 'now')[m
+[36m [2m❯[22m src/features/database.test.ts:[2m197:40[m[K[64C
+[103C    [90m195|       [m})[33m;[m
+    [90m196|[K[95C[m
+    [90m197|       [34mexpect[m(admin[33m.[mfirestore[33m.Timestamp.[mnow)[33m.[34mtoHaveBeenCalled[m()[33m;[K[31C[m
+       [90m|[40X[31m[40C^[K[54C[m
+    [90m198|       [34mexpect[m(mockFirestore[33m.[mcollection)[33m.[34mtoHaveBeenCalledWith[m([32m'_health'[m)[33m;[K[23C[m
+    [90m199|       [34mexpect[m(mockCollection[33m.[mlimit)[33m.[34mtoHaveBeenCalledWith[m([34m1[m)[33m;[K[35C[m
+[103C
+[103C[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/14]⎯[m
+[103C
+[103C[41m[1m FAIL [m src/features/database.test.ts[2m > [22mDatabaseService[2m > [22mhealthCheck[2m > [22mshould return unhealthy status w
+[10;103Hwhen database is not accessible[73C
+[103C[31m[1mAssertionError[22m: expected { status: 'healthy', connected: true } to deeply equal { status: 'unhealthy', [m
+[31m[10;103H …(1) }[97C[m
+[103C
+[32m- Expected[93C[m
+[31m+ Received[93C[m
+[103C
+[2m  {[22m[K[100C
+[32m-   "connected": false,[80C[m
+[32m-   "status": "unhealthy",[77C[m
+[31m+   "connected": true,[81C[m
+[31m+   "status": "healthy",[79C[m
+[2m  }[22m[K[100C
+[103C
+[103C[36m [2m❯[22m src/features/database.test.ts:[2m213:22[m
+[103C    [90m211|       [35mconst [mresult [33m= [35mawait [mdatabaseService[33m.[34mhealthCheck[m()[33m;[m
+    [90m212|[K[95C[m
+    [90m213|       [34mexpect[m(result)[33m.[34mtoEqual[m({[K[64C
+       [90m|[22X[31m[22C^[K[72C[m
+    [90m214|[9X[m[9Cstatus[33m: [32m'unhealthy'[33m,[K[66C[m
+    [90m215|[9X[m[9Cconnected[33m: [35mfalse[K[70C[m
+[103C
+[103C[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/14]⎯[m
+[103C
+[41m[1m FAIL [m src/features/database.test.ts[2m > [22mDatabaseService[2m > [22mdisconnect[2m > [22mshould handle app deletion errors
+[10;103Hs gracefully[92C
+[103C[31m[1mAssertionError[22m: promise rejected "Error: Failed to delete app" instead of resolving

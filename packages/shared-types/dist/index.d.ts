@@ -1,12 +1,29 @@
-export interface User {
-    id: string;
-    email: string;
-    firstName: string;
-    lastName: string;
-    role: 'patient' | 'pharmacist' | 'admin';
-    createdAt: Date;
-    updatedAt: Date;
+export declare enum UserRole {
+    Patient = "patient",
+    Caregiver = "caregiver",
+    Doctor = "doctor",
+    Pharmacist = "pharmacist"
 }
+export interface User {
+    uid: string;
+    role: UserRole;
+    email?: string;
+    phoneNumber?: string;
+    displayName: string;
+    createdAt: Date;
+}
+export interface UserValidationResult {
+    isValid: boolean;
+    errors: string[];
+}
+export interface CreateUserInput {
+    role: UserRole;
+    email?: string;
+    phoneNumber?: string;
+    displayName: string;
+}
+export declare const validateUser: (user: Partial<User>) => UserValidationResult;
+export declare const validateCreateUserInput: (input: CreateUserInput) => UserValidationResult;
 export interface Order {
     id: string;
     userId: string;
@@ -29,5 +46,9 @@ export interface ApiResponse<T> {
     error?: string;
     message?: string;
 }
-export * from './index';
+export interface ApiError {
+    code: string;
+    message: string;
+    details?: any;
+}
 //# sourceMappingURL=index.d.ts.map
