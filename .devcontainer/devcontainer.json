@@ -1,0 +1,93 @@
+{
+  "name": "PharmaRx Firebase DevOps Environment",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": "."
+  },
+  
+  // Features to install
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "20"
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
+  },
+
+  // Configure tool-specific properties
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.vscode-typescript-next",
+        "bradlc.vscode-tailwindcss",
+        "ms-vscode.vscode-json",
+        "hashicorp.terraform",
+        "ms-vscode.azure-account",
+        "googlecloudtools.cloudcode",
+        "firebase.firebase-vscode",
+        "esbenp.prettier-vscode",
+        "ms-playwright.playwright",
+        "vitest.explorer"
+      ],
+      "settings": {
+        "typescript.preferences.includePackageJsonAutoImports": "auto",
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "files.exclude": {
+          "**/node_modules": true,
+          "**/dist": true,
+          "**/.terraform": true
+        }
+      }
+    }
+  },
+
+  // Forward ports for development
+  "forwardPorts": [
+    3001,   // API server
+    5173,   // Vite dev server
+    4000,   // Firebase emulator UI
+    8080,   // Firestore emulator
+    9099,   // Auth emulator
+    9199,   // Storage emulator
+    4400    // Firebase emulator hub
+  ],
+
+  // Port attributes
+  "portsAttributes": {
+    "3001": {
+      "label": "API Server",
+      "onAutoForward": "notify"
+    },
+    "5173": {
+      "label": "Web App",
+      "onAutoForward": "openBrowser"
+    },
+    "4000": {
+      "label": "Firebase Emulator UI",
+      "onAutoForward": "notify"
+    }
+  },
+
+  // Post-create command to install dependencies and setup
+  "postCreateCommand": ".devcontainer/setup.sh",
+
+  // Environment variables
+  "containerEnv": {
+    "NODE_ENV": "development",
+    "FIREBASE_EMULATOR_HUB": "localhost:4400",
+    "FIRESTORE_EMULATOR_HOST": "localhost:8080",
+    "FIREBASE_AUTH_EMULATOR_HOST": "localhost:9099",
+    "FIREBASE_STORAGE_EMULATOR_HOST": "localhost:9199"
+  },
+
+  // User settings
+  "remoteUser": "vscode",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
+  "workspaceFolder": "/workspace",
+
+  // Lifecycle scripts
+  "onCreateCommand": "echo 'Setting up PharmaRx Firebase DevOps environment...'",
+  "updateContentCommand": "npm install",
+  "postStartCommand": ".devcontainer/post-start.sh"
+} 
