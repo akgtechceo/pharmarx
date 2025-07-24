@@ -25,6 +25,23 @@ print_warning() {
     echo -e "${YELLOW}⚠️  $1${NC}"
 }
 
+# Install Firebase CLI
+print_status "Installing Firebase CLI..."
+npm install -g firebase-tools@latest
+print_success "Firebase CLI installed"
+
+# Install additional useful tools
+print_status "Installing additional development tools..."
+npm install -g tsx vitest typescript
+print_success "Additional tools installed"
+
+# Install jq if not available
+if ! command -v jq &> /dev/null; then
+    print_status "Installing jq..."
+    sudo apt-get update && sudo apt-get install -y jq
+    print_success "jq installed"
+fi
+
 # Install project dependencies
 print_status "Installing project dependencies..."
 
@@ -60,7 +77,7 @@ fi
 
 # Make scripts executable
 print_status "Making scripts executable..."
-chmod +x infra/scripts/*.sh
+chmod +x infra/scripts/*.sh 2>/dev/null || true
 print_success "Scripts are now executable"
 
 # Verify tool installations
@@ -113,14 +130,9 @@ print_status "Creating necessary directories..."
 mkdir -p .firebase
 mkdir -p logs
 mkdir -p temp
+mkdir -p .env
+mkdir -p config
 print_success "Directories created"
-
-# Set up git hooks if needed
-if [ -d ".git" ]; then
-    print_status "Setting up git hooks..."
-    # You can add git hooks setup here if needed
-    print_success "Git hooks configured"
-fi
 
 # Initialize Firebase project configuration (without login)
 print_status "Preparing Firebase configuration..."
@@ -159,10 +171,14 @@ if [ ! -f "firestore.indexes.json" ]; then
     print_success "Firestore indexes file created"
 fi
 
-# Create environment-specific directories
-mkdir -p .env
-mkdir -p config
-print_success "Configuration directories created"
+# Set up shell aliases
+print_status "Setting up shell aliases..."
+echo 'alias tf="terraform"' >> ~/.bashrc
+echo 'alias fb="firebase"' >> ~/.bashrc
+echo 'alias gc="gcloud"' >> ~/.bashrc
+echo 'alias dev="./infra/scripts/dev-workflow.sh"' >> ~/.bashrc
+echo 'alias setup="./infra/scripts/setup-firebase.sh"' >> ~/.bashrc
+print_success "Shell aliases configured"
 
 print_success "🎉 PharmaRx Firebase DevOps environment setup complete!"
 print_status "📋 Next steps:"

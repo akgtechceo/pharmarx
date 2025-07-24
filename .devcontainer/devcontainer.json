@@ -1,17 +1,20 @@
 {
   "name": "PharmaRx Firebase DevOps Environment",
-  "build": {
-    "dockerfile": "Dockerfile",
-    "context": "."
-  },
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:20-bullseye",
   
-  // Features to install
+  // Use devcontainer features instead of custom Dockerfile
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
       "version": "20"
     },
     "ghcr.io/devcontainers/features/github-cli:1": {},
-    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {},
+    "ghcr.io/devcontainers/features/google-cloud-cli:1": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/terraform:1": {
+      "version": "1.8.3"
+    }
   },
 
   // Configure tool-specific properties
@@ -22,9 +25,7 @@
         "bradlc.vscode-tailwindcss",
         "ms-vscode.vscode-json",
         "hashicorp.terraform",
-        "ms-vscode.azure-account",
         "googlecloudtools.cloudcode",
-        "firebase.firebase-vscode",
         "esbenp.prettier-vscode",
         "ms-playwright.playwright",
         "vitest.explorer"
@@ -83,8 +84,6 @@
 
   // User settings
   "remoteUser": "vscode",
-  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
-  "workspaceFolder": "/workspace",
 
   // Lifecycle scripts
   "onCreateCommand": "echo 'Setting up PharmaRx Firebase DevOps environment...'",
