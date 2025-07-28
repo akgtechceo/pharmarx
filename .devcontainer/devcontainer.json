@@ -1,8 +1,10 @@
 {
   "name": "PharmaRx Firebase DevOps Environment",
-  "image": "mcr.microsoft.com/devcontainers/universal:2-linux",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
   
-  // Use devcontainer features instead of custom Dockerfile
+  // Use devcontainer features
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
       "version": "20"
