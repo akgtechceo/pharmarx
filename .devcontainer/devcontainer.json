@@ -1,6 +1,6 @@
 {
   "name": "PharmaRx Firebase DevOps Environment",
-  "image": "mcr.microsoft.com/devcontainers/typescript-node:20-bullseye",
+  "image": "mcr.microsoft.com/devcontainers/universal:2-linux",
   
   // Use devcontainer features instead of custom Dockerfile
   "features": {

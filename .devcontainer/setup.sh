@@ -63,9 +63,17 @@ else
 fi
 
 # Create gcloud configuration directory with proper permissions
-sudo mkdir -p /home/vscode/.config/gcloud
-sudo chown -R vscode:vscode /home/vscode/.config/gcloud
-chmod 700 /home/vscode/.config/gcloud
+CURRENT_USER=$(whoami)
+USER_HOME=$(eval echo ~$CURRENT_USER)
+
+# Create gcloud config directory for current user
+mkdir -p $USER_HOME/.config/gcloud
+chmod 700 $USER_HOME/.config/gcloud
+
+# If running as root, ensure proper ownership for vscode user
+if [ "$CURRENT_USER" = "root" ] && id -u vscode >/dev/null 2>&1; then
+    chown -R vscode:vscode /home/vscode/.config/gcloud 2>/dev/null || true
+fi
 
 # Install Firebase CLI
 print_status "Installing Firebase CLI..."
@@ -216,13 +224,20 @@ fi
 
 # Set up shell aliases
 print_status "Setting up shell aliases..."
-echo 'alias tf="terraform"' >> ~/.bashrc
-echo 'alias fb="firebase"' >> ~/.bashrc
-echo 'alias gc="gcloud"' >> ~/.bashrc
-echo 'alias dev="./infra/scripts/dev-workflow.sh"' >> ~/.bashrc
-echo 'alias setup="./infra/scripts/setup-firebase.sh"' >> ~/.bashrc
-echo 'alias gconfig="./.devcontainer/gcloud-config.sh"' >> ~/.bashrc
-print_success "Shell aliases configured"
+
+# Determine shell config file
+SHELL_CONFIG="$HOME/.bashrc"
+if [ -f "$HOME/.zshrc" ]; then
+    SHELL_CONFIG="$HOME/.zshrc"
+fi
+
+echo 'alias tf="terraform"' >> $SHELL_CONFIG
+echo 'alias fb="firebase"' >> $SHELL_CONFIG
+echo 'alias gc="gcloud"' >> $SHELL_CONFIG
+echo 'alias dev="./infra/scripts/dev-workflow.sh"' >> $SHELL_CONFIG
+echo 'alias setup="./infra/scripts/setup-firebase.sh"' >> $SHELL_CONFIG
+echo 'alias gconfig="./.devcontainer/gcloud-config.sh"' >> $SHELL_CONFIG
+print_success "Shell aliases configured for $(basename $SHELL_CONFIG)"
 
 print_success "🎉 PharmaRx Firebase DevOps environment setup complete!"
 print_status "📋 Next steps:"
