@@ -30,6 +30,13 @@ print_error() {
 
 print_status "🚀 Starting PharmaRx Firebase DevOps environment..."
 
+# Load Google Cloud environment if available
+if [ -f ".devcontainer/gcloud.env" ]; then
+    print_status "Loading Google Cloud environment configuration..."
+    source .devcontainer/gcloud.env
+    print_success "Google Cloud environment loaded"
+fi
+
 # Update npm packages if needed (in background)
 print_status "Checking for package updates..."
 npm update --silent > /dev/null 2>&1 &
@@ -110,14 +117,15 @@ print_success "🎯 PharmaRx Firebase DevOps Environment Ready!"
 echo ""
 print_status "📋 Available quick commands:"
 echo "  setup    - Run Firebase setup script"
-echo "  dev      - Start development environment"
+echo "  dev      - Start development environment" 
+echo "  gconfig  - Configure Google Cloud CLI"
 echo "  tf       - Terraform shortcut"
 echo "  fb       - Firebase shortcut"
 echo "  gc       - Google Cloud shortcut"
 echo ""
 print_status "🚀 Next steps to get started:"
-echo "  1. Configure your GCP project: edit infra/terraform/terraform.tfvars"
-echo "  2. Authenticate: gcloud auth login"
+echo "  1. Configure Google Cloud: gconfig (or ./.devcontainer/gcloud-config.sh)"
+echo "  2. Alternative: Manual setup - edit infra/terraform/terraform.tfvars, then gcloud auth login"
 echo "  3. Set up Firebase: ./infra/scripts/setup-firebase.sh"
 echo "  4. Start development: ./infra/scripts/dev-workflow.sh"
 echo ""

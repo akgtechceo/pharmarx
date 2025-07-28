@@ -1,0 +1,71 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.devcontainer/gcloud.env
+
+# Firebase
+.firebase/
+.firebaserc.local
+firebase-debug.log*
+ui-debug.log
+
+# Google Cloud
+.gcloud/
+gcloud-debug.log
+service-account-key.json
+*.json.key
+
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+*.tfvars
+!*.tfvars.example
+
+# Build outputs
+dist/
+build/
+out/
+*.tsbuildinfo
+
+# Runtime logs
+logs/
+*.log
+
+# Temporary files
+temp/
+tmp/
+.tmp/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Playwright
+test-results/
+playwright-report/
+playwright/.cache/
+
+# Local development
+.local/
+.cache/ 

@@ -25,6 +25,48 @@ print_warning() {
     echo -e "${YELLOW}⚠️  $1${NC}"
 }
 
+# Install Google Cloud CLI
+print_status "Installing Google Cloud CLI..."
+if ! command -v gcloud &> /dev/null; then
+    # Modern installation approach using official Google installation script
+    print_status "Downloading Google Cloud CLI..."
+    curl -sSL https://sdk.cloud.google.com | bash -s -- --disable-prompts --install-dir=/usr/local
+    
+    # Add to PATH for current session
+    export PATH="/usr/local/google-cloud-sdk/bin:$PATH"
+    
+    # Add to PATH permanently for all users
+    echo 'export PATH="/usr/local/google-cloud-sdk/bin:$PATH"' | sudo tee -a /etc/environment
+    
+    # Install additional components useful for Firebase development
+    print_status "Installing Google Cloud CLI components..."
+    gcloud components install --quiet \
+        firebase-tools \
+        cloud-sql-proxy \
+        pubsub-emulator \
+        cloud-firestore-emulator \
+        app-engine-go \
+        kubectl
+    
+    # Configure gcloud for better devcontainer experience  
+    gcloud config set core/disable_usage_reporting true
+    gcloud config set component_manager/disable_update_check true
+    gcloud config set core/disable_color false
+    
+    print_success "Google Cloud CLI installed with components"
+else
+    print_success "Google Cloud CLI already installed"
+    
+    # Ensure components are up to date
+    print_status "Updating Google Cloud CLI components..."
+    gcloud components update --quiet
+fi
+
+# Create gcloud configuration directory with proper permissions
+sudo mkdir -p /home/vscode/.config/gcloud
+sudo chown -R vscode:vscode /home/vscode/.config/gcloud
+chmod 700 /home/vscode/.config/gcloud
+
 # Install Firebase CLI
 print_status "Installing Firebase CLI..."
 npm install -g firebase-tools@latest
@@ -78,6 +120,7 @@ fi
 # Make scripts executable
 print_status "Making scripts executable..."
 chmod +x infra/scripts/*.sh 2>/dev/null || true
+chmod +x .devcontainer/*.sh 2>/dev/null || true
 print_success "Scripts are now executable"
 
 # Verify tool installations
@@ -178,16 +221,17 @@ echo 'alias fb="firebase"' >> ~/.bashrc
 echo 'alias gc="gcloud"' >> ~/.bashrc
 echo 'alias dev="./infra/scripts/dev-workflow.sh"' >> ~/.bashrc
 echo 'alias setup="./infra/scripts/setup-firebase.sh"' >> ~/.bashrc
+echo 'alias gconfig="./.devcontainer/gcloud-config.sh"' >> ~/.bashrc
 print_success "Shell aliases configured"
 
 print_success "🎉 PharmaRx Firebase DevOps environment setup complete!"
 print_status "📋 Next steps:"
-echo "  1. Configure your GCP project in infra/terraform/terraform.tfvars"
-echo "  2. Authenticate with Google Cloud: gcloud auth login"
-echo "  3. Run the setup script: ./infra/scripts/setup-firebase.sh"
-echo "  4. Start development: ./infra/scripts/dev-workflow.sh"
+echo "  1. Configure Google Cloud: gconfig (recommended) or manual setup"
+echo "  2. Run Firebase setup: ./infra/scripts/setup-firebase.sh"
+echo "  3. Start development: ./infra/scripts/dev-workflow.sh"
 echo ""
 print_status "🔧 Quick commands available:"
+echo "  gconfig  - Configure Google Cloud CLI (recommended first step)"
 echo "  setup    - Run Firebase setup script"
 echo "  dev      - Start development environment"
 echo "  tf       - Terraform shortcut"
