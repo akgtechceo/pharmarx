@@ -1,6 +1,7 @@
 import { Payment, PaymentGateway, PaymentStatus, PrescriptionOrder } from '@pharmarx/shared-types';
 import { db } from './database';
 import admin from 'firebase-admin';
+import { receiptService } from './receiptService';
 
 export interface ProcessPaymentRequest {
   orderId: string;
@@ -97,6 +98,33 @@ class PaymentService {
       // Update order status if payment succeeded
       if (status === 'succeeded') {
         await this.updateOrderStatusToPaid(request.orderId);
+        
+        // Generate receipt for successful payment
+        try {
+          const orderDoc = await this.ordersCollection.doc(request.orderId).get();
+          if (orderDoc.exists) {
+            const order = orderDoc.data() as PrescriptionOrder;
+            
+            // Default pharmacy info (in real implementation, this would come from configuration)
+            const pharmacyInfo = {
+              name: 'PharmaRx - Pharmacie Moderne',
+              address: '123 Avenue de la République, Cotonou, Bénin',
+              phone: '+229 21 30 45 67',
+              email: 'contact@pharmarx.bj',
+              licenseNumber: 'PHM-BJ-2024-001',
+              taxId: 'NIF-BJ-20240001234'
+            };
+
+            await receiptService.generateReceipt({
+              payment,
+              order,
+              pharmacyInfo
+            });
+          }
+        } catch (receiptError) {
+          // Log receipt generation error but don't fail the payment
+          console.error('Failed to generate receipt for payment:', paymentId, receiptError);
+        }
       }
 
       // Log audit trail

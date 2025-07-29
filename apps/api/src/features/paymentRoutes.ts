@@ -1,6 +1,7 @@
 import { Request, Response, Router } from 'express';
 import { ApiResponse } from '@pharmarx/shared-types';
 import { paymentService, ProcessPaymentRequest, ProcessPaymentResult } from './paymentService';
+import { receiptService } from './receiptService';
 import admin from 'firebase-admin';
 
 const router = Router();
@@ -330,6 +331,172 @@ router.post('/public/pay/:paymentToken', async (req: Request, res: Response) => 
     res.status(500).json({
       success: false,
       error: 'Failed to process payment'
+    } as ApiResponse<null>);
+  }
+});
+
+/**
+ * GET /payments/:paymentId/receipt - Get receipt details for a payment
+ */
+router.get('/payments/:paymentId/receipt', authenticateUser, async (req: Request, res: Response) => {
+  try {
+    const { paymentId } = req.params;
+
+    const receipt = await receiptService.getReceiptByPaymentId(paymentId);
+
+    if (!receipt) {
+      return res.status(404).json({
+        success: false,
+        error: 'Receipt not found for this payment'
+      } as ApiResponse<null>);
+    }
+
+    res.status(200).json({
+      success: true,
+      data: receipt,
+      message: 'Receipt details retrieved successfully'
+    } as ApiResponse<typeof receipt>);
+
+  } catch (error) {
+    console.error('Error fetching receipt:', error);
+    
+    res.status(500).json({
+      success: false,
+      error: 'Failed to retrieve receipt'
+    } as ApiResponse<null>);
+  }
+});
+
+/**
+ * GET /payments/:paymentId/receipt/download - Download receipt PDF
+ */
+router.get('/payments/:paymentId/receipt/download', authenticateUser, async (req: Request, res: Response) => {
+  try {
+    const { paymentId } = req.params;
+
+    const receipt = await receiptService.getReceiptByPaymentId(paymentId);
+
+    if (!receipt) {
+      return res.status(404).json({
+        success: false,
+        error: 'Receipt not found for this payment'
+      } as ApiResponse<null>);
+    }
+
+    const pdfBuffer = await receiptService.getReceiptPDF(receipt.receiptId);
+
+    if (!pdfBuffer) {
+      return res.status(500).json({
+        success: false,
+        error: 'Failed to generate receipt PDF'
+      } as ApiResponse<null>);
+    }
+
+    // Set headers for PDF download
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename="facture-${receipt.receiptNumber}.pdf"`);
+    res.setHeader('Content-Length', pdfBuffer.length);
+
+    res.send(pdfBuffer);
+
+  } catch (error) {
+    console.error('Error downloading receipt:', error);
+    
+    res.status(500).json({
+      success: false,
+      error: 'Failed to download receipt'
+    } as ApiResponse<null>);
+  }
+});
+
+/**
+ * GET /orders/:orderId/receipt - Get receipt for an order (convenience endpoint)
+ */
+router.get('/orders/:orderId/receipt', authenticateUser, async (req: Request, res: Response) => {
+  try {
+    const { orderId } = req.params;
+
+    // Get the successful payment for this order
+    const payments = await paymentService.getPaymentsForOrder(orderId);
+    const successfulPayment = payments.find(p => p.status === 'succeeded');
+
+    if (!successfulPayment) {
+      return res.status(404).json({
+        success: false,
+        error: 'No successful payment found for this order'
+      } as ApiResponse<null>);
+    }
+
+    const receipt = await receiptService.getReceiptByPaymentId(successfulPayment.paymentId);
+
+    if (!receipt) {
+      return res.status(404).json({
+        success: false,
+        error: 'Receipt not found for this order'
+      } as ApiResponse<null>);
+    }
+
+    res.status(200).json({
+      success: true,
+      data: receipt,
+      message: 'Order receipt retrieved successfully'
+    } as ApiResponse<typeof receipt>);
+
+  } catch (error) {
+    console.error('Error fetching order receipt:', error);
+    
+    res.status(500).json({
+      success: false,
+      error: 'Failed to retrieve order receipt'
+    } as ApiResponse<null>);
+  }
+});
+
+/**
+ * POST /payments/:paymentId/receipt/regenerate - Regenerate receipt with custom info
+ */
+router.post('/payments/:paymentId/receipt/regenerate', authenticateUser, async (req: Request, res: Response) => {
+  try {
+    const { paymentId } = req.params;
+    const { pharmacyInfo, customerInfo } = req.body;
+
+    // Validate required pharmacy info
+    if (!pharmacyInfo || !pharmacyInfo.name || !pharmacyInfo.taxId) {
+      return res.status(400).json({
+        success: false,
+        error: 'Valid pharmacy information is required'
+      } as ApiResponse<null>);
+    }
+
+    const result = await receiptService.generateReceiptForPayment(
+      paymentId,
+      pharmacyInfo,
+      customerInfo
+    );
+
+    res.status(200).json({
+      success: true,
+      data: {
+        receiptId: result.receiptId,
+        receiptNumber: result.receiptNumber,
+        receiptDetails: result.receiptDetails
+      },
+      message: 'Receipt regenerated successfully'
+    } as ApiResponse<{
+      receiptId: string;
+      receiptNumber: string;
+      receiptDetails: any;
+    }>);
+
+  } catch (error) {
+    console.error('Error regenerating receipt:', error);
+    
+    const errorMessage = error instanceof Error ? error.message : 'Failed to regenerate receipt';
+    const statusCode = errorMessage.includes('not found') ? 404 : 500;
+
+    res.status(statusCode).json({
+      success: false,
+      error: errorMessage
     } as ApiResponse<null>);
   }
 });
