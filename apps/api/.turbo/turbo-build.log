@@ -1,34 +1,1444 @@
 [?9001h[?1004h[?25l[2J[m[H]0;npm[?25h]0;npm run build[?25l
 > @pharmarx/api@1.0.0 build
-> tsc[5;1H[?25h[K]0;Administrator:  C:\WINDOWS\system32\cmd.exe [?25l[96msrc/features/authRoutes.test.ts[m:[93m164[m:[93m14 [m- [91merror [90mTS2790: [mThe operand of a 'delete' operator must be optional.[7m[8;1H164[27m       delete invalidData.uid;[7m
-   [27m[14X[91m[14C~~~~~~~~~~~~~~~[11;1H[?25h[m[?25l[96msrc/features/database.test.ts[m:[93m57[m:[93m27 [m- [91merror [90mTS2339: [mProperty 'disconnect' does not exist on type 'DatabaseService'.[7m[14;1H57[27m     await databaseService.disconnect();[?25h
-[7m  [27m[27X[91m[27C~~~~~~~~~~[K[m
+> tsc[5;1H[?25h[K]0;C:\WINDOWS\system32\cmd.exe [?25l[96msrc/config/firebase.ts[m:[93m64[m:[93m16 [m- [91merror [90mTS2454: [mVariable 'firestore' is used before being assigned.[7m[8;1H64[27m export default firestore;[7m
+  [27m[16X[91m[16C~~~~~~~~~[11;1H[?25h[m[96msrc/features/doctorPrescriptionRoutes.test.ts[m:[93m245[m:[93m81 [m- [91merror [90mTS2345: [mArgument of type '{ prescriptionId: string; doctorUid: string; patientProfileId: string; medicationDetails: { name: string; dosage: string; quantity: number; instructions: string; refillsAuthorized: number; refillsRemaining: number; }; pre
+[13;77HescriptionNotes: string; submittedAt: Date; status: string; }' is not assignab
+[13;77Hble to parameter of type 'DoctorPrescriptionSubmission'.
+  Types of property 'status' are incompatible.
+    Type 'string' is not assignable to type '"delivered" | "submitted" | "pro
+[13;77Hocessed"'.
 
-[96msrc/features/database.test.ts[m:[93m242[m:[93m29 [m- [91merror [90mTS2339: [mProperty 'disconnect' do
-[13;77Hoes not exist on type 'DatabaseService'.
+[7m245[27m       vi.mocked(doctorPrescriptionService.submitPrescription).mockResolve
+[13;77HedValue(mockPrescription);
+[7m   [27m                                                                          [14;152H
+[91m       ~~~~~~~~~~~~~~~~[m
 
-[7m242[27m       await databaseService.disconnect();[K
-[7m   [27m[29X[91m[29C~~~~~~~~~~[K[m
+[96msrc/features/doctorPrescriptionRoutes.test.ts[m:[93m386[m:[93m85 [m- [91merror [90mTS2345: [mArgument
+[13;77Ht of type '{ prescriptions: { prescriptionId: string; doctorUid: string; patie
+[13;77HentProfileId: string; medicationDetails: { name: string; dosage: string; quant
+[13;77Htity: number; instructions: string; refillsAuthorized: number; refillsRemainin
+[13;77Hng: number; }; prescriptionNotes: string; submittedAt: Date; status: string; }
+[13;77H}[]; pagination: { ....' is not assignable to parameter of type 'DoctorPrescri
+[13;77HiptionHistoryResponse'.
+  Types of property 'prescriptions' are incompatible.
+    Type '{ prescriptionId: string; doctorUid: string; patientProfileId: stri
+[13;77Hing; medicationDetails: { name: string; dosage: string; quantity: number; inst
+[13;77Htructions: string; refillsAuthorized: number; refillsRemaining: number; }; pre
+[13;77HescriptionNotes: string; submittedAt: Date; status: string; }[]' is not assign
+[13;77Hnable to type 'DoctorPrescriptionSubmission[]'.
+      Type '{ prescriptionId: string; doctorUid: string; patientProfileId: st
+[13;77Htring; medicationDetails: { name: string; dosage: string; quantity: number; in
+[13;77Hnstructions: string; refillsAuthorized: number; refillsRemaining: number; }; p
+[13;77HprescriptionNotes: string; submittedAt: Date; status: string; }' is not assign
+[13;77Hnable to type 'DoctorPrescriptionSubmission'.
+        Types of property 'status' are incompatible.
+          Type 'string' is not assignable to type '"delivered" | "submitted" 
+[13;77H | "processed"'.
 
-[96msrc/features/database.test.ts[m:[93m254[m:[93m29 [m- [91merror [90mTS2339: [mProperty 'disconnect' do
-[13;77Hoes not exist on type 'DatabaseService'.
+[7m386[27m       vi.mocked(doctorPrescriptionService.getPrescriptionHistory).mockRes
+[13;77HsolvedValue(mockHistory);
+[7m   [27m                                                                          [14;152H
+[91m           ~~~~~~~~~~~[m
 
-[7m254[27m       await databaseService.disconnect();[K
-[7m   [27m[29X[91m[29C~~~~~~~~~~[K[m
+[96msrc/features/doctorPrescriptionRoutes.ts[m:[93m131[m:[93m13 [m- [91merror [90mTS2339: [mProperty 'med
+[13;77HdicationDetails' does not exist on type '{ name: string; dosage: string; quant
+[13;77Htity: number; instructions: string; refillsAuthorized: number; }'.
 
-[96msrc/features/database.test.ts[m:[93m263[m:[93m36 [m- [91merror [90mTS2339: [mProperty 'disconnect' do
-[13;77Hoes not exist on type 'DatabaseService'.
+[7m131[27m     const { medicationDetails } = prescriptionData.medicationDetails;    [14;1H
+[7m   [27m[13X[91m[13C~~~~~~~~~~~~~~~~~[K[m
 
-[7m263[27m       await expect(databaseService.disconnect()).resolves.toBeUndefined()
+[96msrc/features/doctorPrescriptionService.test.ts[m:[93m3[m:[93m10 [m- [91merror [90mTS2614: [mModule '"
+[13;77H"./database"' has no exported member 'db'. Did you mean to use 'import db from
+[13;77Hm "./database"' instead?
+
+[7m3[27m import { db } from './database';[K
+[7m [27m[10X[91m[10C~~[K[m
+
+[96msrc/features/doctorPrescriptionService.test.ts[m:[93m101[m:[93m50 [m- [91merror [90mTS7006: [mParamet
+[13;77Hter 'collectionName' implicitly has an 'any' type.
+
+[7m101[27m       (db.collection as any).mockImplementation((collectionName) => {    [14;1H
+[7m   [27m[50X[91m[50C~~~~~~~~~~~~~~[K[m
+
+[96msrc/features/doctorPrescriptionService.test.ts[m:[93m175[m:[93m50 [m- [91merror [90mTS7006: [mParamet
+[13;77Hter 'collectionName' implicitly has an 'any' type.
+
+[7m175[27m       (db.collection as any).mockImplementation((collectionName) => {    [14;1H
+[7m   [27m[50X[91m[50C~~~~~~~~~~~~~~[K[m
+
+[96msrc/features/doctorPrescriptionService.ts[m:[93m1[m:[93m10 [m- [91merror [90mTS2614: [mModule '"./dat
+[13;77Htabase"' has no exported member 'db'. Did you mean to use 'import db from "./d
+[13;77Hdatabase"' instead?
+
+[7m1[27m import { db } from './database';[K
+[7m [27m[10X[91m[10C~~[K[m
+
+[96msrc/features/doctorPrescriptionService.ts[m:[93m38[m:[93m52 [m- [91merror [90mTS7006: [mParameter 'do
+[13;77Hoc' implicitly has an 'any' type.
+
+[7m38[27m           const phoneUserIds = phoneQuery.docs.map(doc => doc.id);        [14;1H
+[7m  [27m[52X[91m[52C~~~[K[m
+
+[96msrc/features/doctorPrescriptionService.ts[m:[93m48[m:[93m52 [m- [91merror [90mTS7006: [mParameter 'do
+[13;77Hoc' implicitly has an 'any' type.
+
+[7m48[27m           const emailUserIds = emailQuery.docs.map(doc => doc.id);        [14;1H
+[7m  [27m[52X[91m[52C~~~[K[m
+
+[96msrc/features/doctorPrescriptionService.ts[m:[93m66[m:[93m58 [m- [91merror [90mTS7006: [mParameter 'do
+[13;77Hoc' implicitly has an 'any' type.
+
+[7m66[27m           const allPhoneUserIds = allPhoneQuery.docs.map(doc => doc.id);  [14;1H
+[7m  [27m[58X[91m[58C~~~[K[m
+
+[96msrc/features/doctorPrescriptionService.ts[m:[93m67[m:[93m58 [m- [91merror [90mTS7006: [mParameter 'do
+[13;77Hoc' implicitly has an 'any' type.
+
+[7m67[27m           const allEmailUserIds = allEmailQuery.docs.map(doc => doc.id);  [14;1H
+[7m  [27m[58X[91m[58C~~~[K[m
+
+[96msrc/features/doctorPrescriptionService.ts[m:[93m73[m:[93m58 [m- [91merror [90mTS7006: [mParameter 'do
+[13;77Hoc' implicitly has an 'any' type.
+
+[7m73[27m             additionalResults = additionalQuery.docs.map(doc => this.mapPr
+[13;77HrofileToSearchResult(doc));
+[7m  [27m[58X[91m[58C~~~[K[m
+
+[96msrc/features/doctorPrescriptionService.ts[m:[93m76[m:[93m50 [m- [91merror [90mTS7006: [mParameter 'do
+[13;77Hoc' implicitly has an 'any' type.
+
+[7m76[27m           const nameResults = nameQuery.docs.map(doc => this.mapProfileToS
+[13;77HSearchResult(doc));
+[7m  [27m[50X[91m[50C~~~[K[m
+
+[96msrc/features/doctorPrescriptionService.ts[m:[93m87[m:[93m7 [m- [91merror [90mTS2322: [mType 'Promise<
+[13;77H<PatientSearchResult>[]' is not assignable to type 'PatientSearchResult[]'.   
+  Type 'Promise<PatientSearchResult>' is missing the following properties fro
+[13;77Hom type 'PatientSearchResult': profileId, patientName, dateOfBirth
+
+[7m87[27m       return results;[K
+[7m  [27m       [91m~~~~~~[K[m
+
+[96msrc/features/doctorPrescriptionService.ts[m:[93m182[m:[93m47 [m- [91merror [90mTS7006: [mParameter 'd
+[13;77Hdoc' implicitly has an 'any' type.
+
+[7m182[27m       const prescriptions = snapshot.docs.map(doc => {[K
+[7m   [27m[47X[91m[47C~~~[K[m
+
+[96msrc/features/ocrRoutes.test.ts[m:[93m35[m:[93m13 [m- [91merror [90mTS2339: [mProperty 'db' does not e
+[13;77Hexist on type 'typeof import("C:/Users/akgte/PharmaRx/apps/api/src/features/da
+[13;77Hatabase")'.
+
+[7m35[27m     const { db } = await import('./database');[K
+[7m  [27m[13X[91m[13C~~[K[m
+
+[96msrc/features/ocrRoutes.ts[m:[93m4[m:[93m10 [m- [91merror [90mTS2614: [mModule '"./database"' has no e
+[13;77Hexported member 'db'. Did you mean to use 'import db from "./database"' instea
+[13;77Had?
+
+[7m4[27m import { db } from './database';[K
+[7m [27m[10X[91m[10C~~[K[m
+
+[96msrc/features/ocrService.ts[m:[93m20[m:[93m44 [m- [91merror [90mTS2345: [mArgument of type 'GCPConfig'
+[13;77H' is not assignable to parameter of type 'ClientOptions'.
+  Index signature for type 'string' is missing in type 'GCPConfig'.
+
+[7m20[27m     this.client = new ImageAnnotatorClient(this.config.gcpConfig);        [14;1H
+[7m  [27m[44X[91m[44C~~~~~~~~~~~~~~~~~~~~~[K[m
+
+[96msrc/features/paymentLinkRoutes.test.ts[m:[93m386[m:[93m17 [m- [91merror [90mTS2552: [mCannot find nam
+[13;77Hme 'validRequest'. Did you mean 'IDBRequest'?
+
+[7m386[27m           .send(validRequest)[K
+[7m   [27m[17X[91m[17C~~~~~~~~~~~~[K[m
+
+  [96m../../node_modules/typescript/lib/lib.dom.d.ts[m:[93m14951[m:[93m13[K[m
+    [7m14951[27m declare var IDBRequest: {[K
+    [7m     [27m[13X[96m[13C~~~~~~~~~~[K[m
+    'IDBRequest' is declared here.
+
+[96msrc/features/paymentLinkRoutes.test.ts[m:[93m417[m:[93m15 [m- [91merror [90mTS2552: [mCannot find nam
+[13;77Hme 'validRequest'. Did you mean 'IDBRequest'?
+
+[7m417[27m         .send(validRequest)[K
+[7m   [27m[15X[91m[15C~~~~~~~~~~~~[K[m
+
+  [96m../../node_modules/typescript/lib/lib.dom.d.ts[m:[93m14951[m:[93m13[K[m
+    [7m14951[27m declare var IDBRequest: {[K
+    [7m     [27m[13X[96m[13C~~~~~~~~~~[K[m
+    'IDBRequest' is declared here.
+
+[96msrc/features/paymentLinkRoutes.ts[m:[93m2[m:[93m35 [m- [91merror [90mTS2307: [mCannot find module '..
+[13;77H./middleware/auth' or its corresponding type declarations.
+
+[7m2[27m import { authenticateToken } from '../middleware/auth';[K
+[7m [27m[35X[91m[35C~~~~~~~~~~~~~~~~~~~~[K[m
+
+[96msrc/features/paymentLinkRoutes.ts[m:[93m3[m:[93m33 [m- [91merror [90mTS2307: [mCannot find module '..
+[13;77H./middleware/validation' or its corresponding type declarations.
+
+[7m3[27m import { validateRequest } from '../middleware/validation';[K
+[7m [27m[33X[91m[33C~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+
+[96msrc/features/paymentLinkRoutes.ts[m:[93m39[m:[93m26 [m- [91merror [90mTS2339: [mProperty 'user' does 
+[13;77H not exist on type 'Request<ParamsDictionary, any, any, ParsedQs, Record<strin
+[13;77Hng, any>>'.
+
+[7m39[27m       const userId = req.user?.uid;[K
+[7m  [27m[26X[91m[26C~~~~[K[m
+
+[96msrc/features/paymentLinkRoutes.ts[m:[93m122[m:[93m26 [m- [91merror [90mTS2339: [mProperty 'user' does
+[13;77Hs not exist on type 'Request<ParamsDictionary, any, any, ParsedQs, Record<stri
+[13;77Hing, any>>'.
+
+[7m122[27m       const userId = req.user?.uid;[K
+[7m   [27m[26X[91m[26C~~~~[K[m
+
+[96msrc/features/paymentLinkRoutes.ts[m:[93m170[m:[93m26 [m- [91merror [90mTS2339: [mProperty 'user' does
+[13;77Hs not exist on type 'Request<ParamsDictionary, any, any, ParsedQs, Record<stri
+[13;77Hing, any>>'.
+
+[7m170[27m       const userId = req.user?.uid;[K
+[7m   [27m[26X[91m[26C~~~~[K[m
+
+[96msrc/features/paymentLinkService.test.ts[m:[93m86[m:[93m48 [m- [91merror [90mTS2345: [mArgument of typ
+[13;77Hpe '{ doc: Mock<Procedure>; }' is not assignable to parameter of type '{ doc: 
+[13;77H Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; update: Mock<Procedu
+[13;77Hure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.
+  Property 'where' is missing in type '{ doc: Mock<Procedure>; }' but require
+[13;77Hed in type '{ doc: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; up
+[13;77Hpdate: Mock<Procedure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.    
+
+[7m86[27m       mockFirestore.collection.mockReturnValue({[K
+[7m  [27m[48X[91m[48C~[K[m
+[7m87[27m         doc: vi.fn().mockReturnValue(mockDocRef)[K
+[7m  [27m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+[7m88[27m       });[K
+[7m  [27m [91m~~~~~~~[K[m
+
+  [96msrc/features/paymentLinkService.test.ts[m:[93m15[m:[93m5[K[m
+    [7m 15[27m     where: vi.fn(() => ({[K
+    [7m   [27m     [96m~~~~~~~~~~~~~~~~~~~~~[K[m
+    [7m 16[27m       orderBy: vi.fn(() => ({[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+    [7m...[27m[K
+    [7m 22[27m       get: vi.fn()[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~[K[m
+    [7m 23[27m     }))[K
+    [7m   [27m [96m~~~~~~~[K[m
+    'where' is declared here.
+
+[96msrc/features/paymentLinkService.test.ts[m:[93m121[m:[93m48 [m- [91merror [90mTS2345: [mArgument of ty
+[13;77Hype '{ doc: Mock<Procedure>; }' is not assignable to parameter of type '{ doc:
+[13;77H: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; update: Mock<Proced
+[13;77Hdure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.
+  Property 'where' is missing in type '{ doc: Mock<Procedure>; }' but require
+[13;77Hed in type '{ doc: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; up
+[13;77Hpdate: Mock<Procedure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.    
+
+[7m121[27m       mockFirestore.collection.mockReturnValue({[K
+[7m   [27m[48X[91m[48C~[K[m
+[7m122[27m         doc: vi.fn().mockReturnValue(mockDocRef)[K
+[7m   [27m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+[7m123[27m       });[K
+[7m   [27m [91m~~~~~~~[K[m
+
+  [96msrc/features/paymentLinkService.test.ts[m:[93m15[m:[93m5[K[m
+    [7m 15[27m     where: vi.fn(() => ({[K
+    [7m   [27m     [96m~~~~~~~~~~~~~~~~~~~~~[K[m
+    [7m 16[27m       orderBy: vi.fn(() => ({[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+    [7m...[27m[K
+    [7m 22[27m       get: vi.fn()[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~[K[m
+    [7m 23[27m     }))[K
+    [7m   [27m [96m~~~~~~~[K[m
+    'where' is declared here.
+
+[96msrc/features/paymentLinkService.test.ts[m:[93m150[m:[93m48 [m- [91merror [90mTS2345: [mArgument of ty
+[13;77Hype '{ doc: Mock<Procedure>; }' is not assignable to parameter of type '{ doc:
+[13;77H: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; update: Mock<Proced
+[13;77Hdure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.
+  Property 'where' is missing in type '{ doc: Mock<Procedure>; }' but require
+[13;77Hed in type '{ doc: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; up
+[13;77Hpdate: Mock<Procedure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.    
+
+[7m150[27m       mockFirestore.collection.mockReturnValue({[K
+[7m   [27m[48X[91m[48C~[K[m
+[7m151[27m         doc: vi.fn().mockReturnValue(mockDocRef)[K
+[7m   [27m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+[7m152[27m       });[K
+[7m   [27m [91m~~~~~~~[K[m
+
+  [96msrc/features/paymentLinkService.test.ts[m:[93m15[m:[93m5[K[m
+    [7m 15[27m     where: vi.fn(() => ({[K
+    [7m   [27m     [96m~~~~~~~~~~~~~~~~~~~~~[K[m
+    [7m 16[27m       orderBy: vi.fn(() => ({[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+    [7m...[27m[K
+    [7m 22[27m       get: vi.fn()[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~[K[m
+    [7m 23[27m     }))[K
+    [7m   [27m [96m~~~~~~~[K[m
+    'where' is declared here.
+
+[96msrc/features/paymentLinkService.test.ts[m:[93m170[m:[93m48 [m- [91merror [90mTS2345: [mArgument of ty
+[13;77Hype '{ doc: Mock<Procedure>; }' is not assignable to parameter of type '{ doc:
+[13;77H: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; update: Mock<Proced
+[13;77Hdure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.
+  Property 'where' is missing in type '{ doc: Mock<Procedure>; }' but require
+[13;77Hed in type '{ doc: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; up
+[13;77Hpdate: Mock<Procedure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.    
+
+[7m170[27m       mockFirestore.collection.mockReturnValue({[K
+[7m   [27m[48X[91m[48C~[K[m
+[7m171[27m         doc: vi.fn().mockReturnValue({[K
+[7m   [27m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+[7m...[27m[K
+[7m173[27m         })[K
+[7m   [27m [91m~~~~~~~~~~[K[m
+[7m174[27m       });[K
+[7m   [27m [91m~~~~~~~[K[m
+
+  [96msrc/features/paymentLinkService.test.ts[m:[93m15[m:[93m5[K[m
+    [7m 15[27m     where: vi.fn(() => ({[K
+    [7m   [27m     [96m~~~~~~~~~~~~~~~~~~~~~[K[m
+    [7m 16[27m       orderBy: vi.fn(() => ({[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+    [7m...[27m[K
+    [7m 22[27m       get: vi.fn()[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~[K[m
+    [7m 23[27m     }))[K
+    [7m   [27m [96m~~~~~~~[K[m
+    'where' is declared here.
+
+[96msrc/features/paymentLinkService.test.ts[m:[93m273[m:[93m48 [m- [91merror [90mTS2345: [mArgument of ty
+[13;77Hype '{ doc: Mock<Procedure>; }' is not assignable to parameter of type '{ doc:
+[13;77H: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; update: Mock<Proced
+[13;77Hdure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.
+  Property 'where' is missing in type '{ doc: Mock<Procedure>; }' but require
+[13;77Hed in type '{ doc: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; up
+[13;77Hpdate: Mock<Procedure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.    
+
+[7m273[27m       mockFirestore.collection.mockReturnValue({[K
+[7m   [27m[48X[91m[48C~[K[m
+[7m274[27m         doc: vi.fn().mockReturnValue({[K
+[7m   [27m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+[7m...[27m[K
+[7m276[27m         })[K
+[7m   [27m [91m~~~~~~~~~~[K[m
+[7m277[27m       });[K
+[7m   [27m [91m~~~~~~~[K[m
+
+  [96msrc/features/paymentLinkService.test.ts[m:[93m15[m:[93m5[K[m
+    [7m 15[27m     where: vi.fn(() => ({[K
+    [7m   [27m     [96m~~~~~~~~~~~~~~~~~~~~~[K[m
+    [7m 16[27m       orderBy: vi.fn(() => ({[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+    [7m...[27m[K
+    [7m 22[27m       get: vi.fn()[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~[K[m
+    [7m 23[27m     }))[K
+    [7m   [27m [96m~~~~~~~[K[m
+    'where' is declared here.
+
+[96msrc/features/paymentLinkService.test.ts[m:[93m290[m:[93m48 [m- [91merror [90mTS2345: [mArgument of ty
+[13;77Hype '{ doc: Mock<Procedure>; }' is not assignable to parameter of type '{ doc:
+[13;77H: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; update: Mock<Proced
+[13;77Hdure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.
+  Property 'where' is missing in type '{ doc: Mock<Procedure>; }' but require
+[13;77Hed in type '{ doc: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; up
+[13;77Hpdate: Mock<Procedure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.    
+
+[7m290[27m       mockFirestore.collection.mockReturnValue({[K
+[7m   [27m[48X[91m[48C~[K[m
+[7m291[27m         doc: vi.fn().mockReturnValue({[K
+[7m   [27m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+[7m...[27m[K
+[7m293[27m         })[K
+[7m   [27m [91m~~~~~~~~~~[K[m
+[7m294[27m       });[K
+[7m   [27m [91m~~~~~~~[K[m
+
+  [96msrc/features/paymentLinkService.test.ts[m:[93m15[m:[93m5[K[m
+    [7m 15[27m     where: vi.fn(() => ({[K
+    [7m   [27m     [96m~~~~~~~~~~~~~~~~~~~~~[K[m
+    [7m 16[27m       orderBy: vi.fn(() => ({[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+    [7m...[27m[K
+    [7m 22[27m       get: vi.fn()[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~[K[m
+    [7m 23[27m     }))[K
+    [7m   [27m [96m~~~~~~~[K[m
+    'where' is declared here.
+
+[96msrc/features/paymentLinkService.test.ts[m:[93m309[m:[93m48 [m- [91merror [90mTS2345: [mArgument of ty
+[13;77Hype '{ doc: Mock<Procedure>; }' is not assignable to parameter of type '{ doc:
+[13;77H: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; update: Mock<Proced
+[13;77Hdure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.
+  Property 'where' is missing in type '{ doc: Mock<Procedure>; }' but require
+[13;77Hed in type '{ doc: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; up
+[13;77Hpdate: Mock<Procedure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.    
+
+[7m309[27m       mockFirestore.collection.mockReturnValue({[K
+[7m   [27m[48X[91m[48C~[K[m
+[7m310[27m         doc: vi.fn().mockReturnValue({[K
+[7m   [27m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+[7m...[27m[K
+[7m312[27m         })[K
+[7m   [27m [91m~~~~~~~~~~[K[m
+[7m313[27m       });[K
+[7m   [27m [91m~~~~~~~[K[m
+
+  [96msrc/features/paymentLinkService.test.ts[m:[93m15[m:[93m5[K[m
+    [7m 15[27m     where: vi.fn(() => ({[K
+    [7m   [27m     [96m~~~~~~~~~~~~~~~~~~~~~[K[m
+    [7m 16[27m       orderBy: vi.fn(() => ({[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+    [7m...[27m[K
+    [7m 22[27m       get: vi.fn()[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~[K[m
+    [7m 23[27m     }))[K
+    [7m   [27m [96m~~~~~~~[K[m
+    'where' is declared here.
+
+[96msrc/features/paymentLinkService.test.ts[m:[93m321[m:[93m48 [m- [91merror [90mTS2345: [mArgument of ty
+[13;77Hype '{ doc: Mock<Procedure>; }' is not assignable to parameter of type '{ doc:
+[13;77H: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; update: Mock<Proced
+[13;77Hdure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.
+  Property 'where' is missing in type '{ doc: Mock<Procedure>; }' but require
+[13;77Hed in type '{ doc: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; up
+[13;77Hpdate: Mock<Procedure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.    
+
+[7m321[27m       mockFirestore.collection.mockReturnValue({[K
+[7m   [27m[48X[91m[48C~[K[m
+[7m322[27m         doc: vi.fn().mockReturnValue({[K
+[7m   [27m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+[7m...[27m[K
+[7m324[27m         })[K
+[7m   [27m [91m~~~~~~~~~~[K[m
+[7m325[27m       });[K
+[7m   [27m [91m~~~~~~~[K[m
+
+  [96msrc/features/paymentLinkService.test.ts[m:[93m15[m:[93m5[K[m
+    [7m 15[27m     where: vi.fn(() => ({[K
+    [7m   [27m     [96m~~~~~~~~~~~~~~~~~~~~~[K[m
+    [7m 16[27m       orderBy: vi.fn(() => ({[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+    [7m...[27m[K
+    [7m 22[27m       get: vi.fn()[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~[K[m
+    [7m 23[27m     }))[K
+    [7m   [27m [96m~~~~~~~[K[m
+    'where' is declared here.
+
+[96msrc/features/paymentLinkService.test.ts[m:[93m342[m:[93m48 [m- [91merror [90mTS2345: [mArgument of ty
+[13;77Hype '{ doc: Mock<Procedure>; }' is not assignable to parameter of type '{ doc:
+[13;77H: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; update: Mock<Proced
+[13;77Hdure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.
+  Property 'where' is missing in type '{ doc: Mock<Procedure>; }' but require
+[13;77Hed in type '{ doc: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; up
+[13;77Hpdate: Mock<Procedure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.    
+
+[7m342[27m       mockFirestore.collection.mockReturnValue({[K
+[7m   [27m[48X[91m[48C~[K[m
+[7m343[27m         doc: vi.fn().mockReturnValue({[K
+[7m   [27m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+[7m...[27m[K
+[7m345[27m         })[K
+[7m   [27m [91m~~~~~~~~~~[K[m
+[7m346[27m       });[K
+[7m   [27m [91m~~~~~~~[K[m
+
+  [96msrc/features/paymentLinkService.test.ts[m:[93m15[m:[93m5[K[m
+    [7m 15[27m     where: vi.fn(() => ({[K
+    [7m   [27m     [96m~~~~~~~~~~~~~~~~~~~~~[K[m
+    [7m 16[27m       orderBy: vi.fn(() => ({[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+    [7m...[27m[K
+    [7m 22[27m       get: vi.fn()[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~[K[m
+    [7m 23[27m     }))[K
+    [7m   [27m [96m~~~~~~~[K[m
+    'where' is declared here.
+
+[96msrc/features/paymentLinkService.test.ts[m:[93m358[m:[93m48 [m- [91merror [90mTS2345: [mArgument of ty
+[13;77Hype '{ doc: Mock<Procedure>; }' is not assignable to parameter of type '{ doc:
+[13;77H: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; update: Mock<Proced
+[13;77Hdure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.
+  Property 'where' is missing in type '{ doc: Mock<Procedure>; }' but require
+[13;77Hed in type '{ doc: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; up
+[13;77Hpdate: Mock<Procedure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.    
+
+[7m358[27m       mockFirestore.collection.mockReturnValue({[K
+[7m   [27m[48X[91m[48C~[K[m
+[7m359[27m         doc: vi.fn().mockReturnValue({[K
+[7m   [27m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+[7m...[27m[K
+[7m361[27m         })[K
+[7m   [27m [91m~~~~~~~~~~[K[m
+[7m362[27m       });[K
+[7m   [27m [91m~~~~~~~[K[m
+
+  [96msrc/features/paymentLinkService.test.ts[m:[93m15[m:[93m5[K[m
+    [7m 15[27m     where: vi.fn(() => ({[K
+    [7m   [27m     [96m~~~~~~~~~~~~~~~~~~~~~[K[m
+    [7m 16[27m       orderBy: vi.fn(() => ({[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+    [7m...[27m[K
+    [7m 22[27m       get: vi.fn()[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~[K[m
+    [7m 23[27m     }))[K
+    [7m   [27m [96m~~~~~~~[K[m
+    'where' is declared here.
+
+[96msrc/features/paymentLinkService.test.ts[m:[93m377[m:[93m48 [m- [91merror [90mTS2345: [mArgument of ty
+[13;77Hype '{ doc: Mock<Procedure>; }' is not assignable to parameter of type '{ doc:
+[13;77H: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; update: Mock<Proced
+[13;77Hdure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.
+  Property 'where' is missing in type '{ doc: Mock<Procedure>; }' but require
+[13;77Hed in type '{ doc: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; up
+[13;77Hpdate: Mock<Procedure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.    
+
+[7m377[27m       mockFirestore.collection.mockReturnValue({[K
+[7m   [27m[48X[91m[48C~[K[m
+[7m378[27m         doc: vi.fn().mockReturnValue({[K
+[7m   [27m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+[7m...[27m[K
+[7m380[27m         })[K
+[7m   [27m [91m~~~~~~~~~~[K[m
+[7m381[27m       });[K
+[7m   [27m [91m~~~~~~~[K[m
+
+  [96msrc/features/paymentLinkService.test.ts[m:[93m15[m:[93m5[K[m
+    [7m 15[27m     where: vi.fn(() => ({[K
+    [7m   [27m     [96m~~~~~~~~~~~~~~~~~~~~~[K[m
+    [7m 16[27m       orderBy: vi.fn(() => ({[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+    [7m...[27m[K
+    [7m 22[27m       get: vi.fn()[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~[K[m
+    [7m 23[27m     }))[K
+    [7m   [27m [96m~~~~~~~[K[m
+    'where' is declared here.
+
+[96msrc/features/paymentLinkService.test.ts[m:[93m407[m:[93m48 [m- [91merror [90mTS2345: [mArgument of ty
+[13;77Hype '{ where: Mock<Procedure>; }' is not assignable to parameter of type '{ do
+[13;77Hoc: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; update: Mock<Proc
+[13;77Hcedure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.
+  Property 'doc' is missing in type '{ where: Mock<Procedure>; }' but require
+[13;77Hed in type '{ doc: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; up
+[13;77Hpdate: Mock<Procedure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.    
+
+[7m407[27m       mockFirestore.collection.mockReturnValue({[K
+[7m   [27m[48X[91m[48C~[K[m
+[7m408[27m         where: vi.fn().mockReturnValue({[K
+[7m   [27m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+[7m...[27m[K
+[7m412[27m         })[K
+[7m   [27m [91m~~~~~~~~~~[K[m
+[7m413[27m       });[K
+[7m   [27m [91m~~~~~~~[K[m
+
+  [96msrc/features/paymentLinkService.test.ts[m:[93m9[m:[93m5[K[m
+    [7m  9[27m     doc: vi.fn(() => ({[K
+    [7m   [27m     [96m~~~~~~~~~~~~~~~~~~~[K[m
+    [7m 10[27m       set: vi.fn(),[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~~[K[m
+    [7m...[27m[K
+    [7m 13[27m       delete: vi.fn()[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~~~~[K[m
+    [7m 14[27m     })),[K
+    [7m   [27m [96m~~~~~~~[K[m
+    'doc' is declared here.
+
+[96msrc/features/paymentLinkService.test.ts[m:[93m435[m:[93m48 [m- [91merror [90mTS2345: [mArgument of ty
+[13;77Hype '{ where: Mock<Procedure>; }' is not assignable to parameter of type '{ do
+[13;77Hoc: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; update: Mock<Proc
+[13;77Hcedure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.
+  Property 'doc' is missing in type '{ where: Mock<Procedure>; }' but require
+[13;77Hed in type '{ doc: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; up
+[13;77Hpdate: Mock<Procedure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.    
+
+[7m435[27m       mockFirestore.collection.mockReturnValue({[K
+[7m   [27m[48X[91m[48C~[K[m
+[7m436[27m         where: vi.fn().mockReturnValue({[K
+[7m   [27m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+[7m...[27m[K
+[7m440[27m         })[K
+[7m   [27m [91m~~~~~~~~~~[K[m
+[7m441[27m       });[K
+[7m   [27m [91m~~~~~~~[K[m
+
+  [96msrc/features/paymentLinkService.test.ts[m:[93m9[m:[93m5[K[m
+    [7m  9[27m     doc: vi.fn(() => ({[K
+    [7m   [27m     [96m~~~~~~~~~~~~~~~~~~~[K[m
+    [7m 10[27m       set: vi.fn(),[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~~[K[m
+    [7m...[27m[K
+    [7m 13[27m       delete: vi.fn()[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~~~~[K[m
+    [7m 14[27m     })),[K
+    [7m   [27m [96m~~~~~~~[K[m
+    'doc' is declared here.
+
+[96msrc/features/paymentLinkService.test.ts[m:[93m449[m:[93m48 [m- [91merror [90mTS2345: [mArgument of ty
+[13;77Hype '{ where: Mock<Procedure>; }' is not assignable to parameter of type '{ do
+[13;77Hoc: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; update: Mock<Proc
+[13;77Hcedure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.
+  Property 'doc' is missing in type '{ where: Mock<Procedure>; }' but require
+[13;77Hed in type '{ doc: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; up
+[13;77Hpdate: Mock<Procedure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.    
+
+[7m449[27m       mockFirestore.collection.mockReturnValue({[K
+[7m   [27m[48X[91m[48C~[K[m
+[7m450[27m         where: vi.fn().mockReturnValue({[K
+[7m   [27m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+[7m...[27m[K
+[7m454[27m         })[K
+[7m   [27m [91m~~~~~~~~~~[K[m
+[7m455[27m       });[K
+[7m   [27m [91m~~~~~~~[K[m
+
+  [96msrc/features/paymentLinkService.test.ts[m:[93m9[m:[93m5[K[m
+    [7m  9[27m     doc: vi.fn(() => ({[K
+    [7m   [27m     [96m~~~~~~~~~~~~~~~~~~~[K[m
+    [7m 10[27m       set: vi.fn(),[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~~[K[m
+    [7m...[27m[K
+    [7m 13[27m       delete: vi.fn()[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~~~~[K[m
+    [7m 14[27m     })),[K
+    [7m   [27m [96m~~~~~~~[K[m
+    'doc' is declared here.
+
+[96msrc/features/paymentLinkService.test.ts[m:[93m476[m:[93m48 [m- [91merror [90mTS2345: [mArgument of ty
+[13;77Hype '{ where: Mock<Procedure>; }' is not assignable to parameter of type '{ do
+[13;77Hoc: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; update: Mock<Proc
+[13;77Hcedure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.
+  Property 'doc' is missing in type '{ where: Mock<Procedure>; }' but require
+[13;77Hed in type '{ doc: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; up
+[13;77Hpdate: Mock<Procedure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.    
+
+[7m476[27m       mockFirestore.collection.mockReturnValue({[K
+[7m   [27m[48X[91m[48C~[K[m
+[7m477[27m         where: vi.fn().mockReturnValue({[K
+[7m   [27m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+[7m...[27m[K
+[7m481[27m         })[K
+[7m   [27m [91m~~~~~~~~~~[K[m
+[7m482[27m       });[K
+[7m   [27m [91m~~~~~~~[K[m
+
+  [96msrc/features/paymentLinkService.test.ts[m:[93m9[m:[93m5[K[m
+    [7m  9[27m     doc: vi.fn(() => ({[K
+    [7m   [27m     [96m~~~~~~~~~~~~~~~~~~~[K[m
+    [7m 10[27m       set: vi.fn(),[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~~[K[m
+    [7m...[27m[K
+    [7m 13[27m       delete: vi.fn()[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~~~~[K[m
+    [7m 14[27m     })),[K
+    [7m   [27m [96m~~~~~~~[K[m
+    'doc' is declared here.
+
+[96msrc/features/paymentLinkService.test.ts[m:[93m499[m:[93m48 [m- [91merror [90mTS2345: [mArgument of ty
+[13;77Hype '{ where: Mock<Procedure>; }' is not assignable to parameter of type '{ do
+[13;77Hoc: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; update: Mock<Proc
+[13;77Hcedure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.
+  Property 'doc' is missing in type '{ where: Mock<Procedure>; }' but require
+[13;77Hed in type '{ doc: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; up
+[13;77Hpdate: Mock<Procedure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.    
+
+[7m499[27m       mockFirestore.collection.mockReturnValue({[K
+[7m   [27m[48X[91m[48C~[K[m
+[7m500[27m         where: vi.fn().mockReturnValue({[K
+[7m   [27m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+[7m...[27m[K
+[7m504[27m         })[K
+[7m   [27m [91m~~~~~~~~~~[K[m
+[7m505[27m       });[K
+[7m   [27m [91m~~~~~~~[K[m
+
+  [96msrc/features/paymentLinkService.test.ts[m:[93m9[m:[93m5[K[m
+    [7m  9[27m     doc: vi.fn(() => ({[K
+    [7m   [27m     [96m~~~~~~~~~~~~~~~~~~~[K[m
+    [7m 10[27m       set: vi.fn(),[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~~[K[m
+    [7m...[27m[K
+    [7m 13[27m       delete: vi.fn()[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~~~~[K[m
+    [7m 14[27m     })),[K
+    [7m   [27m [96m~~~~~~~[K[m
+    'doc' is declared here.
+
+[96msrc/features/paymentLinkService.test.ts[m:[93m524[m:[93m48 [m- [91merror [90mTS2345: [mArgument of ty
+[13;77Hype '{ where: Mock<Procedure>; }' is not assignable to parameter of type '{ do
+[13;77Hoc: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; update: Mock<Proc
+[13;77Hcedure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.
+  Property 'doc' is missing in type '{ where: Mock<Procedure>; }' but require
+[13;77Hed in type '{ doc: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; up
+[13;77Hpdate: Mock<Procedure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.    
+
+[7m524[27m       mockFirestore.collection.mockReturnValue({[K
+[7m   [27m[48X[91m[48C~[K[m
+[7m525[27m         where: vi.fn().mockReturnValue({[K
+[7m   [27m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+[7m...[27m[K
+[7m529[27m         })[K
+[7m   [27m [91m~~~~~~~~~~[K[m
+[7m530[27m       });[K
+[7m   [27m [91m~~~~~~~[K[m
+
+  [96msrc/features/paymentLinkService.test.ts[m:[93m9[m:[93m5[K[m
+    [7m  9[27m     doc: vi.fn(() => ({[K
+    [7m   [27m     [96m~~~~~~~~~~~~~~~~~~~[K[m
+    [7m 10[27m       set: vi.fn(),[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~~[K[m
+    [7m...[27m[K
+    [7m 13[27m       delete: vi.fn()[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~~~~[K[m
+    [7m 14[27m     })),[K
+    [7m   [27m [96m~~~~~~~[K[m
+    'doc' is declared here.
+
+[96msrc/features/paymentLinkService.test.ts[m:[93m555[m:[93m48 [m- [91merror [90mTS2345: [mArgument of ty
+[13;77Hype '{ where: Mock<Procedure>; }' is not assignable to parameter of type '{ do
+[13;77Hoc: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; update: Mock<Proc
+[13;77Hcedure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.
+  Property 'doc' is missing in type '{ where: Mock<Procedure>; }' but require
+[13;77Hed in type '{ doc: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; up
+[13;77Hpdate: Mock<Procedure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.    
+
+[7m555[27m       mockFirestore.collection.mockReturnValue({[K
+[7m   [27m[48X[91m[48C~[K[m
+[7m556[27m         where: vi.fn().mockReturnValue({[K
+[7m   [27m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+[7m...[27m[K
+[7m560[27m         })[K
+[7m   [27m [91m~~~~~~~~~~[K[m
+[7m561[27m       });[K
+[7m   [27m [91m~~~~~~~[K[m
+
+  [96msrc/features/paymentLinkService.test.ts[m:[93m9[m:[93m5[K[m
+    [7m  9[27m     doc: vi.fn(() => ({[K
+    [7m   [27m     [96m~~~~~~~~~~~~~~~~~~~[K[m
+    [7m 10[27m       set: vi.fn(),[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~~[K[m
+    [7m...[27m[K
+    [7m 13[27m       delete: vi.fn()[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~~~~[K[m
+    [7m 14[27m     })),[K
+    [7m   [27m [96m~~~~~~~[K[m
+    'doc' is declared here.
+
+[96msrc/features/paymentLinkService.test.ts[m:[93m563[m:[93m21 [m- [91merror [90mTS2339: [mProperty 'batc
+[13;77Hch' does not exist on type '{ collection: Mock<() => { doc: Mock<() => { set: 
+[13;77H Mock<Procedure>; get: Mock<Procedure>; update: Mock<Procedure>; delete: Mock<
+[13;77H<Procedure>; }>; where: Mock<...>; }>; Timestamp: { ...; }; }'.
+
+[7m563[27m       mockFirestore.batch = vi.fn().mockReturnValue(mockBatch);[K
+[7m   [27m[21X[91m[21C~~~~~[K[m
+
+[96msrc/features/paymentLinkService.test.ts[m:[93m578[m:[93m48 [m- [91merror [90mTS2345: [mArgument of ty
+[13;77Hype '{ where: Mock<Procedure>; }' is not assignable to parameter of type '{ do
+[13;77Hoc: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; update: Mock<Proc
+[13;77Hcedure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.
+  Property 'doc' is missing in type '{ where: Mock<Procedure>; }' but require
+[13;77Hed in type '{ doc: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; up
+[13;77Hpdate: Mock<Procedure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.    
+
+[7m578[27m       mockFirestore.collection.mockReturnValue({[K
+[7m   [27m[48X[91m[48C~[K[m
+[7m579[27m         where: vi.fn().mockReturnValue({[K
+[7m   [27m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+[7m...[27m[K
+[7m583[27m         })[K
+[7m   [27m [91m~~~~~~~~~~[K[m
+[7m584[27m       });[K
+[7m   [27m [91m~~~~~~~[K[m
+
+  [96msrc/features/paymentLinkService.test.ts[m:[93m9[m:[93m5[K[m
+    [7m  9[27m     doc: vi.fn(() => ({[K
+    [7m   [27m     [96m~~~~~~~~~~~~~~~~~~~[K[m
+    [7m 10[27m       set: vi.fn(),[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~~[K[m
+    [7m...[27m[K
+    [7m 13[27m       delete: vi.fn()[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~~~~[K[m
+    [7m 14[27m     })),[K
+    [7m   [27m [96m~~~~~~~[K[m
+    'doc' is declared here.
+
+[96msrc/features/paymentLinkService.test.ts[m:[93m592[m:[93m48 [m- [91merror [90mTS2345: [mArgument of ty
+[13;77Hype '{ where: Mock<Procedure>; }' is not assignable to parameter of type '{ do
+[13;77Hoc: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; update: Mock<Proc
+[13;77Hcedure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.
+  Property 'doc' is missing in type '{ where: Mock<Procedure>; }' but require
+[13;77Hed in type '{ doc: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; up
+[13;77Hpdate: Mock<Procedure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.    
+
+[7m592[27m       mockFirestore.collection.mockReturnValue({[K
+[7m   [27m[48X[91m[48C~[K[m
+[7m593[27m         where: vi.fn().mockReturnValue({[K
+[7m   [27m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+[7m...[27m[K
+[7m597[27m         })[K
+[7m   [27m [91m~~~~~~~~~~[K[m
+[7m598[27m       });[K
+[7m   [27m [91m~~~~~~~[K[m
+
+  [96msrc/features/paymentLinkService.test.ts[m:[93m9[m:[93m5[K[m
+    [7m  9[27m     doc: vi.fn(() => ({[K
+    [7m   [27m     [96m~~~~~~~~~~~~~~~~~~~[K[m
+    [7m 10[27m       set: vi.fn(),[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~~[K[m
+    [7m...[27m[K
+    [7m 13[27m       delete: vi.fn()[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~~~~[K[m
+    [7m 14[27m     })),[K
+    [7m   [27m [96m~~~~~~~[K[m
+    'doc' is declared here.
+
+[96msrc/features/paymentLinkService.test.ts[m:[93m623[m:[93m30 [m- [91merror [90mTS2345: [mArgument of ty
+[13;77Hype '{ doc: Mock<Procedure>; }' is not assignable to parameter of type '{ doc:
+[13;77H: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; update: Mock<Proced
+[13;77Hdure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.
+  Property 'where' is missing in type '{ doc: Mock<Procedure>; }' but require
+[13;77Hed in type '{ doc: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; up
+[13;77Hpdate: Mock<Procedure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.    
+
+[7m623[27m         .mockReturnValueOnce({[K
+[7m   [27m[30X[91m[30C~[K[m
+[7m624[27m           doc: vi.fn().mockReturnValue({[K
+[7m   [27m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+[7m...[27m[K
+[7m627[27m           })[K
+[7m   [27m [91m~~~~~~~~~~~~[K[m
+[7m628[27m         })[K
+[7m   [27m [91m~~~~~~~~~[K[m
+
+  [96msrc/features/paymentLinkService.test.ts[m:[93m15[m:[93m5[K[m
+    [7m 15[27m     where: vi.fn(() => ({[K
+    [7m   [27m     [96m~~~~~~~~~~~~~~~~~~~~~[K[m
+    [7m 16[27m       orderBy: vi.fn(() => ({[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+    [7m...[27m[K
+    [7m 22[27m       get: vi.fn()[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~[K[m
+    [7m 23[27m     }))[K
+    [7m   [27m [96m~~~~~~~[K[m
+    'where' is declared here.
+
+[96msrc/features/paymentLinkService.test.ts[m:[93m629[m:[93m30 [m- [91merror [90mTS2345: [mArgument of ty
+[13;77Hype '{ doc: Mock<Procedure>; }' is not assignable to parameter of type '{ doc:
+[13;77H: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; update: Mock<Proced
+[13;77Hdure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.
+  Property 'where' is missing in type '{ doc: Mock<Procedure>; }' but require
+[13;77Hed in type '{ doc: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; up
+[13;77Hpdate: Mock<Procedure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.    
+
+[7m629[27m         .mockReturnValueOnce({[K
+[7m   [27m[30X[91m[30C~[K[m
+[7m630[27m           doc: vi.fn().mockReturnValue({[K
+[7m   [27m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+[7m...[27m[K
+[7m632[27m           })[K
+[7m   [27m [91m~~~~~~~~~~~~[K[m
+[7m633[27m         });[K
+[7m   [27m [91m~~~~~~~~~[K[m
+
+  [96msrc/features/paymentLinkService.test.ts[m:[93m15[m:[93m5[K[m
+    [7m 15[27m     where: vi.fn(() => ({[K
+    [7m   [27m     [96m~~~~~~~~~~~~~~~~~~~~~[K[m
+    [7m 16[27m       orderBy: vi.fn(() => ({[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+    [7m...[27m[K
+    [7m 22[27m       get: vi.fn()[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~[K[m
+    [7m 23[27m     }))[K
+    [7m   [27m [96m~~~~~~~[K[m
+    'where' is declared here.
+
+[96msrc/features/paymentLinkService.test.ts[m:[93m645[m:[93m48 [m- [91merror [90mTS2345: [mArgument of ty
+[13;77Hype '{ doc: Mock<Procedure>; }' is not assignable to parameter of type '{ doc:
+[13;77H: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; update: Mock<Proced
+[13;77Hdure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.
+  Property 'where' is missing in type '{ doc: Mock<Procedure>; }' but require
+[13;77Hed in type '{ doc: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; up
+[13;77Hpdate: Mock<Procedure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.    
+
+[7m645[27m       mockFirestore.collection.mockReturnValue({[K
+[7m   [27m[48X[91m[48C~[K[m
+[7m646[27m         doc: vi.fn().mockReturnValue({[K
+[7m   [27m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+[7m...[27m[K
+[7m648[27m         })[K
+[7m   [27m [91m~~~~~~~~~~[K[m
+[7m649[27m       });[K
+[7m   [27m [91m~~~~~~~[K[m
+
+  [96msrc/features/paymentLinkService.test.ts[m:[93m15[m:[93m5[K[m
+    [7m 15[27m     where: vi.fn(() => ({[K
+    [7m   [27m     [96m~~~~~~~~~~~~~~~~~~~~~[K[m
+    [7m 16[27m       orderBy: vi.fn(() => ({[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+    [7m...[27m[K
+    [7m 22[27m       get: vi.fn()[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~[K[m
+    [7m 23[27m     }))[K
+    [7m   [27m [96m~~~~~~~[K[m
+    'where' is declared here.
+
+[96msrc/features/paymentLinkService.test.ts[m:[93m673[m:[93m30 [m- [91merror [90mTS2345: [mArgument of ty
+[13;77Hype '{ doc: Mock<Procedure>; }' is not assignable to parameter of type '{ doc:
+[13;77H: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; update: Mock<Proced
+[13;77Hdure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.
+  Property 'where' is missing in type '{ doc: Mock<Procedure>; }' but require
+[13;77Hed in type '{ doc: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; up
+[13;77Hpdate: Mock<Procedure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.    
+
+[7m673[27m         .mockReturnValueOnce({[K
+[7m   [27m[30X[91m[30C~[K[m
+[7m674[27m           doc: vi.fn().mockReturnValue({[K
+[7m   [27m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+[7m...[27m[K
+[7m676[27m           })[K
+[7m   [27m [91m~~~~~~~~~~~~[K[m
+[7m677[27m         })[K
+[7m   [27m [91m~~~~~~~~~[K[m
+
+  [96msrc/features/paymentLinkService.test.ts[m:[93m15[m:[93m5[K[m
+    [7m 15[27m     where: vi.fn(() => ({[K
+    [7m   [27m     [96m~~~~~~~~~~~~~~~~~~~~~[K[m
+    [7m 16[27m       orderBy: vi.fn(() => ({[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+    [7m...[27m[K
+    [7m 22[27m       get: vi.fn()[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~[K[m
+    [7m 23[27m     }))[K
+    [7m   [27m [96m~~~~~~~[K[m
+    'where' is declared here.
+
+[96msrc/features/paymentLinkService.test.ts[m:[93m678[m:[93m30 [m- [91merror [90mTS2345: [mArgument of ty
+[13;77Hype '{ doc: Mock<Procedure>; }' is not assignable to parameter of type '{ doc:
+[13;77H: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; update: Mock<Proced
+[13;77Hdure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.
+  Property 'where' is missing in type '{ doc: Mock<Procedure>; }' but require
+[13;77Hed in type '{ doc: Mock<() => { set: Mock<Procedure>; get: Mock<Procedure>; up
+[13;77Hpdate: Mock<Procedure>; delete: Mock<Procedure>; }>; where: Mock<...>; }'.    
+
+[7m678[27m         .mockReturnValueOnce({[K
+[7m   [27m[30X[91m[30C~[K[m
+[7m679[27m           doc: vi.fn().mockReturnValue({[K
+[7m   [27m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+[7m...[27m[K
+[7m681[27m           })[K
+[7m   [27m [91m~~~~~~~~~~~~[K[m
+[7m682[27m         });[K
+[7m   [27m [91m~~~~~~~~~[K[m
+
+  [96msrc/features/paymentLinkService.test.ts[m:[93m15[m:[93m5[K[m
+    [7m 15[27m     where: vi.fn(() => ({[K
+    [7m   [27m     [96m~~~~~~~~~~~~~~~~~~~~~[K[m
+    [7m 16[27m       orderBy: vi.fn(() => ({[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+    [7m...[27m[K
+    [7m 22[27m       get: vi.fn()[K
+    [7m   [27m [96m~~~~~~~~~~~~~~~~~~[K[m
+    [7m 23[27m     }))[K
+    [7m   [27m [96m~~~~~~~[K[m
+    'where' is declared here.
+
+[96msrc/features/paymentLinkService.ts[m:[93m45[m:[93m30 [m- [91merror [90mTS2339: [mProperty 'Timestamp'
+[13;77H' does not exist on type 'Firestore'.
+
+[7m45[27m         expiresAt: firestore.Timestamp.fromDate(paymentLink.expiresAt),   [14;1H
+[7m  [27m[30X[91m[30C~~~~~~~~~[K[m
+
+[96msrc/features/paymentLinkService.ts[m:[93m46[m:[93m30 [m- [91merror [90mTS2339: [mProperty 'Timestamp'
+[13;77H' does not exist on type 'Firestore'.
+
+[7m46[27m         createdAt: firestore.Timestamp.fromDate(paymentLink.createdAt)    [14;1H
+[7m  [27m[30X[91m[30C~~~~~~~~~[K[m
+
+[96msrc/features/paymentLinkService.ts[m:[93m189[m:[93m34 [m- [91merror [90mTS2339: [mProperty 'Timestamp
+[13;77Hp' does not exist on type 'Firestore'.
+
+[7m189[27m         deactivatedAt: firestore.Timestamp.now()[K
+[7m   [27m[34X[91m[34C~~~~~~~~~[K[m
+
+[96msrc/features/paymentLinkService.ts[m:[93m249[m:[93m27 [m- [91merror [90mTS2339: [mProperty 'Timestamp
+[13;77Hp' does not exist on type 'Firestore'.
+
+[7m249[27m         usedAt: firestore.Timestamp.now()[K
+[7m   [27m[27X[91m[27C~~~~~~~~~[K[m
+
+[96msrc/features/paymentLinkService.ts[m:[93m264[m:[93m29 [m- [91merror [90mTS2339: [mProperty 'Timestamp
+[13;77Hp' does not exist on type 'Firestore'.
+
+[7m264[27m       const now = firestore.Timestamp.now();[K
+[7m   [27m[29X[91m[29C~~~~~~~~~[K[m
+
+[96msrc/features/paymentRoutes.test.ts[m:[93m63[m:[93m63 [m- [91merror [90mTS2345: [mArgument of type '{ 
+[13;77H paymentId: string; transactionId: string; status: string; }' is not assignabl
+[13;77Hle to parameter of type 'ProcessPaymentResult'.
+  Types of property 'status' are incompatible.
+    Type 'string' is not assignable to type 'PaymentStatus'.
+
+[7m63[27m       mockPaymentService.processPayment.mockResolvedValueOnce(mockResult);[14;1H
+[7m  [27m[63X[91m[63C~~~~~~~~~~  [14;1H[m
+
+[96msrc/features/paymentRoutes.test.ts[m:[93m115[m:[93m14 [m- [91merror [90mTS2790: [mThe operand of a 'd
+[13;77Hdelete' operator must be optional.
+
+[7m115[27m       delete invalidData.gateway;[K
+[7m   [27m[14X[91m[14C~~~~~~~~~~~~~~~~~~~[K[m
+
+[96msrc/features/paymentRoutes.test.ts[m:[93m142[m:[93m14 [m- [91merror [90mTS2790: [mThe operand of a 'd
+[13;77Hdelete' operator must be optional.
+
+[7m142[27m       delete invalidData.currency;[K
+[7m   [27m[14X[91m[14C~~~~~~~~~~~~~~~~~~~~[K[m
+
+[96msrc/features/paymentRoutes.test.ts[m:[93m204[m:[93m68 [m- [91merror [90mTS2345: [mArgument of type '{
+[13;77H{ paymentId: string; orderId: string; amount: number; status: string; createdA
+[13;77HAt: Date; }[]' is not assignable to parameter of type 'Payment[]'.
+  Type '{ paymentId: string; orderId: string; amount: number; status: string;
+[13;77H; createdAt: Date; }' is missing the following properties from type 'Payment':
+[13;77H: currency, gateway, transactionId, receiptDetails
+
+[7m204[27m       mockPaymentService.getPaymentsForOrder.mockResolvedValueOnce(mockPa
+[13;77Hayments);
+[7m   [27m                                                                    [K[91m~~~~~~[m
+[91m[13;77H~~~~~~~[m
+
+[96msrc/features/paymentRoutes.test.ts[m:[93m238[m:[93m59 [m- [91merror [90mTS2345: [mArgument of type '{
+[13;77H{ paymentId: string; orderId: string; amount: number; status: string; gateway:
+[13;77H: string; }' is not assignable to parameter of type 'Payment'.
+  Type '{ paymentId: string; orderId: string; amount: number; status: string;
+[13;77H; gateway: string; }' is missing the following properties from type 'Payment':
+[13;77H: currency, transactionId, receiptDetails, createdAt
+
+[7m238[27m       mockPaymentService.getPayment.mockResolvedValueOnce(mockPayment);  [14;1H
+[7m   [27m[59X[91m[59C~~~~~~~~~~~    [14;1H[m
+
+[96msrc/features/paymentRoutes.test.ts[m:[93m456[m:[93m70 [m- [91merror [90mTS2345: [mArgument of type '{
+[13;77H{ paymentId: string; status: string; }[]' is not assignable to parameter of ty
+[13;77Hype 'Payment[]'.
+  Type '{ paymentId: string; status: string; }' is missing the following prop
+[13;77Hperties from type 'Payment': orderId, amount, currency, gateway, and 3 more.  
+
+[7m456[27m         mockPaymentService.getPaymentsForOrder.mockResolvedValueOnce(mock
+[13;77HkPayments);
+[7m   [27m                                                                      [K[91m~~~~[m
+[91m[13;77H~~~~~~~~~[m
+
+[96msrc/features/paymentRoutes.test.ts[m:[93m503[m:[93m76 [m- [91merror [90mTS2345: [mArgument of type '{
+[13;77H{ receiptId: string; receiptNumber: string; receiptDetails: {}; }' is not assi
+[13;77Hignable to parameter of type 'ReceiptGenerationResult'.
+  Property 'pdfBuffer' is missing in type '{ receiptId: string; receiptNumber
+[13;77Hr: string; receiptDetails: {}; }' but required in type 'ReceiptGenerationResul
+[13;77Hlt'.
+
+[7m503[27m         mockReceiptService.generateReceiptForPayment.mockResolvedValueOnc
+[13;77Hce(mockResult);
+[7m   [27m                                                                          [14;152H
+[91m  ~~~~~~~~~~[m
+
+  [96msrc/features/receiptService.ts[m:[93m59[m:[93m3[K[m
+    [7m59[27m   pdfBuffer: Buffer;[K
+    [7m  [27m   [96m~~~~~~~~~[K[m
+    'pdfBuffer' is declared here.
+
+[96msrc/features/paymentRoutes.ts[m:[93m24[m:[93m9 [m- [91merror [90mTS2339: [mProperty 'user' does not e
+[13;77Hexist on type 'Request<ParamsDictionary, any, any, ParsedQs, Record<string, an
+[13;77Hny>>'.
+
+[7m24[27m     req.user = decodedToken;[K
+[7m  [27m[9X[91m[9C~~~~[K[m
+
+[96msrc/features/paymentRoutes.ts[m:[93m74[m:[93m76 [m- [91merror [90mTS2339: [mProperty 'user' does not 
+[13;77H exist on type 'Request<ParamsDictionary, any, any, ParsedQs, Record<string, a
+[13;77Hany>>'.
+
+[7m74[27m     const result = await paymentService.processPayment(paymentRequest, req
+[13;77Hq.user?.uid);
+[7m  [27m                                                                           [14;153H
+[91m ~~~~[m
+
+[96msrc/features/paymentService.test.ts[m:[93m3[m:[93m10 [m- [91merror [90mTS2614: [mModule '"./database"
+[13;77H"' has no exported member 'db'. Did you mean to use 'import db from "./databas
+[13;77Hse"' instead?
+
+[7m3[27m import { db } from './database';[K
+[7m [27m[10X[91m[10C~~[K[m
+
+[96msrc/features/paymentService.ts[m:[93m2[m:[93m10 [m- [91merror [90mTS2614: [mModule '"./database"' has
+[13;77Hs no exported member 'db'. Did you mean to use 'import db from "./database"' i
+[13;77Hinstead?
+
+[7m2[27m import { db } from './database';[K
+[7m [27m[10X[91m[10C~~[K[m
+
+[96msrc/features/paymentService.ts[m:[93m390[m:[93m25 [m- [91merror [90mTS2552: [mCannot find name 'Presc
+[13;77HcriptionOrderStatus'. Did you mean 'PrescriptionOrder'?
+
+[7m390[27m       status: 'paid' as PrescriptionOrderStatus,[K
+[7m   [27m[25X[91m[25C~~~~~~~~~~~~~~~~~~~~~~~[K[m
+
+[96msrc/features/paymentService.ts[m:[93m424[m:[93m30 [m- [91merror [90mTS7006: [mParameter 'doc' implici
+[13;77Hitly has an 'any' type.
+
+[7m424[27m     return snapshot.docs.map(doc => doc.data() as Payment);[K
+[7m   [27m[30X[91m[30C~~~[K[m
+
+[96msrc/features/paymentService.ts[m:[93m442[m:[93m30 [m- [91merror [90mTS7006: [mParameter 'doc' implici
+[13;77Hitly has an 'any' type.
+
+[7m442[27m     return snapshot.docs.map(doc => doc.data() as PaymentAuditLog);      [14;1H
+[7m   [27m[30X[91m[30C~~~[K[m
+
+[96msrc/features/prescriptionOrderRoutes.ts[m:[93m3[m:[93m10 [m- [91merror [90mTS2614: [mModule '"./datab
+[13;77Hbase"' has no exported member 'db'. Did you mean to use 'import db from "./dat
+[13;77Htabase"' instead?
+
+[7m3[27m import { db } from './database';[K
+[7m [27m[10X[91m[10C~~[K[m
+
+[96msrc/features/prescriptionOrderRoutes.ts[m:[93m109[m:[93m65 [m- [91merror [90mTS7006: [mParameter 'doc
+[13;77Hc' implicitly has an 'any' type.
+
+[7m109[27m     const orders: PrescriptionOrder[] = ordersSnapshot.docs.map(doc => { [14;1H
+[7m   [27m[65X[91m[65C~~~      [14;1H[m
+
+[96msrc/features/prescriptionOrderRoutes.ts[m:[93m281[m:[93m35 [m- [91merror [90mTS2352: [mConversion of 
+[13;77H type '{ success: false; error: string; data: { currentText: any; ocrStatus: a
+[13;77Hany; }; }' to type 'ApiResponse<null>' may be a mistake because neither type s
+[13;77Hsufficiently overlaps with the other. If this was intentional, convert the exp
+[13;77Hpression to 'unknown' first.
+  Types of property 'data' are incompatible.
+    Type '{ currentText: any; ocrStatus: any; }' is not comparable to type 'n
+[13;77Hnull | undefined'.
+
+[7m281[27m       return res.status(409).json({[K
+[7m   [27m[35X[91m[35C~[K[m
+[7m282[27m         success: false,[K
+[7m   [27m [91m~~~~~~~~~~~~~~~~~~~~~~~[K[m
+[7m...[27m[K
+[7m287[27m         }[K
+[7m   [27m [91m~~~~~~~~~[K[m
+[7m288[27m       } as ApiResponse<null>);[K
+[7m   [27m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+
+[96msrc/features/prescriptionOrderRoutes.ts[m:[93m389[m:[93m46 [m- [91merror [90mTS7006: [mParameter 'doc
+[13;77Hc' implicitly has an 'any' type.
+
+[7m389[27m     const orderIds = ordersSnapshot.docs.map(doc => doc.id);[K
+[7m   [27m[46X[91m[46C~~~[K[m
+
+[96msrc/features/prescriptionOrderRoutes.ts[m:[93m396[m:[93m35 [m- [91merror [90mTS7006: [mParameter 'doc
+[13;77Hc' implicitly has an 'any' type.
+
+[7m396[27m     paymentsSnapshot.docs.forEach(doc => {[K
+[7m   [27m[35X[91m[35C~~~[K[m
+
+[96msrc/features/prescriptionOrderRoutes.ts[m:[93m401[m:[93m64 [m- [91merror [90mTS7006: [mParameter 'doc
+[13;77Hc' implicitly has an 'any' type.
+
+[7m401[27m     const orders: OrderHistoryItem[] = ordersSnapshot.docs.map(doc => {  [14;1H
+[7m   [27m[64X[91m[64C~~~       [14;1H[m
+
+[96msrc/features/profileRoutes.integration.test.ts[m:[93m4[m:[93m10 [m- [91merror [90mTS2614: [mModule '"
+[13;77H"./database"' has no exported member 'db'. Did you mean to use 'import db from
+[13;77Hm "./database"' instead?
+
+[7m4[27m import { db } from './database';[K
+[7m [27m[10X[91m[10C~~[K[m
+
+[96msrc/features/profileRoutes.test.ts[m:[93m4[m:[93m28 [m- [91merror [90mTS2307: [mCannot find module '.
+[13;77H./profiles' or its corresponding type declarations.
+
+[7m4[27m import profileService from './profiles';[K
+[7m [27m[28X[91m[28C~~~~~~~~~~~~[K[m
+
+[96msrc/features/profileRoutes.ts[m:[93m3[m:[93m28 [m- [91merror [90mTS2307: [mCannot find module './prof
+[13;77Hfiles' or its corresponding type declarations.
+
+[7m3[27m import profileService from './profiles';[K
+[7m [27m[28X[91m[28C~~~~~~~~~~~~[K[m
+
+[96msrc/features/profileRoutes.ts[m:[93m13[m:[93m30 [m- [91merror [90mTS2339: [mProperty 'user' does not 
+[13;77H exist on type 'Request<ParamsDictionary, any, any, ParsedQs, Record<string, a
+[13;77Hany>>'.
+
+[7m13[27m     const managedByUid = req.user?.uid;[K
+[7m  [27m[30X[91m[30C~~~~[K[m
+
+[96msrc/features/profileRoutes.ts[m:[93m40[m:[93m30 [m- [91merror [90mTS2339: [mProperty 'user' does not 
+[13;77H exist on type 'Request<ParamsDictionary, any, any, ParsedQs, Record<string, a
+[13;77Hany>>'.
+
+[7m40[27m     const managedByUid = req.user?.uid;[K
+[7m  [27m[30X[91m[30C~~~~[K[m
+
+[96msrc/features/profileRoutes.ts[m:[93m53[m:[93m30 [m- [91merror [90mTS2339: [mProperty 'session' does n
+[13;77Hnot exist on type 'Request<ParamsDictionary, any, any, ParsedQs, Record<string
+[13;77Hg, any>>'.
+
+[7m53[27m         activeProfileId: req.session?.activeProfileId[K
+[7m  [27m[30X[91m[30C~~~~~~~[K[m
+
+[96msrc/features/profileRoutes.ts[m:[93m70[m:[93m30 [m- [91merror [90mTS2339: [mProperty 'user' does not 
+[13;77H exist on type 'Request<ParamsDictionary, any, any, ParsedQs, Record<string, a
+[13;77Hany>>'.
+
+[7m70[27m     const managedByUid = req.user?.uid;[K
+[7m  [27m[30X[91m[30C~~~~[K[m
+
+[96msrc/features/profileRoutes.ts[m:[93m111[m:[93m30 [m- [91merror [90mTS2339: [mProperty 'user' does not
+[13;77Ht exist on type 'Request<ParamsDictionary, any, any, ParsedQs, Record<string, 
+[13;77H any>>'.
+
+[7m111[27m     const managedByUid = req.user?.uid;[K
+[7m   [27m[30X[91m[30C~~~~[K[m
+
+[96msrc/features/profileRoutes.ts[m:[93m139[m:[93m30 [m- [91merror [90mTS2339: [mProperty 'user' does not
+[13;77Ht exist on type 'Request<ParamsDictionary, any, any, ParsedQs, Record<string, 
+[13;77H any>>'.
+
+[7m139[27m     const managedByUid = req.user?.uid;[K
+[7m   [27m[30X[91m[30C~~~~[K[m
+
+[96msrc/features/profileRoutes.ts[m:[93m173[m:[93m30 [m- [91merror [90mTS2339: [mProperty 'user' does not
+[13;77Ht exist on type 'Request<ParamsDictionary, any, any, ParsedQs, Record<string, 
+[13;77H any>>'.
+
+[7m173[27m     const managedByUid = req.user?.uid;[K
+[7m   [27m[30X[91m[30C~~~~[K[m
+
+[96msrc/features/publicPaymentRoutes.ts[m:[93m2[m:[93m33 [m- [91merror [90mTS2307: [mCannot find module '
+[13;77H'../middleware/validation' or its corresponding type declarations.
+
+[7m2[27m import { validateRequest } from '../middleware/validation';[K
+[7m [27m[33X[91m[33C~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+
+[96msrc/features/publicPaymentRoutes.ts[m:[93m315[m:[93m28 [m- [91merror [90mTS2339: [mProperty 'Timestam
+[13;77Hmp' does not exist on type 'Firestore'.
+
+[7m315[27m       createdAt: firestore.Timestamp.now(),[K
+[7m   [27m[28X[91m[28C~~~~~~~~~[K[m
+
+[96msrc/features/publicPaymentRoutes.ts[m:[93m348[m:[93m25 [m- [91merror [90mTS2339: [mProperty 'Timestam
+[13;77Hmp' does not exist on type 'Firestore'.
+
+[7m348[27m       paidAt: firestore.Timestamp.now(),[K
+[7m   [27m[25X[91m[25C~~~~~~~~~[K[m
+
+[96msrc/features/publicPaymentRoutes.ts[m:[93m349[m:[93m28 [m- [91merror [90mTS2339: [mProperty 'Timestam
+[13;77Hmp' does not exist on type 'Firestore'.
+
+[7m349[27m       updatedAt: firestore.Timestamp.now()[K
+[7m   [27m[28X[91m[28C~~~~~~~~~[K[m
+
+[96msrc/features/receiptService.test.ts[m:[93m4[m:[93m10 [m- [91merror [90mTS2614: [mModule '"./database"
+[13;77H"' has no exported member 'db'. Did you mean to use 'import db from "./databas
+[13;77Hse"' instead?
+
+[7m4[27m import { db } from './database';[K
+[7m [27m[10X[91m[10C~~[K[m
+
+[96msrc/features/receiptService.test.ts[m:[93m87[m:[93m5 [m- [91merror [90mTS2322: [mType '"paid"' is not
+[13;77Ht assignable to type 'PrescriptionOrderStatus'.
+
+[7m87[27m     status: 'paid',[K
+[7m  [27m     [91m~~~~~~[K[m
+
+  [96m../../packages/shared-types/src/index.ts[m:[93m160[m:[93m3[K[m
+    [7m160[27m   status: PrescriptionOrderStatus;[K
+    [7m   [27m   [96m~~~~~~[K[m
+    The expected type comes from property 'status' which is declared here on 
+[13;77H type 'PrescriptionOrder'
+
+[96msrc/features/receiptService.test.ts[m:[93m94[m:[93m7 [m- [91merror [90mTS2353: [mObject literal may o
+[13;77Honly specify known properties, and 'instructions' does not exist in type 'Medi
+[13;77HicationDetails'.
+
+[7m94[27m       instructions: 'Take one tablet three times daily'[K
+[7m  [27m       [91m~~~~~~~~~~~~[K[m
+
+  [96m../../packages/shared-types/src/index.ts[m:[93m168[m:[93m3[K[m
+    [7m168[27m   medicationDetails?: MedicationDetails;[K
+    [7m   [27m   [96m~~~~~~~~~~~~~~~~~[K[m
+    The expected type comes from property 'medicationDetails' which is declar
+[13;77Hred here on type 'PrescriptionOrder'
+
+[96msrc/features/receiptService.ts[m:[93m2[m:[93m10 [m- [91merror [90mTS2614: [mModule '"./database"' has
+[13;77Hs no exported member 'db'. Did you mean to use 'import db from "./database"' i
+[13;77Hinstead?
+
+[7m2[27m import { db } from './database';[K
+[7m [27m[10X[91m[10C~~[K[m
+
+[96msrc/features/receiptService.ts[m:[93m241[m:[93m21 [m- [91merror [90mTS2351: [mThis expression is not 
+[13;77H constructable.
+  Type '{ default: PDFDocument; version: number; compress: boolean; info: Doc
+[13;77HcumentInfo; options: PDFDocumentOptions; page: PDFPage; x: number; ... 130 mor
+[13;77Hre ...; endOutline(): void; }' has no construct signatures.
+
+[7m241[27m     const doc = new PDFDocument({ margin: 50 });[K
+[7m   [27m[21X[91m[21C~~~~~~~~~~~[K[m
+
+  [96msrc/features/receiptService.ts[m:[93m3[m:[93m1[K[m
+    [7m3[27m import * as PDFDocument from 'pdfkit';[K
+    [7m [27m [96m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+    Type originates at this import. A namespace-style import cannot be called
+[13;77Hd or constructed, and will cause a failure at runtime. Consider using a defaul
+[13;77Hlt import or import require here instead.
+
+[96msrc/features/receiptService.ts[m:[93m245[m:[93m21 [m- [91merror [90mTS7006: [mParameter 'buffer' impl
+[13;77Hlicitly has an 'any' type.
+
+[7m245[27m     doc.on('data', (buffer) => buffers.push(buffer));[K
+[7m   [27m[21X[91m[21C~~~~~~[K[m
+
+[96msrc/features/smsService.test.ts[m:[93m57[m:[93m21 [m- [91merror [90mTS2339: [mProperty 'data' does no
+[13;77Hot exist on type '{ success: boolean; error?: string | undefined; }'.
+
+[7m57[27m       expect(result.data).toEqual({[K
+[7m  [27m[21X[91m[21C~~~~[K[m
+
+[96msrc/features/smsService.test.ts[m:[93m193[m:[93m66 [m- [91merror [90mTS2554: [mExpected 1 arguments, 
+[13;77H but got 2.
+
+[7m193[27m       const messageInfo = smsService.getMessageInfo(longMessage, '+229123
+[13;77H345678');
+[7m   [27m                                                                  [K[91m~~~~~~~~[m
+[91m[13;77H~~~~~~~[m
+
+[96msrc/features/smsService.test.ts[m:[93m220[m:[93m21 [m- [91merror [90mTS2339: [mProperty 'data' does n
+[13;77Hnot exist on type '{ success: boolean; results: { phone: string; success: bool
+[13;77Hlean; error?: string | undefined; }[]; }'.
+
+[7m220[27m       expect(result.data).toEqual({[K
+[7m   [27m[21X[91m[21C~~~~[K[m
+
+[96msrc/features/smsService.test.ts[m:[93m265[m:[93m21 [m- [91merror [90mTS2339: [mProperty 'data' does n
+[13;77Hnot exist on type '{ success: boolean; results: { phone: string; success: bool
+[13;77Hlean; error?: string | undefined; }[]; }'.
+
+[7m265[27m       expect(result.data).toEqual({[K
+[7m   [27m[21X[91m[21C~~~~[K[m
+
+[96msrc/features/smsService.test.ts[m:[93m291[m:[93m57 [m- [91merror [90mTS2554: [mExpected 2 arguments, 
+[13;77H but got 3.
+
+[7m291[27m       await smsService.sendBulkSMS(recipients, message, 100); // 100ms de
+[13;77Helay between messages
+[7m   [27m[57X[91m[57C~~~[K[m
+
+[96msrc/features/smsService.test.ts[m:[93m304[m:[93m21 [m- [91merror [90mTS2339: [mProperty 'error' does 
+[13;77H not exist on type '{ success: boolean; results: { phone: string; success: boo
+[13;77Holean; error?: string | undefined; }[]; }'.
+
+[7m304[27m       expect(result.error).toBe('No recipients provided');[K
+[7m   [27m[21X[91m[21C~~~~~[K[m
+
+[96msrc/features/smsService.test.ts[m:[93m330[m:[93m21 [m- [91merror [90mTS2339: [mProperty 'data' does n
+[13;77Hnot exist on type '{ success: boolean; status?: string | undefined; error?: st
+[13;77Htring | undefined; }'.
+
+[7m330[27m       expect(result.data).toEqual({[K
+[7m   [27m[21X[91m[21C~~~~[K[m
+
+[96msrc/features/smsService.test.ts[m:[93m367[m:[93m21 [m- [91merror [90mTS2339: [mProperty 'data' does n
+[13;77Hnot exist on type '{ success: boolean; status?: string | undefined; error?: st
+[13;77Htring | undefined; }'.
+
+[7m367[27m       expect(result.data?.status).toBe('failed');[K
+[7m   [27m[21X[91m[21C~~~~[K[m
+
+[96msrc/features/smsService.test.ts[m:[93m368[m:[93m21 [m- [91merror [90mTS2339: [mProperty 'data' does n
+[13;77Hnot exist on type '{ success: boolean; status?: string | undefined; error?: st
+[13;77Htring | undefined; }'.
+
+[7m368[27m       expect(result.data?.errorCode).toBe(30008);[K
+[7m   [27m[21X[91m[21C~~~~[K[m
+
+[96msrc/features/smsService.test.ts[m:[93m369[m:[93m21 [m- [91merror [90mTS2339: [mProperty 'data' does n
+[13;77Hnot exist on type '{ success: boolean; status?: string | undefined; error?: st
+[13;77Htring | undefined; }'.
+
+[7m369[27m       expect(result.data?.errorMessage).toBe('Unknown error');[K
+[7m   [27m[21X[91m[21C~~~~[K[m
+
+[96msrc/features/smsService.test.ts[m:[93m481[m:[93m9 [m- [91merror [90mTS2345: [mArgument of type 'numbe
+[13;77Her' is not assignable to parameter of type 'string'.
+
+[7m481[27m         45.50,[K
+[7m   [27m[9X[91m[9C~~~~~[K[m
+
+[96msrc/features/smsService.test.ts[m:[93m498[m:[93m9 [m- [91merror [90mTS2345: [mArgument of type 'numbe
+[13;77Her' is not assignable to parameter of type 'string'.
+
+[7m498[27m         45.50,[K
+[7m   [27m[9X[91m[9C~~~~~[K[m
+
+[96msrc/features/smsService.test.ts[m:[93m517[m:[93m11 [m- [91merror [90mTS2345: [mArgument of type 'numb
+[13;77Hber' is not assignable to parameter of type 'string'.
+
+[7m517[27m           testCase.amount,[K
+[7m   [27m[11X[91m[11C~~~~~~~~~~~~~~~[K[m
+
+[96msrc/features/smsService.test.ts[m:[93m536[m:[93m66 [m- [91merror [90mTS2554: [mExpected 1 arguments, 
+[13;77H but got 2.
+
+[7m536[27m         const info = smsService.getMessageInfo(testCase.message, '+229123
+[13;77H345678');
+[7m   [27m                                                                  [K[91m~~~~~~~~[m
+[91m[13;77H~~~~~~~[m
+
+[96msrc/features/smsService.test.ts[m:[93m544[m:[93m62 [m- [91merror [90mTS2554: [mExpected 1 arguments, 
+[13;77H but got 2.
+
+[7m544[27m       const info = smsService.getMessageInfo(unicodeMessage, '+2291234567
+[13;77H78');
+[7m   [27m                                                              [K[91m~~~~~~~~~~~~[m
+[91m[13;77H~~~[m
+
+[96msrc/features/smsService.test.ts[m:[93m561[m:[93m57 [m- [91merror [90mTS2554: [mExpected 1 arguments, 
+[13;77H but got 2.
+
+[7m561[27m         const info = smsService.getMessageInfo(message, testCase.phone); [14;1H
+[7m   [27m[57X[91m[57C~~~~~~~~~~~~~~   [14;1H[m
+
+[96msrc/features/smsService.test.ts[m:[93m562[m:[93m21 [m- [91merror [90mTS2339: [mProperty 'estimatedCos
+[13;77Hst' does not exist on type '{ length: number; segments: number; encoding: "GSM
+[13;77HM" | "UCS2"; cost: number; }'.
+
+[7m562[27m         expect(info.estimatedCost).toBeCloseTo(testCase.expectedCostPerSe
+[13;77Hegment * 3, 3);
+[7m   [27m[21X[91m[21C~~~~~~~~~~~~~[K[m
+
+[96msrc/features/smsService.test.ts[m:[93m596[m:[93m36 [m- [91merror [90mTS2551: [mProperty 'validatePhon
+[13;77HneNumber' does not exist on type 'SMSService'. Did you mean 'isValidPhoneNumbe
+[13;77Her'?
+
+[7m596[27m         const isValid = smsService['validatePhoneNumber'](number);       [14;1H
+[7m   [27m[36X[91m[36C~~~~~~~~~~~~~~~~~~~~~[K[m
+
+[96msrc/features/smsService.test.ts[m:[93m633[m:[93m35 [m- [91merror [90mTS2551: [mProperty 'parseErrorMe
+[13;77Hessage' does not exist on type 'SMSService'. Did you mean 'getErrorMessage'?  
+
+[7m633[27m         const parsed = smsService['parseErrorMessage'](testCase.response)
 [13;77H);
-[7m   [27m[36X[91m[36C~~~~~~~~~~[K[m
+[7m   [27m[35X[91m[35C~~~~~~~~~~~~~~~~~~~[K[m
 
-[96msrc/features/database.test.ts[m:[93m274[m:[93m36 [m- [91merror [90mTS2339: [mProperty 'disconnect' do
-[13;77Hoes not exist on type 'DatabaseService'.
+[96msrc/features/smsService.test.ts[m:[93m647[m:[93m35 [m- [91merror [90mTS2551: [mProperty 'parseErrorMe
+[13;77Hessage' does not exist on type 'SMSService'. Did you mean 'getErrorMessage'?  
 
-[7m274[27m       await expect(databaseService.disconnect()).resolves.toBeUndefined()
-[13;77H);
-[7m   [27m[36X[91m[36C~~~~~~~~~~[K[m
+[7m647[27m         const parsed = smsService['parseErrorMessage'](response);        [14;1H
+[7m   [27m[35X[91m[35C~~~~~~~~~~~~~~~~~~~[K[m
 
 [96msrc/features/userRoutes.ts[m:[93m2[m:[93m43 [m- [91merror [90mTS6059: [mFile 'C:/Users/akgte/PharmaRx
 [13;77Hx/packages/shared-types/src/index.ts' is not under 'rootDir' 'C:/Users/akgte/P
@@ -41,7 +1451,55 @@
     Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
 [13;77H/apps/api/src/features/authRoutes.ts'
     Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
+[13;77H/apps/api/src/features/ocrService.ts'
+    Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
+[13;77H/apps/api/src/features/ocrRoutes.ts'
+    Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
+[13;77H/apps/api/src/features/prescriptionOrderRoutes.ts'
+    Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
+[13;77H/apps/api/src/features/receiptService.ts'
+    Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
+[13;77H/apps/api/src/features/paymentRoutes.ts'
+    Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
+[13;77H/apps/api/src/features/paymentService.ts'
+    Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
+[13;77H/apps/api/src/features/webhookRoutes.ts'
+    Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
+[13;77H/apps/api/src/features/deliveryTrackingRoutes.ts'
+    Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
+[13;77H/apps/api/src/features/profileRoutes.ts'
+    Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
+[13;77H/apps/api/src/features/doctorPrescriptionRoutes.ts'
+    Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
+[13;77H/apps/api/src/features/doctorPrescriptionService.ts'
+    Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
 [13;77H/apps/api/src/features/authRoutes.test.ts'
+    Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
+[13;77H/apps/api/src/features/deliveryTrackingRoutes.test.ts'
+    Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
+[13;77H/apps/api/src/features/doctorPrescriptionRoutes.test.ts'
+    Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
+[13;77H/apps/api/src/features/doctorPrescriptionService.test.ts'
+    Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
+[13;77H/apps/api/src/features/ocrIntegration.test.ts'
+    Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
+[13;77H/apps/api/src/features/ocrRoutes.test.ts'
+    Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
+[13;77H/apps/api/src/features/ocrService.test.ts'
+    Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
+[13;77H/apps/api/src/features/paymentLinkService.ts'
+    Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
+[13;77H/apps/api/src/features/paymentLinkRoutes.ts'
+    Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
+[13;77H/apps/api/src/features/prescriptionOrderRoutes.test.ts'
+    Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
+[13;77H/apps/api/src/features/profileRoutes.integration.test.ts'
+    Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
+[13;77H/apps/api/src/features/profileRoutes.test.ts'
+    Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
+[13;77H/apps/api/src/features/publicPaymentRoutes.ts'
+    Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
+[13;77H/apps/api/src/features/receiptService.test.ts'
     Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
 [13;77H/apps/api/src/features/userRoutes.test.ts'
     Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
@@ -60,9 +1518,135 @@
     [7m2[27m import { UserRole, CreateUserInput } from '@pharmarx/shared-types';    [14;1H
     [7m [27m[43X[96m[43C~~~~~~~~~~~~~~~~~~~~~~~~     [14;1H[m
     File is included via import here.
+  [96msrc/features/ocrService.ts[m:[93m2[m:[93m70[K[m
+    [7m2[27m import { OCRProcessingRequest, OCRProcessingResult, OCRStatus } from '@
+[13;77H@pharmarx/shared-types';
+    [7m [27m                                                                      [K[96m~~[m
+[96m[13;77H~~~~~~~~~~~~~~~~~~~~~~~[m
+    File is included via import here.
+  [96msrc/features/ocrRoutes.ts[m:[93m3[m:[93m70[K[m
+    [7m3[27m import { OCRProcessingRequest, OCRStatusResponse, ApiResponse } from '@
+[13;77H@pharmarx/shared-types';
+    [7m [27m                                                                      [K[96m~~[m
+[96m[13;77H~~~~~~~~~~~~~~~~~~~~~~~[m
+    File is included via import here.
+  [96msrc/features/prescriptionOrderRoutes.ts[m:[93m2[m:[93m143[K[m
+    [7m2[27m import { PrescriptionOrder, CreatePrescriptionOrderInput, PrescriptionO
+[13;77HOrderStatus, ApiResponse, OrderHistoryResponse, OrderHistoryItem } from '@phar
+[13;77Hrmarx/shared-types';
+    [7m [27m                                                                        [14;150H
+[96m                                                                       ~~~~~~[m
+[96m[13;77H~~~~~~~~~~~~~~~~~~~[m
+    File is included via import here.
+  [96msrc/features/receiptService.ts[m:[93m1[m:[93m60[K[m
+    [7m1[27m import { Payment, PaymentGateway, PrescriptionOrder } from '@pharmarx/s
+[13;77Hshared-types';
+    [7m [27m                                                            [K[96m~~~~~~~~~~~~[m
+[96m[13;77H~~~~~~~~~~~~~[m
+    File is included via import here.
+  [96msrc/features/paymentRoutes.ts[m:[93m2[m:[93m29[K[m
+    [7m2[27m import { ApiResponse } from '@pharmarx/shared-types';[K
+    [7m [27m[29X[96m[29C~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+    File is included via import here.
+  [96msrc/features/paymentService.ts[m:[93m1[m:[93m75[K[m
+    [7m1[27m import { Payment, PaymentGateway, PaymentStatus, PrescriptionOrder } fr
+[13;77Hrom '@pharmarx/shared-types';
+    [7m [27m                                                                        [14;150H
+[96m   ~~~~~~~~~~~~~~~~~~~~~~~~[m
+    File is included via import here.
+  [96msrc/features/webhookRoutes.ts[m:[93m2[m:[93m29[K[m
+    [7m2[27m import { ApiResponse } from '@pharmarx/shared-types';[K
+    [7m [27m[29X[96m[29C~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+    File is included via import here.
+  [96msrc/features/deliveryTrackingRoutes.ts[m:[93m2[m:[93m84[K[m
+    [7m2[27m import { DeliveryTrackingInfo, ApiResponse, DeliveryNotificationPrefere
+[13;77Hences } from '@pharmarx/shared-types';
+    [7m [27m                                                                        [14;150H
+[96m            ~~~~~~~~~~~~~~~~~~~~~~~~[m
+    File is included via import here.
+  [96msrc/features/profileRoutes.ts[m:[93m2[m:[93m60[K[m
+    [7m2[27m import { CreateProfileRequest, UpdateProfileRequest } from '@pharmarx/s
+[13;77Hshared-types';
+    [7m [27m                                                            [K[96m~~~~~~~~~~~~[m
+[96m[13;77H~~~~~~~~~~~~~[m
+    File is included via import here.
+  [96msrc/features/doctorPrescriptionRoutes.ts[m:[93m7[m:[93m8[K[m
+    [7m7[27m } from '@pharmarx/shared-types';[K
+    [7m [27m        [96m~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+    File is included via import here.
+  [96msrc/features/doctorPrescriptionService.ts[m:[93m10[m:[93m8[K[m
+    [7m10[27m } from '@pharmarx/shared-types';[K
+    [7m  [27m        [96m~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+    File is included via import here.
   [96msrc/features/authRoutes.test.ts[m:[93m6[m:[93m26[K[m
     [7m6[27m import { UserRole } from '@pharmarx/shared-types';[K
     [7m [27m[26X[96m[26C~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+    File is included via import here.
+  [96msrc/features/deliveryTrackingRoutes.test.ts[m:[93m5[m:[93m84[K[m
+    [7m5[27m import { DeliveryTrackingInfo, ApiResponse, DeliveryNotificationPrefere
+[13;77Hences } from '@pharmarx/shared-types';
+    [7m [27m                                                                        [14;150H
+[96m            ~~~~~~~~~~~~~~~~~~~~~~~~[m
+    File is included via import here.
+  [96msrc/features/doctorPrescriptionRoutes.test.ts[m:[93m6[m:[93m26[K[m
+    [7m6[27m import { UserRole } from '@pharmarx/shared-types';[K
+    [7m [27m[26X[96m[26C~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+    File is included via import here.
+  [96msrc/features/doctorPrescriptionService.test.ts[m:[93m9[m:[93m8[K[m
+    [7m9[27m } from '@pharmarx/shared-types';[K
+    [7m [27m        [96m~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+    File is included via import here.
+  [96msrc/features/ocrIntegration.test.ts[m:[93m3[m:[93m38[K[m
+    [7m3[27m import { OCRProcessingRequest } from '@pharmarx/shared-types';[K
+    [7m [27m[38X[96m[38C~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+    File is included via import here.
+  [96msrc/features/ocrRoutes.test.ts[m:[93m5[m:[93m35[K[m
+    [7m5[27m import { OCRStatusResponse } from '@pharmarx/shared-types';[K
+    [7m [27m[35X[96m[35C~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+    File is included via import here.
+  [96msrc/features/ocrService.test.ts[m:[93m3[m:[93m38[K[m
+    [7m3[27m import { OCRProcessingRequest } from '@pharmarx/shared-types';[K
+    [7m [27m[38X[96m[38C~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+    File is included via import here.
+  [96msrc/features/paymentLinkService.ts[m:[93m2[m:[93m95[K[m
+    [7m2[27m import { PaymentLink, PaymentLinkRequest, PaymentLinkResponse, Prescrip
+[13;77HptionOrderStatus } from '@pharmarx/shared-types';
+    [7m [27m                                                                        [14;150H
+[96m                       ~~~~~~~~~~~~~~~~~~~~~~~~[m
+    File is included via import here.
+  [96msrc/features/paymentLinkRoutes.ts[m:[93m5[m:[93m70[K[m
+    [7m5[27m import { PaymentLinkRequest, PaymentLinkResponse, ApiResponse } from '@
+[13;77H@pharmarx/shared-types';
+    [7m [27m                                                                      [K[96m~~[m
+[96m[13;77H~~~~~~~~~~~~~~~~~~~~~~~[m
+    File is included via import here.
+  [96msrc/features/prescriptionOrderRoutes.test.ts[m:[93m6[m:[93m65[K[m
+    [7m6[27m import { CreatePrescriptionOrderInput, PrescriptionOrder } from '@pharm
+[13;77Hmarx/shared-types';
+    [7m [27m                                                                 [K[96m~~~~~~~[m
+[96m[13;77H~~~~~~~~~~~~~~~~~~[m
+    File is included via import here.
+  [96msrc/features/profileRoutes.integration.test.ts[m:[93m5[m:[93m76[K[m
+    [7m5[27m import { PatientProfile, CreateProfileRequest, UpdateProfileRequest } f
+[13;77Hfrom '@pharmarx/shared-types';
+    [7m [27m                                                                        [14;150H
+[96m    ~~~~~~~~~~~~~~~~~~~~~~~~[m
+    File is included via import here.
+  [96msrc/features/profileRoutes.test.ts[m:[93m5[m:[93m76[K[m
+    [7m5[27m import { PatientProfile, CreateProfileRequest, UpdateProfileRequest } f
+[13;77Hfrom '@pharmarx/shared-types';
+    [7m [27m                                                                        [14;150H
+[96m    ~~~~~~~~~~~~~~~~~~~~~~~~[m
+    File is included via import here.
+  [96msrc/features/publicPaymentRoutes.ts[m:[93m4[m:[93m109[K[m
+    [7m4[27m import { PublicPaymentInfo, PublicPaymentRequest, PublicPaymentResponse
+[13;77He, PaymentLinkValidationResult } from '@pharmarx/shared-types';
+    [7m [27m                                                                        [14;150H
+[96m                                     ~~~~~~~~~~~~~~~~~~~~~~~~[m
+    File is included via import here.
+  [96msrc/features/receiptService.test.ts[m:[93m3[m:[93m44[K[m
+    [7m3[27m import { Payment, PrescriptionOrder } from '@pharmarx/shared-types';   [14;1H
+    [7m [27m[44X[96m[44C~~~~~~~~~~~~~~~~~~~~~~~~    [14;1H[m
     File is included via import here.
   [96msrc/features/userRoutes.test.ts[m:[93m4[m:[93m43[K[m
     [7m4[27m import { UserRole, CreateUserInput } from '@pharmarx/shared-types';    [14;1H
@@ -75,25 +1659,135 @@
 [96m[13;77H~~[m
     File is included via import here.
 
-[96msrc/index.ts[m:[93m33[m:[93m37 [m- [91merror [90mTS2339: [mProperty 'connected' does not exist on typ
-[13;77Hpe '{ status: string; projectId: string; timestamp: Date; }'.
+[96msrc/features/webhookRoutes.test.ts[m:[93m355[m:[93m14 [m- [91merror [90mTS2790: [mThe operand of a 'd
+[13;77Hdelete' operator must be optional.
 
-[7m33[27m     const statusCode = healthStatus.connected ? 200 : 503;[K
-[7m  [27m[37X[91m[37C~~~~~~~~~[K[m
+[7m355[27m       delete eventWithoutSignature.Signature;[K
+[7m   [27m[14X[91m[14C~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+
+[96msrc/features/whatsappService.test.ts[m:[93m53[m:[93m21 [m- [91merror [90mTS2339: [mProperty 'data' do
+[13;77Hoes not exist on type '{ success: boolean; error?: string | undefined; }'.    
+
+[7m53[27m       expect(result.data).toEqual({[K
+[7m  [27m[21X[91m[21C~~~~[K[m
+
+[96msrc/features/whatsappService.test.ts[m:[93m199[m:[93m9 [m- [91merror [90mTS2554: [mExpected 3 argumen
+[13;77Hnts, but got 4.
+
+[7m199[27m         ['PharmaRx', '$45.50', 'https://pharmarx.com/pay/token123']      [14;1H
+[7m   [27m[9X[91m[9C~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~      [14;1H[m
+
+[96msrc/features/whatsappService.test.ts[m:[93m203[m:[93m21 [m- [91merror [90mTS2339: [mProperty 'data' d
+[13;77Hdoes not exist on type '{ success: boolean; error?: string | undefined; }'.   
+
+[7m203[27m       expect(result.data).toEqual({[K
+[7m   [27m[21X[91m[21C~~~~[K[m
+
+[96msrc/features/whatsappService.test.ts[m:[93m234[m:[93m9 [m- [91merror [90mTS2554: [mExpected 3 argumen
+[13;77Hnts, but got 4.
+
+[7m234[27m         [][K
+[7m   [27m[9X[91m[9C~~[K[m
+
+[96msrc/features/whatsappService.test.ts[m:[93m246[m:[93m9 [m- [91merror [90mTS2554: [mExpected 3 argumen
+[13;77Hnts, but got 4.
+
+[7m246[27m         [][K
+[7m   [27m[9X[91m[9C~~[K[m
+
+[96msrc/features/whatsappService.test.ts[m:[93m346[m:[93m9 [m- [91merror [90mTS2345: [mArgument of type '
+[13;77H'number' is not assignable to parameter of type 'string'.
+
+[7m346[27m         45.50,[K
+[7m   [27m[9X[91m[9C~~~~~[K[m
+
+[96msrc/features/whatsappService.test.ts[m:[93m363[m:[93m9 [m- [91merror [90mTS2345: [mArgument of type '
+[13;77H'number' is not assignable to parameter of type 'string'.
+
+[7m363[27m         45.50,[K
+[7m   [27m[9X[91m[9C~~~~~[K[m
+
+[96msrc/features/whatsappService.test.ts[m:[93m382[m:[93m11 [m- [91merror [90mTS2345: [mArgument of type 
+[13;77H 'number' is not assignable to parameter of type 'string'.
+
+[7m382[27m           testCase.amount,[K
+[7m   [27m[11X[91m[11C~~~~~~~~~~~~~~~[K[m
+
+[96msrc/features/whatsappService.test.ts[m:[93m421[m:[93m41 [m- [91merror [90mTS2551: [mProperty 'validat
+[13;77HtePhoneNumber' does not exist on type 'WhatsAppService'. Did you mean 'isValid
+[13;77HdPhoneNumber'?
+
+[7m421[27m         const isValid = whatsappService['validatePhoneNumber'](number);  [14;1H
+[7m   [27m[41X[91m[41C~~~~~~~~~~~~~~~~~~~~~[K[m
+
+[96msrc/features/whatsappService.test.ts[m:[93m462[m:[93m40 [m- [91merror [90mTS2551: [mProperty 'parseEr
+[13;77HrrorMessage' does not exist on type 'WhatsAppService'. Did you mean 'getErrorM
+[13;77HMessage'?
+
+[7m462[27m         const parsed = whatsappService['parseErrorMessage'](testCase.resp
+[13;77Hponse);
+[7m   [27m[40X[91m[40C~~~~~~~~~~~~~~~~~~~[K[m
+
+[96msrc/features/whatsappService.test.ts[m:[93m477[m:[93m40 [m- [91merror [90mTS2551: [mProperty 'parseEr
+[13;77HrrorMessage' does not exist on type 'WhatsAppService'. Did you mean 'getErrorM
+[13;77HMessage'?
+
+[7m477[27m         const parsed = whatsappService['parseErrorMessage'](response);   [14;1H
+[7m   [27m[40X[91m[40C~~~~~~~~~~~~~~~~~~~[K[m
+
+[96m../../packages/shared-types/src/index.ts[m:[93m322[m:[93m15 [m- [91merror [90mTS6059: [mFile 'C:/User
+[13;77Hrs/akgte/PharmaRx/packages/shared-types/src/paymentLink.types.ts' is not under
+[13;77Hr 'rootDir' 'C:/Users/akgte/PharmaRx/apps/api/src'. 'rootDir' is expected to c
+[13;77Hcontain all source files.
+
+[7m322[27m export * from './paymentLink.types';[K
+[7m   [27m[15X[91m[15C~~~~~~~~~~~~~~~~~~~~~[K[m
+
+[96m../../packages/shared-types/src/index.ts[m:[93m325[m:[93m15 [m- [91merror [90mTS6059: [mFile 'C:/User
+[13;77Hrs/akgte/PharmaRx/packages/shared-types/src/deliveryTracking.types.ts' is not 
+[13;77H under 'rootDir' 'C:/Users/akgte/PharmaRx/apps/api/src'. 'rootDir' is expected
+[13;77Hd to contain all source files.
+
+[7m325[27m export * from './deliveryTracking.types';[K
+[7m   [27m[15X[91m[15C~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
 
 
-Found 8 errors in 4 files.
+Found 132 errors in 28 files.
 
 Errors  Files
-     1  src/features/authRoutes.test.ts[90m:164[K[m
-     5  src/features/database.test.ts[90m:57[K[m
+     1  src/config/firebase.ts[90m:64[K[m
+     2  src/features/doctorPrescriptionRoutes.test.ts[90m:245[K[m
+     1  src/features/doctorPrescriptionRoutes.ts[90m:131[K[m
+     3  src/features/doctorPrescriptionService.test.ts[90m:3[K[m
+     9  src/features/doctorPrescriptionService.ts[90m:1[K[m
+     1  src/features/ocrRoutes.test.ts[90m:35[K[m
+     1  src/features/ocrRoutes.ts[90m:4[K[m
+     1  src/features/ocrService.ts[90m:20[K[m
+     2  src/features/paymentLinkRoutes.test.ts[90m:386[K[m
+     5  src/features/paymentLinkRoutes.ts[90m:2[K[m
+    26  src/features/paymentLinkService.test.ts[90m:86[K[m
+     5  src/features/paymentLinkService.ts[90m:45[K[m
+     7  src/features/paymentRoutes.test.ts[90m:63[K[m
+     2  src/features/paymentRoutes.ts[90m:24[K[m
+     1  src/features/paymentService.test.ts[90m:3[K[m
+     4  src/features/paymentService.ts[90m:2[K[m
+     6  src/features/prescriptionOrderRoutes.ts[90m:3[K[m
+     1  src/features/profileRoutes.integration.test.ts[90m:4[K[m
+     1  src/features/profileRoutes.test.ts[90m:4[K[m
+     8  src/features/profileRoutes.ts[90m:3[K[m
+     4  src/features/publicPaymentRoutes.ts[90m:2[K[m
+     3  src/features/receiptService.test.ts[90m:4[K[m
+     3  src/features/receiptService.ts[90m:2[K[m
+    20  src/features/smsService.test.ts[90m:57[K[m
      1  src/features/userRoutes.ts[90m:2[K[m
-     1  src/index.ts[90m:33[K[m
-⠙[K[1mnpm[22m [31merror [mLifecycle script `build` failed with error:[K
-[1mnpm[22m [31merror [94mcode [33m2[K[m
-[1mnpm[22m [31merror [94mpath [mC:\Users\akgte\PharmaRx\apps\api[K
+     1  src/features/webhookRoutes.test.ts[90m:355[K[m
+    11  src/features/whatsappService.test.ts[90m:53[K[m
+     2  ../../packages/shared-types/src/index.ts[90m:322[K[m
+[K⠙[1mnpm[22m [31merror [mLifecycle script `build` failed with error:[K
+⠙[1mnpm[22m [31merror [94mcode [33m2[K[m
+⠙[1mnpm[22m [31merror [94mpath [mC:\Users\akgte\PharmaRx\apps\api[K
 [1mnpm[22m [31merror [94mworkspace [m@pharmarx/api@1.0.0[K
-[1mnpm[22m [31merror [94mlocation [mC:\Users\akgte\PharmaRx\apps\api
-⠙[1mnpm[22m [31merror [mcommand failed[K
+⠹[K[1mnpm[22m [31merror [94mlocation [mC:\Users\akgte\PharmaRx\apps\api[K
+[1mnpm[22m [31merror [mcommand failed[K
 [1mnpm[22m [31merror [94mcommand [mC:\WINDOWS\system32\cmd.exe /d /s /c tsc[K
-⠹[K[?9001l[?1004l
+⠸[K[?9001l[?1004l

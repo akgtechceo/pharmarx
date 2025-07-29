@@ -99,3 +99,70 @@ export const validatePrescriptionFile = (file) => {
         errors
     };
 };
+// Re-export payment link types
+export * from './paymentLink.types';
+// Re-export delivery tracking types
+export * from './deliveryTracking.types';
+export const validateCreateProfileRequest = (input) => {
+    const errors = [];
+    if (!input.patientName || typeof input.patientName !== 'string' || input.patientName.trim() === '') {
+        errors.push('patientName is required and must be a non-empty string');
+    }
+    if (!input.dateOfBirth || typeof input.dateOfBirth !== 'string') {
+        errors.push('dateOfBirth is required and must be a valid ISO date string');
+    }
+    else {
+        const date = new Date(input.dateOfBirth);
+        if (isNaN(date.getTime())) {
+            errors.push('dateOfBirth must be a valid date');
+        }
+        // Check if date is not in the future
+        if (date > new Date()) {
+            errors.push('dateOfBirth cannot be in the future');
+        }
+    }
+    // Validate insurance details if provided
+    if (input.insuranceDetails) {
+        if (!input.insuranceDetails.provider || typeof input.insuranceDetails.provider !== 'string' || input.insuranceDetails.provider.trim() === '') {
+            errors.push('insurance provider is required when insurance details are provided');
+        }
+        if (!input.insuranceDetails.policyNumber || typeof input.insuranceDetails.policyNumber !== 'string' || input.insuranceDetails.policyNumber.trim() === '') {
+            errors.push('insurance policy number is required when insurance details are provided');
+        }
+    }
+    return {
+        isValid: errors.length === 0,
+        errors
+    };
+};
+export const validateUpdateProfileRequest = (input) => {
+    const errors = [];
+    // Validate date of birth format if provided
+    if (input.dateOfBirth) {
+        const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+        if (!dateRegex.test(input.dateOfBirth)) {
+            errors.push('dateOfBirth must be in YYYY-MM-DD format');
+        }
+        else {
+            const date = new Date(input.dateOfBirth);
+            if (isNaN(date.getTime())) {
+                errors.push('dateOfBirth must be a valid date');
+            }
+        }
+    }
+    // Validate insurance details if provided
+    if (input.insuranceDetails) {
+        if (!input.insuranceDetails.provider || typeof input.insuranceDetails.provider !== 'string' || input.insuranceDetails.provider.trim() === '') {
+            errors.push('insurance provider is required when insurance details are provided');
+        }
+        if (!input.insuranceDetails.policyNumber || typeof input.insuranceDetails.policyNumber !== 'string' || input.insuranceDetails.policyNumber.trim() === '') {
+            errors.push('insurance policy number is required when insurance details are provided');
+        }
+    }
+    return {
+        isValid: errors.length === 0,
+        errors
+    };
+};
+// Re-export inventory types
+export * from './inventory.types';

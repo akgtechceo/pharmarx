@@ -1,10 +1,14 @@
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import RegisterPage from './features/auth/RegisterPage';
 import LoginPage from './features/auth/LoginPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import { UserRole } from '@pharmarx/shared-types';
-import PatientPortal from './components/portals/PatientPortal';
-import CaregiverPortal from './components/portals/CaregiverPortal';
+import { PatientPortal } from './components/portals/PatientPortal';
+import { CaregiverPortal } from './components/portals/CaregiverPortal';
+import { DoctorPrescriptionPortal } from './features/doctor/components/DoctorPrescriptionPortal';
 import VerificationPage from './features/prescriptions/pages/VerificationPage';
 import OrderHistoryPage from './features/prescriptions/pages/OrderHistoryPage';
 
@@ -54,6 +58,11 @@ function App() {
         <Route path="/portal/pharmacist" element={
           <ProtectedRoute requiredRole={UserRole.Pharmacist}>
             <PharmacistPortal />
+          </ProtectedRoute>
+        } />
+        <Route path="/doctor/prescriptions" element={
+          <ProtectedRoute requiredRole={UserRole.Doctor}>
+            <DoctorPrescriptionPortal />
           </ProtectedRoute>
         } />
         <Route path="/terms" element={<TermsPlaceholder />} />
@@ -235,9 +244,12 @@ function DoctorPortal() {
             <div className="bg-white rounded-lg shadow-md p-6">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl font-semibold text-gray-900">Prescription Queue</h2>
-                <button className="bg-blue-700 text-white px-4 py-2 rounded-md hover:bg-blue-800 text-sm">
+                <Link 
+                  to="/doctor/prescriptions" 
+                  className="bg-blue-700 text-white px-4 py-2 rounded-md hover:bg-blue-800 text-sm"
+                >
                   Write New Prescription
-                </button>
+                </Link>
               </div>
               <div className="space-y-3">
                 <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">

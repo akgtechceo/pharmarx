@@ -44,10 +44,10 @@ vi.mock('./database', () => ({
               get: vi.fn().mockResolvedValue({
                 empty: true,
                 docs: []
-              }))
+              })
             }))
           }))
-        }))),
+        })),
         limit: vi.fn(() => ({
           get: vi.fn().mockResolvedValue({
             empty: true,

@@ -355,6 +355,12 @@ export interface PatientProfile {
     provider: string;
     policyNumber: string;
   };
+  notificationPreferences?: {
+    enableSMS: boolean;
+    enableEmail: boolean;
+    smsPhoneNumber?: string;
+    emailAddress?: string;
+  };
   createdAt: Date;
   updatedAt?: Date;
 }
@@ -426,21 +432,15 @@ export const validateCreateProfileRequest = (input: CreateProfileRequest): Profi
 export const validateUpdateProfileRequest = (input: UpdateProfileRequest): ProfileValidationResult => {
   const errors: string[] = [];
 
-  if (input.patientName !== undefined && (typeof input.patientName !== 'string' || input.patientName.trim() === '')) {
-    errors.push('patientName must be a non-empty string when provided');
-  }
-
-  if (input.dateOfBirth !== undefined) {
-    if (typeof input.dateOfBirth !== 'string') {
-      errors.push('dateOfBirth must be a valid ISO date string');
+  // Validate date of birth format if provided
+  if (input.dateOfBirth) {
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+    if (!dateRegex.test(input.dateOfBirth)) {
+      errors.push('dateOfBirth must be in YYYY-MM-DD format');
     } else {
       const date = new Date(input.dateOfBirth);
       if (isNaN(date.getTime())) {
         errors.push('dateOfBirth must be a valid date');
-      }
-      // Check if date is not in the future
-      if (date > new Date()) {
-        errors.push('dateOfBirth cannot be in the future');
       }
     }
   }
@@ -459,4 +459,91 @@ export const validateUpdateProfileRequest = (input: UpdateProfileRequest): Profi
     isValid: errors.length === 0,
     errors
   };
-}; 
+};
+
+// Doctor Prescription Types
+export interface DoctorPrescriptionSubmission {
+  prescriptionId: string;
+  doctorUid: string;
+  patientProfileId: string;
+  medicationDetails: {
+    name: string;
+    dosage: string;
+    quantity: number;
+    instructions: string;
+    refillsAuthorized: number;
+    refillsRemaining: number;
+  };
+  prescriptionNotes?: string;
+  submittedAt: Date;
+  status: 'submitted' | 'processed' | 'delivered';
+}
+
+export interface PatientSearchResult {
+  profileId: string;
+  patientName: string;
+  dateOfBirth: Date;
+  phoneNumber?: string;
+  email?: string;
+  insuranceDetails?: {
+    provider: string;
+    policyNumber: string;
+  };
+  lastPrescriptionDate?: Date;
+}
+
+export interface PatientSearchRequest {
+  query: string;
+  searchType: 'name' | 'phone' | 'email' | 'all';
+  limit?: number;
+}
+
+export interface PrescriptionNotification {
+  notificationId: string;
+  patientProfileId: string;
+  prescriptionId: string;
+  notificationType: 'sms' | 'email';
+  status: 'pending' | 'sent' | 'delivered' | 'failed';
+  sentAt?: Date;
+  deliveredAt?: Date;
+  errorMessage?: string;
+}
+
+export interface NotificationPreferences {
+  enableSMS: boolean;
+  enableEmail: boolean;
+  smsPhoneNumber?: string;
+  emailAddress?: string;
+}
+
+export interface UpdateNotificationPreferencesRequest {
+  enableSMS?: boolean;
+  enableEmail?: boolean;
+  smsPhoneNumber?: string;
+  emailAddress?: string;
+}
+
+export interface CreateDoctorPrescriptionInput {
+  patientProfileId: string;
+  medicationDetails: {
+    name: string;
+    dosage: string;
+    quantity: number;
+    instructions: string;
+    refillsAuthorized: number;
+  };
+  prescriptionNotes?: string;
+}
+
+export interface DoctorPrescriptionHistoryResponse {
+  prescriptions: DoctorPrescriptionSubmission[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    hasMore: boolean;
+  };
+}
+
+// Re-export inventory types
+export * from './inventory.types'; 

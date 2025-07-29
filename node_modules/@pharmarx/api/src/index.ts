@@ -11,6 +11,9 @@ import paymentRoutes from './features/paymentRoutes';
 import webhookRoutes from './features/webhookRoutes';
 import deliveryTrackingRoutes from './features/deliveryTrackingRoutes';
 import profileRoutes from './features/profileRoutes';
+import doctorPrescriptionRoutes from './features/doctorPrescriptionRoutes';
+import notificationRoutes from './features/notificationRoutes';
+import inventoryRoutes from './features/inventoryRoutes';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -65,6 +68,15 @@ app.use('/api/auth', authRoutes);
 
 // Profile routes
 app.use('/api/profiles', profileRoutes);
+
+// Doctor prescription routes
+app.use('/api/doctor', doctorPrescriptionRoutes);
+
+// Notification routes
+app.use('/api/notifications', notificationRoutes);
+
+// Inventory routes
+app.use('/api/inventory', inventoryRoutes);
 
 // OCR routes
 app.use('/api', ocrRoutes);

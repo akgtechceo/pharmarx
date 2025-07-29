@@ -160,4 +160,144 @@ export interface PaymentNotification {
     };
     approvedAt: Date;
 }
+export * from './paymentLink.types';
+export * from './deliveryTracking.types';
+export interface OrderHistoryItem {
+    orderId: string;
+    status: PrescriptionOrderStatus;
+    medicationDetails?: MedicationDetails;
+    cost?: number;
+    createdAt: Date;
+    deliveredAt?: Date;
+    hasReceipt: boolean;
+}
+export interface OrderHistoryResponse {
+    orders: OrderHistoryItem[];
+    pagination: {
+        page: number;
+        limit: number;
+        total: number;
+        hasMore: boolean;
+    };
+}
+export interface PatientProfile {
+    profileId: string;
+    managedByUid: string;
+    patientName: string;
+    dateOfBirth: Date;
+    insuranceDetails?: {
+        provider: string;
+        policyNumber: string;
+    };
+    notificationPreferences?: {
+        enableSMS: boolean;
+        enableEmail: boolean;
+        smsPhoneNumber?: string;
+        emailAddress?: string;
+    };
+    createdAt: Date;
+    updatedAt?: Date;
+}
+export interface CreateProfileRequest {
+    patientName: string;
+    dateOfBirth: string;
+    insuranceDetails?: {
+        provider: string;
+        policyNumber: string;
+    };
+}
+export interface UpdateProfileRequest {
+    patientName?: string;
+    dateOfBirth?: string;
+    insuranceDetails?: {
+        provider: string;
+        policyNumber: string;
+    };
+}
+export interface ProfileManagementResponse {
+    profiles: PatientProfile[];
+    activeProfileId?: string;
+}
+export interface ProfileValidationResult {
+    isValid: boolean;
+    errors: string[];
+}
+export declare const validateCreateProfileRequest: (input: CreateProfileRequest) => ProfileValidationResult;
+export declare const validateUpdateProfileRequest: (input: UpdateProfileRequest) => ProfileValidationResult;
+export interface DoctorPrescriptionSubmission {
+    prescriptionId: string;
+    doctorUid: string;
+    patientProfileId: string;
+    medicationDetails: {
+        name: string;
+        dosage: string;
+        quantity: number;
+        instructions: string;
+        refillsAuthorized: number;
+        refillsRemaining: number;
+    };
+    prescriptionNotes?: string;
+    submittedAt: Date;
+    status: 'submitted' | 'processed' | 'delivered';
+}
+export interface PatientSearchResult {
+    profileId: string;
+    patientName: string;
+    dateOfBirth: Date;
+    phoneNumber?: string;
+    email?: string;
+    insuranceDetails?: {
+        provider: string;
+        policyNumber: string;
+    };
+    lastPrescriptionDate?: Date;
+}
+export interface PatientSearchRequest {
+    query: string;
+    searchType: 'name' | 'phone' | 'email' | 'all';
+    limit?: number;
+}
+export interface PrescriptionNotification {
+    notificationId: string;
+    patientProfileId: string;
+    prescriptionId: string;
+    notificationType: 'sms' | 'email';
+    status: 'pending' | 'sent' | 'delivered' | 'failed';
+    sentAt?: Date;
+    deliveredAt?: Date;
+    errorMessage?: string;
+}
+export interface NotificationPreferences {
+    enableSMS: boolean;
+    enableEmail: boolean;
+    smsPhoneNumber?: string;
+    emailAddress?: string;
+}
+export interface UpdateNotificationPreferencesRequest {
+    enableSMS?: boolean;
+    enableEmail?: boolean;
+    smsPhoneNumber?: string;
+    emailAddress?: string;
+}
+export interface CreateDoctorPrescriptionInput {
+    patientProfileId: string;
+    medicationDetails: {
+        name: string;
+        dosage: string;
+        quantity: number;
+        instructions: string;
+        refillsAuthorized: number;
+    };
+    prescriptionNotes?: string;
+}
+export interface DoctorPrescriptionHistoryResponse {
+    prescriptions: DoctorPrescriptionSubmission[];
+    pagination: {
+        page: number;
+        limit: number;
+        total: number;
+        hasMore: boolean;
+    };
+}
+export * from './inventory.types';
 //# sourceMappingURL=index.d.ts.map

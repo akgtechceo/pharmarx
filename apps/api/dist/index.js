@@ -5,6 +5,13 @@ import morgan from 'morgan';
 import databaseService from './features/database';
 import userRoutes from './features/userRoutes';
 import authRoutes from './features/authRoutes';
+import { ocrRoutes } from './features/ocrRoutes';
+import { prescriptionOrderRoutes } from './features/prescriptionOrderRoutes';
+import paymentRoutes from './features/paymentRoutes';
+import webhookRoutes from './features/webhookRoutes';
+import deliveryTrackingRoutes from './features/deliveryTrackingRoutes';
+import profileRoutes from './features/profileRoutes';
+import doctorPrescriptionRoutes from './features/doctorPrescriptionRoutes';
 const app = express();
 const PORT = process.env.PORT || 3001;
 const NODE_ENV = process.env.NODE_ENV || 'development';
@@ -26,7 +33,7 @@ app.get('/health', (req, res) => {
 app.get('/health/database', async (req, res) => {
     try {
         const healthStatus = await databaseService.healthCheck();
-        const statusCode = healthStatus.connected ? 200 : 503;
+        const statusCode = healthStatus.status === 'healthy' ? 200 : 503;
         res.status(statusCode).json({
             ...healthStatus,
             timestamp: new Date().toISOString()
@@ -36,7 +43,6 @@ app.get('/health/database', async (req, res) => {
         console.error('Database health check endpoint error:', error);
         res.status(503).json({
             status: 'unhealthy',
-            connected: false,
             error: 'Database health check failed',
             timestamp: new Date().toISOString()
         });
@@ -50,14 +56,38 @@ app.get('/api', (req, res) => {
 app.use('/api/users', userRoutes);
 // Auth routes
 app.use('/api/auth', authRoutes);
-// Error handling middleware
-app.use((err, req, res) => {
-    console.error(err.stack);
-    res.status(500).json({ error: 'Something went wrong!' });
-});
-// 404 handler
+// Profile routes
+app.use('/api/profiles', profileRoutes);
+// Doctor prescription routes
+app.use('/api/doctor', doctorPrescriptionRoutes);
+// OCR routes
+app.use('/api', ocrRoutes);
+// Prescription order routes
+app.use('/api', prescriptionOrderRoutes);
+// Payment routes
+app.use('/api', paymentRoutes);
+// Delivery tracking routes
+app.use('/api/orders', deliveryTrackingRoutes);
+// Webhook routes (no /api prefix for webhooks as they come from external services)
+app.use('/', webhookRoutes);
+// 404 handler for unmatched routes (must come before error handler)
 app.use('*', (req, res) => {
-    res.status(404).json({ error: 'Route not found' });
+    res.status(404).json({
+        error: 'Route not found',
+        path: req.originalUrl,
+        method: req.method
+    });
+});
+// Error handling middleware (must have 4 parameters to be recognized as error handler)
+// eslint-disable-next-line @typescript-eslint/no-unused-vars  
+app.use((err, req, res, next) => {
+    console.error('API Error:', err.stack);
+    // Don't expose detailed error messages in production
+    const isDevelopment = process.env.NODE_ENV === 'development';
+    res.status(500).json({
+        error: isDevelopment ? err.message : 'Internal server error',
+        ...(isDevelopment && { stack: err.stack })
+    });
 });
 if (require.main === module) {
     app.listen(PORT, () => {
