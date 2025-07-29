@@ -282,4 +282,38 @@ export interface ApiError {
   code: string;
   message: string;
   details?: any;
+}
+
+// Payment types
+export type PaymentGateway = 'mtn' | 'stripe' | 'paypal';
+export type PaymentStatus = 'succeeded' | 'failed' | 'pending';
+
+export interface Payment {
+  paymentId: string;
+  orderId: string;
+  amount: number;
+  currency: string;
+  gateway: PaymentGateway;
+  transactionId: string;
+  status: PaymentStatus;
+  receiptDetails: object; // For facture normalisée data
+  createdAt: Date;
+  updatedAt?: Date;
+}
+
+export interface PaymentNotification {
+  orderId: string;
+  status: PrescriptionOrderStatus;
+  calculatedCost?: number;
+  medicationDetails?: MedicationDetails;
+  pharmacyInfo?: {
+    name: string;
+    address: string;
+    phone: string;
+  };
+  estimatedDelivery?: {
+    timeframe: string;
+    description: string;
+  };
+  approvedAt: Date;
 } 

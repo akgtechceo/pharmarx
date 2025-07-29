@@ -7,6 +7,8 @@ import userRoutes from './features/userRoutes';
 import authRoutes from './features/authRoutes';
 import { ocrRoutes } from './features/ocrRoutes';
 import { prescriptionOrderRoutes } from './features/prescriptionOrderRoutes';
+import paymentRoutes from './features/paymentRoutes';
+import webhookRoutes from './features/webhookRoutes';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -65,6 +67,12 @@ app.use('/api', ocrRoutes);
 // Prescription order routes
 app.use('/api', prescriptionOrderRoutes);
 
+// Payment routes
+app.use('/api', paymentRoutes);
+
+// Webhook routes (no /api prefix for webhooks as they come from external services)
+app.use('/', webhookRoutes);
+
 // 404 handler for unmatched routes (must come before error handler)
 app.use('*', (req, res) => {
   res.status(404).json({ 
@@ -75,6 +83,7 @@ app.use('*', (req, res) => {
 });
 
 // Error handling middleware (must have 4 parameters to be recognized as error handler)
+// eslint-disable-next-line @typescript-eslint/no-unused-vars  
 app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
   console.error('API Error:', err.stack);
   
