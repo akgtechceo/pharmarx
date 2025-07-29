@@ -316,4 +316,7 @@ export interface PaymentNotification {
     description: string;
   };
   approvedAt: Date;
-} 
+}
+
+// Re-export payment link types
+export * from './paymentLink.types'; 

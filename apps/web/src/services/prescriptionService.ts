@@ -2,7 +2,8 @@ import {
   PrescriptionOrder, 
   CreatePrescriptionOrderInput, 
   FileUploadResult,
-  ApiResponse 
+  ApiResponse,
+  PrescriptionOrderStatus
 } from '@pharmarx/shared-types';
 
 interface UploadProgress {
@@ -284,6 +285,47 @@ class PrescriptionService {
       return result.data;
     } catch (error) {
       console.error('Manual text entry error:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Update prescription order status using the pharmacist endpoint
+   */
+  async updateOrderStatus(
+    orderId: string, 
+    status: PrescriptionOrderStatus
+  ): Promise<PrescriptionOrder> {
+    try {
+      const token = localStorage.getItem('authToken') || localStorage.getItem('firebase_token');
+      if (!token) {
+        throw new Error('Authentication token not found');
+      }
+
+      const response = await fetch(`${this.baseUrl}/orders/${orderId}/status`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ status })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        const errorMessage = errorData.error || errorData.message || this.getStatusErrorMessage(response.status);
+        throw new Error(errorMessage);
+      }
+
+      const result: ApiResponse<PrescriptionOrder> = await response.json();
+      
+      if (!result.success || !result.data) {
+        throw new Error(result.error || 'Failed to update order status');
+      }
+
+      return result.data;
+    } catch (error) {
+      console.error('Update order status error:', error);
       throw error;
     }
   }

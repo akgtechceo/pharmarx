@@ -1,4 +1,4 @@
-import { PrescriptionOrder, PharmacistReview, ApiResponse } from '@pharmarx/shared-types';
+import { PrescriptionOrder, PharmacistReview, ApiResponse, PrescriptionOrderStatus } from '@pharmarx/shared-types';
 
 // Queue management types
 export interface PharmacistQueueFilters {
@@ -96,6 +96,8 @@ export interface ReviewActionsProps {
   onApprove: (request: ApproveOrderRequest) => Promise<void>;
   onReject: (request: RejectOrderRequest) => Promise<void>;
   onEdit: (request: EditOrderRequest) => Promise<void>;
+  onStatusUpdate: (status: PrescriptionOrderStatus, onStatusUpdate?: (order: PrescriptionOrder) => void) => Promise<PrescriptionOrder>;
+  onStatusUpdateComplete: (updatedOrder: PrescriptionOrder) => void;
   isLoading: boolean;
 }
 

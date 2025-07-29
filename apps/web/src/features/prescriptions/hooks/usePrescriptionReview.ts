@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { PrescriptionOrder } from '@pharmarx/shared-types';
+import { PrescriptionOrder, PrescriptionOrderStatus } from '@pharmarx/shared-types';
 import {
   ApproveOrderRequest,
   RejectOrderRequest,
@@ -7,6 +7,7 @@ import {
   PharmacistActionResponse,
   UsePrescriptionReviewProps
 } from '../types/pharmacist.types';
+import { prescriptionService } from '../../../services/prescriptionService';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
@@ -109,6 +110,24 @@ export const usePrescriptionReview = ({
     }
   }, [handleApiCall, onEdit]);
 
+  const updateOrderStatus = useCallback(async (status: PrescriptionOrderStatus, onStatusUpdate?: (order: PrescriptionOrder) => void) => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const updatedOrder = await prescriptionService.updateOrderStatus(order.orderId, status);
+      setIsLoading(false);
+      onStatusUpdate?.(updatedOrder);
+      return updatedOrder;
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : `Failed to update status to ${status}`;
+      setError(errorMessage);
+      setIsLoading(false);
+      onError?.(errorMessage, `update status to ${status}`);
+      throw error;
+    }
+  }, [order.orderId, onError]);
+
   const clearError = useCallback(() => {
     setError(null);
   }, []);
@@ -122,6 +141,7 @@ export const usePrescriptionReview = ({
     approveOrder,
     rejectOrder,
     editOrder,
+    updateOrderStatus,
     clearError
   };
 };

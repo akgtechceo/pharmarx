@@ -20,6 +20,7 @@ export const PrescriptionReview: React.FC<PrescriptionReviewProps> = ({
     approveOrder,
     rejectOrder,
     editOrder,
+    updateOrderStatus,
     clearError
   } = usePrescriptionReview({
     order,
@@ -355,6 +356,10 @@ export const PrescriptionReview: React.FC<PrescriptionReviewProps> = ({
             onApprove={approveOrder}
             onReject={rejectOrder}
             onEdit={editOrder}
+            onStatusUpdate={updateOrderStatus}
+            onStatusUpdateComplete={(updatedOrder) => {
+              onActionComplete(updatedOrder);
+            }}
             isLoading={actionLoading}
           />
         </div>

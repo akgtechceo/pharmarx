@@ -1,5 +1,6 @@
 import React from 'react';
 import { PaymentNotification as PaymentNotificationData } from '@pharmarx/shared-types';
+import { PaymentLinkRequest } from './PaymentLinkRequest';
 
 interface PaymentNotificationProps {
   notification: PaymentNotificationData;
@@ -166,30 +167,53 @@ export const PaymentNotification: React.FC<PaymentNotificationProps> = ({
         </div>
       </div>
 
-      {/* Action Button */}
-      <div className="mt-8 flex justify-center">
-        <button
-          type="button"
-          onClick={onProceedToPayment}
-          disabled={isLoading || !notification.calculatedCost}
-          className={`px-8 py-3 rounded-lg font-medium text-white transition-colors duration-200 ${
-            isLoading || !notification.calculatedCost
-              ? 'bg-gray-400 cursor-not-allowed'
-              : 'bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'
-          }`}
-        >
-          {isLoading ? (
-            <div className="flex items-center space-x-2">
-              <svg className="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" className="opacity-25"></circle>
-                <path fill="currentColor" d="m15.84 12.84.84-.84-.84-.84-.84.84z" className="opacity-75"></path>
-              </svg>
-              <span>Processing...</span>
-            </div>
-          ) : (
-            `Proceed to Payment - ${notification.calculatedCost ? formatCurrency(notification.calculatedCost) : 'TBD'}`
-          )}
-        </button>
+      {/* Action Buttons */}
+      <div className="mt-8 space-y-4">
+        {/* Primary Payment Button */}
+        <div className="flex justify-center">
+          <button
+            type="button"
+            onClick={onProceedToPayment}
+            disabled={isLoading || !notification.calculatedCost}
+            className={`px-8 py-3 rounded-lg font-medium text-white transition-colors duration-200 ${
+              isLoading || !notification.calculatedCost
+                ? 'bg-gray-400 cursor-not-allowed'
+                : 'bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'
+            }`}
+          >
+            {isLoading ? (
+              <div className="flex items-center space-x-2">
+                <svg className="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" className="opacity-25"></circle>
+                  <path fill="currentColor" d="m15.84 12.84.84-.84-.84-.84-.84.84z" className="opacity-75"></path>
+                </svg>
+                <span>Processing...</span>
+              </div>
+            ) : (
+              `Proceed to Payment - ${notification.calculatedCost ? formatCurrency(notification.calculatedCost) : 'TBD'}`
+            )}
+          </button>
+        </div>
+
+        {/* Divider */}
+        <div className="flex items-center">
+          <div className="flex-1 border-t border-gray-300"></div>
+          <div className="px-3 text-sm text-gray-500">or</div>
+          <div className="flex-1 border-t border-gray-300"></div>
+        </div>
+
+        {/* Request Payment from Third Party */}
+        <div className="max-w-md mx-auto">
+          <PaymentLinkRequest
+            orderId={notification.orderId}
+            onSuccess={(response) => {
+              console.log('Payment link sent successfully:', response);
+            }}
+            onError={(error) => {
+              console.error('Failed to send payment link:', error);
+            }}
+          />
+        </div>
       </div>
     </div>
   );
