@@ -1,3 +1,99 @@
 [?9001h[?1004h[?25l[2J[m[H]0;npm[?25h]0;npm run build[?25l
 > @pharmarx/api@1.0.0 build
-> tsc[5;1H[?25h[K]0;C:\WINDOWS\system32\cmd.exe [K[?9001l[?1004l
+> tsc[5;1H[?25h[K]0;Administrator:  C:\WINDOWS\system32\cmd.exe [?25l[96msrc/features/authRoutes.test.ts[m:[93m164[m:[93m14 [m- [91merror [90mTS2790: [mThe operand of a 'delete' operator must be optional.[7m[8;1H164[27m       delete invalidData.uid;[7m
+   [27m[14X[91m[14C~~~~~~~~~~~~~~~[11;1H[?25h[m[?25l[96msrc/features/database.test.ts[m:[93m57[m:[93m27 [m- [91merror [90mTS2339: [mProperty 'disconnect' does not exist on type 'DatabaseService'.[7m[14;1H57[27m     await databaseService.disconnect();[?25h
+[7m  [27m[27X[91m[27C~~~~~~~~~~[K[m
+
+[96msrc/features/database.test.ts[m:[93m242[m:[93m29 [m- [91merror [90mTS2339: [mProperty 'disconnect' do
+[13;77Hoes not exist on type 'DatabaseService'.
+
+[7m242[27m       await databaseService.disconnect();[K
+[7m   [27m[29X[91m[29C~~~~~~~~~~[K[m
+
+[96msrc/features/database.test.ts[m:[93m254[m:[93m29 [m- [91merror [90mTS2339: [mProperty 'disconnect' do
+[13;77Hoes not exist on type 'DatabaseService'.
+
+[7m254[27m       await databaseService.disconnect();[K
+[7m   [27m[29X[91m[29C~~~~~~~~~~[K[m
+
+[96msrc/features/database.test.ts[m:[93m263[m:[93m36 [m- [91merror [90mTS2339: [mProperty 'disconnect' do
+[13;77Hoes not exist on type 'DatabaseService'.
+
+[7m263[27m       await expect(databaseService.disconnect()).resolves.toBeUndefined()
+[13;77H);
+[7m   [27m[36X[91m[36C~~~~~~~~~~[K[m
+
+[96msrc/features/database.test.ts[m:[93m274[m:[93m36 [m- [91merror [90mTS2339: [mProperty 'disconnect' do
+[13;77Hoes not exist on type 'DatabaseService'.
+
+[7m274[27m       await expect(databaseService.disconnect()).resolves.toBeUndefined()
+[13;77H);
+[7m   [27m[36X[91m[36C~~~~~~~~~~[K[m
+
+[96msrc/features/userRoutes.ts[m:[93m2[m:[93m43 [m- [91merror [90mTS6059: [mFile 'C:/Users/akgte/PharmaRx
+[13;77Hx/packages/shared-types/src/index.ts' is not under 'rootDir' 'C:/Users/akgte/P
+[13;77HPharmaRx/apps/api/src'. 'rootDir' is expected to contain all source files.    
+  The file is in the program because:
+    Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
+[13;77H/apps/api/src/features/userRoutes.ts'
+    Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
+[13;77H/apps/api/src/features/users.ts'
+    Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
+[13;77H/apps/api/src/features/authRoutes.ts'
+    Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
+[13;77H/apps/api/src/features/authRoutes.test.ts'
+    Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
+[13;77H/apps/api/src/features/userRoutes.test.ts'
+    Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
+[13;77H/apps/api/src/features/users.test.ts'
+
+[7m2[27m import { UserRole, CreateUserInput } from '@pharmarx/shared-types';        [14;1H
+[7m [27m[43X[91m[43C~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+
+  [96msrc/features/users.ts[m:[93m1[m:[93m88[K[m
+    [7m1[27m import { User, UserRole, CreateUserInput, validateUser, validateCreateU
+[13;77HUserInput } from '@pharmarx/shared-types';
+    [7m [27m                                                                        [14;150H
+[96m                ~~~~~~~~~~~~~~~~~~~~~~~~[m
+    File is included via import here.
+  [96msrc/features/authRoutes.ts[m:[93m2[m:[93m43[K[m
+    [7m2[27m import { UserRole, CreateUserInput } from '@pharmarx/shared-types';    [14;1H
+    [7m [27m[43X[96m[43C~~~~~~~~~~~~~~~~~~~~~~~~     [14;1H[m
+    File is included via import here.
+  [96msrc/features/authRoutes.test.ts[m:[93m6[m:[93m26[K[m
+    [7m6[27m import { UserRole } from '@pharmarx/shared-types';[K
+    [7m [27m[26X[96m[26C~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+    File is included via import here.
+  [96msrc/features/userRoutes.test.ts[m:[93m4[m:[93m43[K[m
+    [7m4[27m import { UserRole, CreateUserInput } from '@pharmarx/shared-types';    [14;1H
+    [7m [27m[43X[96m[43C~~~~~~~~~~~~~~~~~~~~~~~~     [14;1H[m
+    File is included via import here.
+  [96msrc/features/users.test.ts[m:[93m2[m:[93m49[K[m
+    [7m2[27m import { User, UserRole, CreateUserInput } from '@pharmarx/shared-types
+[13;77Hs';
+    [7m [27m                                                 [K[96m~~~~~~~~~~~~~~~~~~~~~~~[m
+[96m[13;77H~~[m
+    File is included via import here.
+
+[96msrc/index.ts[m:[93m33[m:[93m37 [m- [91merror [90mTS2339: [mProperty 'connected' does not exist on typ
+[13;77Hpe '{ status: string; projectId: string; timestamp: Date; }'.
+
+[7m33[27m     const statusCode = healthStatus.connected ? 200 : 503;[K
+[7m  [27m[37X[91m[37C~~~~~~~~~[K[m
+
+
+Found 8 errors in 4 files.
+
+Errors  Files
+     1  src/features/authRoutes.test.ts[90m:164[K[m
+     5  src/features/database.test.ts[90m:57[K[m
+     1  src/features/userRoutes.ts[90m:2[K[m
+     1  src/index.ts[90m:33[K[m
+⠙[K[1mnpm[22m [31merror [mLifecycle script `build` failed with error:[K
+[1mnpm[22m [31merror [94mcode [33m2[K[m
+[1mnpm[22m [31merror [94mpath [mC:\Users\akgte\PharmaRx\apps\api[K
+[1mnpm[22m [31merror [94mworkspace [m@pharmarx/api@1.0.0[K
+[1mnpm[22m [31merror [94mlocation [mC:\Users\akgte\PharmaRx\apps\api
+⠙[1mnpm[22m [31merror [mcommand failed[K
+[1mnpm[22m [31merror [94mcommand [mC:\WINDOWS\system32\cmd.exe /d /s /c tsc[K
+⠹[K[?9001l[?1004l

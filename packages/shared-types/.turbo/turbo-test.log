@@ -1,96 +1,93 @@
 [?9001h[?1004h[?25l[2J[m[H]0;npm[?25h]0;npm run test[?25l
 > @pharmarx/shared-types@1.0.0 test
 > vitest run[5;1H[?25h[K]0;C:\WINDOWS\system32\cmd.exe ]0;node (vitest)[?25l[46m[1m
- RUN [m [36mv3.2.4 [90mC:/Users/akgte/PharmaRx/packages/shared-types[m
-[103C
-[103C[?2026h
-[2m Test Files [32m[22m[1m0 passed[90m[22m (1)[K[79C[m
-[2m      Tests [32m[22m[1m0 passed[90m[22m (0)[K[79C[m
-[2m   Start at [22m23:56:39[K[83C
-[2m   Duration [22m877ms[K[86C
-[103C[?2026l[?2026h[K[103C[5;1H[K[103C[4;1H[K[103C[3;1H[K[103C[2;1H[K[103C[H[K[103C[2m
+ RUN [m [36mv3.2.4 [90mC:/Users/akgte/PharmaRx/packages/shared-types[?2026h[m[?2026l[2m[9;1H Test Files [32m[22m[1m0 passed[90m[22m (1)[m[2m
+      Tests [32m[22m[1m0 passed[90m[22m (0)[m[2m
+   Start at [22m18:43:16[2m
+   Duration [22m839ms[?2026h
+[K[105C[12;1H[K[105C[11;1H[K[105C[10;1H[K[105C[9;1H[K[105C[8;1H[K[105C[2m
  Test Files [32m[22m[1m0 passed[90m[22m (1)[m[2m
       Tests [32m[22m[1m0 passed[90m[22m (0)[m[2m
-   Start at [22m23:56:39[2m
-   Duration [22m1.87s[?2026l[?2026h]0;node (vitest 1)
-[K[103C[5;1H[K[103C[4;1H[K[103C]0;node (vitest 4)[3;1H[K[103C[2;1H[K[103C]0;node (vitest 2)[H[K[103C[2m
+   Start at [22m18:43:16[2m
+   Duration [22m1.93s[?2026l]0;node (vitest 4)]0;node (vitest 3)]0;node (vitest 2)]0;node (vitest 6)]0;node (vitest 5)[?2026h
+[K[105C[12;1H[K]0;node (vitest 10)[105C[11;1H[K[105C[10;1H[K[105C[9;1H[K]0;node (vitest 1)[105C[8;1H[K[2m
  Test Files [32m[22m[1m0 passed[90m[22m (1)[m[2m
       Tests [32m[22m[1m0 passed[90m[22m (0)[m[2m
-   Start at [22m23:56:39[2m
-   Duration [22m2.88s[?2026l]0;node (vitest 3)]0;node (vitest 10)]0;node (vitest 5)[?2026h
-[K[103C[5;1H[K[103C]0;node (vitest 9)]0;node (vitest 7)[4;1H[K[103C]0;node (vitest 8)[3;1H[K[103C[2;1H[K[103C]0;node (vitest 6)[H[K[103C[2m
+   Start at [22m18:43:16[2m
+   Duration [22m2.91s]0;node (vitest 7)[?2026l]0;node (vitest 8)]0;node (vitest 9)]0;node (vitest 11)[?2026h
+[K[105C[12;1H[K[105C[11;1H[K[105C[10;1H[K[105C[9;1H[K[105C[8;1H[K[105C[2m
  Test Files [32m[22m[1m0 passed[90m[22m (1)[m[2m
       Tests [32m[22m[1m0 passed[90m[22m (0)[m[2m
-   Start at [22m23:56:39[2m
-   Duration [22m3.99s[?2026l]0;node (vitest 11)[?2026h
-[K[103C[5;1H[K[103C[H[K
-[K
-[K
-[K[103C[2m[2;1H Test Files [32m[22m[1m0 passed[90m[22m (1)[m[2m
+   Start at [22m18:43:16[2m
+   Duration [22m3.94s[?2026l[?2026h
+[K[105C[12;1H[K[105C[11;1H[K[105C[10;1H[K[105C[9;1H[K[105C[8;1H[K[105C[2m
+ Test Files [32m[22m[1m0 passed[90m[22m (1)[m[2m
       Tests [32m[22m[1m0 passed[90m[22m (0)[m[2m
-   Start at [22m23:56:39[2m
-   Duration [22m4.96s[?2026l[?2026h[H[K[33m[1m
+   Start at [22m18:43:16[2m
+   Duration [22m4.57s[?2026l[?2026h
+[K[105C[12;1H[K[105C[11;1H[K[105C[10;1H[K[105C[9;1H[K[105C[8;1H[K[105C[2m
+ Test Files [32m[22m[1m0 passed[90m[22m (1)[m[2m
+      Tests [32m[22m[1m0 passed[90m[22m (0)[m[2m
+   Start at [22m18:43:16[2m
+   Duration [22m5.00s[?2026l[?2026h[?2026l[8;1H[K[2m
+ Test Files [32m[22m[1m0 passed[90m[22m (1)[K[m[2m
+      Tests [32m[22m[1m0 passed[90m[22m (0)[K[m[2m
+   Start at [22m18:43:16[K[2m
+   Duration [22m6.04s[K
+[K[105C[?2026h[8;1H[K[33m[1m
  ❯ [msrc/index.test.ts[2m [queued][22m[K
 [K[2m
  Test Files [32m[22m[1m0 passed[90m[22m (1)[K[m[2m
       Tests [32m[22m[1m0 passed[90m[22m (0)[K[m[2m
-   Start at [22m23:56:39[K[83C
-[2m   Duration [22m5.38s[K[86C[?2026l
-[103C[?2026h[4;1H[K
-[K
-[K[103C[3;1H[K[103C[2;1H[K[103C[H[K[103C[33m[1m
- ❯ [msrc/index.test.ts[2m [queued][4;1H Test Files [32m[22m[1m0 passed[90m[22m (1)[m[2m
-      Tests [32m[22m[1m0 passed[90m[22m (0)[m[2m
-   Start at [22m23:56:39
-[2m   Duration [22m6.31s[K[86C
-[103C[?2026l[?2026h[5;1H[K
-[K[103C[H[K[33m[1m
- ❯ [msrc/index.test.ts[2m 0/21[22m[K
+   Start at [22m18:43:16[K[85C
+[2m   Duration [22m6.50s[K[88C[?2026l
+[105C[?2026h[?2026l[6;1H[K[33m[1m
+ ❯ [msrc/index.test.ts[2m [queued][22m[K
 [K[2m
  Test Files [32m[22m[1m0 passed[90m[22m (1)[K[m[2m
-      Tests [32m[22m[1m0 passed[90m[22m (21)[m[2m
-   Start at [22m23:56:39
-[2m   Duration [22m6.63s[K[86C[?2026l
-[103C[?2026h[H[K[33m[1m
+      Tests [32m[22m[1m0 passed[90m[22m (0)[K[m[2m
+   Start at [22m18:43:16[K[2m
+   Duration [22m7.01s[K
+[K[105C[?2026h[11;1H[K
+[K
+[K[105C[?2026l[6;1H[K[33m[1m
  ❯ [msrc/index.test.ts[2m 1/21[22m[K
 [K[2m
  Test Files [32m[22m[1m0 passed[90m[22m (1)[K[m[2m
       Tests [32m[22m[1m1 passed[90m[22m (21)[K[m[2m
-   Start at [22m23:56:39[K[83C
-[2m   Duration [22m6.73s[K[86C[?2026l
-[103C[K[103C[H [32m✓ [msrc/index.test.ts [2m(21 tests)[32m[22m 132[2mms[m[K
-   [32m✓ [mUser Interface Validation[2m > [22mvalidateUser[2m > [22mshould validate a complete user with email [32m25[2mms[m        
-   [32m✓ [mUser Interface Validation[2m > [22mvalidateUser[2m > [22mshould validate a complete user with phone number [32m3[2mms[m  
-   [32m✓ [mUser Interface Validation[2m > [22mvalidateUser[2m > [22mshould validate a user with both email and phone number[32m 3[2mms[m[K
-   [32m✓ [mUser Interface Validation[2m > [22mvalidateUser[2m > [22mshould reject user without uid [32m4[2mms[m
-   [32m✓ [mUser Interface Validation[2m > [22mvalidateUser[2m > [22mshould reject user with invalid role [32m3[2mms[m[K[15C
-   [32m✓ [mUser Interface Validation[2m > [22mvalidateUser[2m > [22mshould reject user without displayName [32m2[2mms[m[K[13C
-   [32m✓ [mUser Interface Validation[2m > [22mvalidateUser[2m > [22mshould reject user without createdAt [32m2[2mms[m[K[15C
-   [32m✓ [mUser Interface Validation[2m > [22mvalidateUser[2m > [22mshould reject user without email or phone number [32m7[2mms[m   
-   [32m✓ [mUser Interface Validation[2m > [22mvalidateUser[2m > [22mshould reject user with invalid email format [32m20[2mms[m      
-   [32m✓ [mUser Interface Validation[2m > [22mvalidateUser[2m > [22mshould reject user with invalid phone number format [32m4[2mms[m
-   [32m✓ [mUser Interface Validation[2m > [22mvalidateUser[2m > [22mshould validate all UserRole enum values [32m2[2mms[m[K[11C
-   [32m✓ [mUser Interface Validation[2m > [22mvalidateCreateUserInput[2m > [22mshould validate complete input with email [32m3[2mm[m
-[32m[2m[5;103Hms[22m[K[102C[m
-   [32m✓ [mUser Interface Validation[2m > [22mvalidateCreateUserInput[2m > [22mshould validate complete input with phone nu
-[5;103Humber [32m3[2mms[m[K[95C
-   [32m✓ [mUser Interface Validation[2m > [22mvalidateCreateUserInput[2m > [22mshould validate input with both email and ph
-[5;103Hhone [32m4[2mms[m[K[96C
-   [32m✓ [mUser Interface Validation[2m > [22mvalidateCreateUserInput[2m > [22mshould reject input without role [32m2[2mms[m        
-   [32m✓ [mUser Interface Validation[2m > [22mvalidateCreateUserInput[2m > [22mshould reject input without displayName [32m5[2mms[m 
-   [32m✓ [mUser Interface Validation[2m > [22mvalidateCreateUserInput[2m > [22mshould reject input without any contact meth
-[5;103Hhod [32m2[2mms[m[K[97C
-   [32m✓ [mUser Interface Validation[2m > [22mvalidateCreateUserInput[2m > [22mshould accept various valid phone number for
-[5;103Hrmats [32m3[2mms[m[K[95C
-   [32m✓ [mUser Interface Validation[2m > [22mvalidateCreateUserInput[2m > [22mshould accept various valid email formats [32m2[2mm[m
-[32m[2m[5;103Hms[22m[K[102C[m
-   [32m✓ [mUser Interface Validation[2m > [22mUserRole enum[2m > [22mshould contain all expected role values [32m2[2mms[m[K[11C
-   [32m✓ [mUser Interface Validation[2m > [22mUserRole enum[2m > [22mshould have exactly 4 role values [32m7[2mms[m[K[17C
-[103C
-[103C[2m Test Files [22m [32m[1m1 passed[90m[22m (1)[m
-[103C[2m      Tests [22m [32m[1m21 passed[90m[22m (21)[m
-[103C[2m   Start at [22m 23:56:39
-[103C[2m   Duration [22m 7.13s[2m (transform 1.79s, setup 0ms, collect 1.18s, tests 132ms, environment 5ms, prepare 2.[22m
-[2m[5;103H.36s)[22m[K[99C
-[103C
-[103C[?25h]0;node (vitest 1)[K⠙[K[?9001l[?1004l
+   Start at [22m18:43:16[2m
+   Duration [22m7.23s[K
+[K[105C[6;1H [32m✓ [msrc/index.test.ts [2m(21 tests)[32m[22m 92[2mms[m[K
+   [32m✓ [mUser Interface Validation[2m > [22mvalidateUser[2m > [22mshould validate a complete user with email [32m19[2mms[m[K
+   [32m✓ [mUser Interface Validation[2m > [22mvalidateUser[2m > [22mshould validate a complete user with phone number [32m3[2mms[m    
+   [32m✓ [mUser Interface Validation[2m > [22mvalidateUser[2m > [22mshould validate a user with both email and phone number [32m3[2mms[m[K
+   [32m✓ [mUser Interface Validation[2m > [22mvalidateUser[2m > [22mshould reject user without uid [32m4[2mms[m[K
+   [32m✓ [mUser Interface Validation[2m > [22mvalidateUser[2m > [22mshould reject user with invalid role [32m3[2mms[m
+   [32m✓ [mUser Interface Validation[2m > [22mvalidateUser[2m > [22mshould reject user without displayName [32m2[2mms[m
+   [32m✓ [mUser Interface Validation[2m > [22mvalidateUser[2m > [22mshould reject user without createdAt [32m1[2mms[m[K[17C
+   [32m✓ [mUser Interface Validation[2m > [22mvalidateUser[2m > [22mshould reject user without email or phone number [32m2[2mms[m     
+   [32m✓ [mUser Interface Validation[2m > [22mvalidateUser[2m > [22mshould reject user with invalid email format [32m3[2mms[m[K[9C
+   [32m✓ [mUser Interface Validation[2m > [22mvalidateUser[2m > [22mshould reject user with invalid phone number format [32m2[2mms[m  
+   [32m✓ [mUser Interface Validation[2m > [22mvalidateUser[2m > [22mshould validate all UserRole enum values [32m2[2mms[m[K[13C
+   [32m✓ [mUser Interface Validation[2m > [22mvalidateCreateUserInput[2m > [22mshould validate complete input with email [32m3[2mms[m 
+   [32m✓ [mUser Interface Validation[2m > [22mvalidateCreateUserInput[2m > [22mshould validate complete input with phone numb
+[12;105Hber [32m3[2mms[m[K[99C
+   [32m✓ [mUser Interface Validation[2m > [22mvalidateCreateUserInput[2m > [22mshould validate input with both email and phon
+[12;105Hne [32m3[2mms[m[K[100C
+   [32m✓ [mUser Interface Validation[2m > [22mvalidateCreateUserInput[2m > [22mshould reject input without role [32m2[2mms[m[K[10C
+   [32m✓ [mUser Interface Validation[2m > [22mvalidateCreateUserInput[2m > [22mshould reject input without displayName [32m2[2mms[m   
+   [32m✓ [mUser Interface Validation[2m > [22mvalidateCreateUserInput[2m > [22mshould reject input without any contact method
+[12;105Hd[32m 2[2mms[22m[K[101C[m
+   [32m✓ [mUser Interface Validation[2m > [22mvalidateCreateUserInput[2m > [22mshould accept various valid phone number forma
+[12;105Hats [32m3[2mms[m[K[99C
+   [32m✓ [mUser Interface Validation[2m > [22mvalidateCreateUserInput[2m > [22mshould accept various valid email formats [32m7[2mms[m 
+   [32m✓ [mUser Interface Validation[2m > [22mUserRole enum[2m > [22mshould contain all expected role values [32m2[2mms[m[K[13C
+   [32m✓ [mUser Interface Validation[2m > [22mUserRole enum[2m > [22mshould have exactly 4 role values [32m6[2mms[m[K[19C
+[105C
+[105C[2m Test Files [22m [32m[1m1 passed[90m[22m (1)[m
+[2m      Tests [22m [32m[1m21 passed[90m[22m (21)[K[78C[m
+[2m   Start at [22m 18:43:16[K[84C
+[2m   Duration [22m 7.59s[2m (transform 633ms, setup 0ms, collect 594ms, tests 92ms, environment 2ms, prepare 3.20s[22m
+[2m[12;105Hs)[22m[K[104C
+[105C
+[105C[?25h]0;node (vitest 1)[K⠙[K[?9001l[?1004l

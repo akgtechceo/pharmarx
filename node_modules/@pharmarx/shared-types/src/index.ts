@@ -121,6 +121,113 @@ export const validateCreateUserInput = (input: CreateUserInput): UserValidationR
   };
 };
 
+// Prescription Order types
+export type PrescriptionOrderStatus = 
+  | 'pending_verification' 
+  | 'awaiting_payment' 
+  | 'preparing' 
+  | 'out_for_delivery' 
+  | 'delivered' 
+  | 'rejected';
+
+export type OCRStatus = 'pending' | 'processing' | 'completed' | 'failed';
+
+export interface MedicationDetails {
+  name: string;
+  dosage: string;
+  quantity: number;
+}
+
+export interface PrescriptionOrder {
+  orderId: string;
+  patientProfileId: string;
+  status: PrescriptionOrderStatus;
+  originalImageUrl: string;
+  // OCR-related fields
+  extractedText?: string;
+  ocrStatus?: OCRStatus;
+  ocrProcessedAt?: Date;
+  ocrError?: string;
+  medicationDetails?: MedicationDetails;
+  cost?: number;
+  createdAt: Date;
+  updatedAt?: Date;
+}
+
+export interface CreatePrescriptionOrderInput {
+  patientProfileId: string;
+  originalImageUrl: string;
+  status?: PrescriptionOrderStatus;
+  // OCR processing will be triggered automatically
+}
+
+// OCR-specific types
+export interface OCRProcessingRequest {
+  orderId: string;
+  imageUrl: string;
+}
+
+export interface OCRProcessingResult {
+  success: boolean;
+  extractedText?: string;
+  confidence?: number;
+  error?: string;
+  processedAt: Date;
+}
+
+export interface OCRStatusResponse {
+  orderId: string;
+  status: OCRStatus;
+  extractedText?: string;
+  confidence?: number;
+  error?: string;
+  processedAt?: Date;
+}
+
+// File upload types
+export interface UploadedFile {
+  file: File;
+  preview: string;
+  name: string;
+  size: number;
+  type: string;
+}
+
+export interface FileUploadResult {
+  success: boolean;
+  url?: string;
+  error?: string;
+}
+
+export interface FileValidationResult {
+  isValid: boolean;
+  errors: string[];
+}
+
+// File validation functions
+export const validatePrescriptionFile = (file: File): FileValidationResult => {
+  const errors: string[] = [];
+  const maxSize = 10 * 1024 * 1024; // 10MB
+  const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
+
+  if (!allowedTypes.includes(file.type)) {
+    errors.push('File must be an image (JPG, PNG) or PDF');
+  }
+
+  if (file.size > maxSize) {
+    errors.push('File size must be less than 10MB');
+  }
+
+  if (file.size === 0) {
+    errors.push('File cannot be empty');
+  }
+
+  return {
+    isValid: errors.length === 0,
+    errors
+  };
+};
+
 // Order/Prescription types
 export interface Order {
   id: string;

@@ -5,6 +5,8 @@ import morgan from 'morgan';
 import databaseService from './features/database';
 import userRoutes from './features/userRoutes';
 import authRoutes from './features/authRoutes';
+import { ocrRoutes } from './features/ocrRoutes';
+import { prescriptionOrderRoutes } from './features/prescriptionOrderRoutes';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -30,7 +32,7 @@ app.get('/health', (req, res) => {
 app.get('/health/database', async (req, res) => {
   try {
     const healthStatus = await databaseService.healthCheck();
-    const statusCode = healthStatus.connected ? 200 : 503;
+    const statusCode = healthStatus.status === 'healthy' ? 200 : 503;
     
     res.status(statusCode).json({
       ...healthStatus,
@@ -40,7 +42,6 @@ app.get('/health/database', async (req, res) => {
     console.error('Database health check endpoint error:', error);
     res.status(503).json({
       status: 'unhealthy',
-      connected: false,
       error: 'Database health check failed',
       timestamp: new Date().toISOString()
     });
@@ -58,15 +59,32 @@ app.use('/api/users', userRoutes);
 // Auth routes
 app.use('/api/auth', authRoutes);
 
-// Error handling middleware
-app.use((err: Error, req: express.Request, res: express.Response) => {
-  console.error(err.stack);
-  res.status(500).json({ error: 'Something went wrong!' });
+// OCR routes
+app.use('/api', ocrRoutes);
+
+// Prescription order routes
+app.use('/api', prescriptionOrderRoutes);
+
+// 404 handler for unmatched routes (must come before error handler)
+app.use('*', (req, res) => {
+  res.status(404).json({ 
+    error: 'Route not found',
+    path: req.originalUrl,
+    method: req.method 
+  });
 });
 
-// 404 handler
-app.use('*', (req, res) => {
-  res.status(404).json({ error: 'Route not found' });
+// Error handling middleware (must have 4 parameters to be recognized as error handler)
+app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  console.error('API Error:', err.stack);
+  
+  // Don't expose detailed error messages in production
+  const isDevelopment = process.env.NODE_ENV === 'development';
+  
+  res.status(500).json({ 
+    error: isDevelopment ? err.message : 'Internal server error',
+    ...(isDevelopment && { stack: err.stack })
+  });
 });
 
 if (require.main === module) {

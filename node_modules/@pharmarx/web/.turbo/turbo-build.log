@@ -1,9 +1,3 @@
 [?9001h[?1004h[?25l[2J[m[H]0;npm[?25h]0;npm run build[?25l
 > @pharmarx/web@1.0.0 build
-> tsc && vite build[5;1H[?25h[K]0;C:\WINDOWS\system32\cmd.exe [36mvite v7.0.5 [32mbuilding for production...
-[m[Ktransforming (1) [2msrc\main.tsx[22m[K[29Ctransforming (5) [2msrc\App.tsx[22m[K[28C[K[K[K[K[K[K[Ktransforming (24) [2m..\..\node_modules\react\cjs\react.production.min.js[22m[K[K[K[K[K[K[2mtransforming (52) ..\..\node_modules\@tanstack\query-core\build\modern\[22m[K[71C[K[2mtransforming (58) ..\..\node_modules\@tanstack\query-core\build\modern\[22m[K[71C[2mtransforming (65) ..\..\node_modules\react-dom\index.js[22m[K[55C[32m✓ [m72 modules transformed.
-[Krendering chunks (1)...[K[23Ccomputing gzip size (0)...[Kcomputing gzip size (2)...[K[K[26C[2mdist/[32m[22mindex.html[17X[m[1m[2m[17C  0.47 kB[22m[2m │ gzip:  0.30 kB[22m[K[2m
-dist/[35m[22massets/index-nNewGyxH.css  [m[1m[2m  8.01 kB[22m[2m │ gzip:  2.21 kB
-dist/[36m[22massets/index-O0YCXFFl.js   [m[1m[2m167.75 kB[22m[2m │ gzip: 53.46 kB[32m[22m
-✓ built in 9.80s
-[m[K[?9001l[?1004l
+> tsc && vite build[5;1H[?25h[K]0;Administrator:  C:\WINDOWS\system32\cmd.exe ^[?9001l[?1004lC

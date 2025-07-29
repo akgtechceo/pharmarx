@@ -8,7 +8,8 @@ describe('API Server', () => {
             .expect(200);
         expect(response.body).toEqual({
             status: 'OK',
-            timestamp: expect.any(String)
+            timestamp: expect.any(String),
+            environment: expect.any(String)
         });
     });
     it('should respond to API endpoint', async () => {

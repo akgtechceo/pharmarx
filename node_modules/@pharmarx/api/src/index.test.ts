@@ -31,7 +31,9 @@ describe('API Server', () => {
       .expect(404)
     
     expect(response.body).toEqual({
-      error: 'Route not found'
+      error: 'Route not found',
+      path: '/unknown-route',
+      method: 'GET'
     })
   })
 }) 

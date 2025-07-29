@@ -171,6 +171,36 @@ router.get('/me', verifyFirebaseToken, async (req: Request, res: Response) => {
 });
 
 /**
+ * POST /auth/login - Login user (validate token and return user profile)
+ * This endpoint validates that the user is authenticated and returns their profile
+ */
+router.post('/login', verifyFirebaseToken, async (req: Request, res: Response) => {
+  try {
+    const tokenUser = (req as any).user;
+    const uid = tokenUser.uid;
+
+    // Get user profile from database
+    const user = await userService.getUserById(uid);
+    if (!user) {
+      return res.status(404).json({
+        error: 'User profile not found. Please contact support.'
+      });
+    }
+
+    res.json({
+      success: true,
+      data: user,
+      message: 'Login successful'
+    });
+  } catch (error) {
+    console.error('Error in POST /auth/login:', error);
+    res.status(500).json({
+      error: error instanceof Error ? error.message : 'Login failed. Please try again.'
+    });
+  }
+});
+
+/**
  * PUT /auth/profile - Update user profile
  */
 router.put('/profile', verifyFirebaseToken, async (req: Request, res: Response) => {

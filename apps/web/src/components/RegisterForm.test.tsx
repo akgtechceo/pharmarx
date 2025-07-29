@@ -59,13 +59,13 @@ describe('RegisterForm', () => {
     
     // Initially shows email input
     expect(screen.getByLabelText(/email address/i)).toBeInTheDocument();
-    expect(screen.queryByLabelText(/phone number/i)).not.toBeInTheDocument();
+    expect(screen.queryByLabelText('Phone Number', { selector: 'input#phoneNumber' })).not.toBeInTheDocument();
     
     // Switch to phone
     const phoneRadio = screen.getByDisplayValue('phone');
     await user.click(phoneRadio);
     
-    expect(screen.getByLabelText(/phone number/i)).toBeInTheDocument();
+    expect(screen.getByLabelText('Phone Number', { selector: 'input#phoneNumber' })).toBeInTheDocument();
     expect(screen.queryByLabelText(/email address/i)).not.toBeInTheDocument();
   });
 
@@ -89,8 +89,12 @@ describe('RegisterForm', () => {
     const user = userEvent.setup();
     render(<RegisterForm onSubmit={mockOnSubmit} />);
     
+    // Fill required fields with invalid email
     const emailInput = screen.getByLabelText(/email address/i);
     await user.type(emailInput, 'invalid-email');
+    await user.type(screen.getByLabelText(/display name/i), 'Test User');
+    await user.type(screen.getByLabelText(/^password$/i), 'password123');
+    await user.type(screen.getByLabelText(/confirm password/i), 'password123');
     
     const submitButton = screen.getByRole('button', { name: /create account/i });
     await user.click(submitButton);
@@ -108,7 +112,7 @@ describe('RegisterForm', () => {
     const phoneRadio = screen.getByDisplayValue('phone');
     await user.click(phoneRadio);
     
-    const phoneInput = screen.getByLabelText(/phone number/i);
+    const phoneInput = screen.getByLabelText('Phone Number', { selector: 'input#phoneNumber' });
     await user.type(phoneInput, 'invalid-phone#$%');
     
     const submitButton = screen.getByRole('button', { name: /create account/i });
@@ -206,7 +210,7 @@ describe('RegisterForm', () => {
     const pharmacistRadio = screen.getByDisplayValue(UserRole.Pharmacist);
     await user.click(pharmacistRadio);
     
-    await user.type(screen.getByLabelText(/phone number/i), '+1 (555) 123-4567');
+    await user.type(screen.getByLabelText('Phone Number', { selector: 'input#phoneNumber' }), '+1 (555) 123-4567');
     await user.type(screen.getByLabelText(/display name/i), 'Pharmacist Joe');
     await user.type(screen.getByLabelText(/^password$/i), 'securepass123');
     await user.type(screen.getByLabelText(/confirm password/i), 'securepass123');

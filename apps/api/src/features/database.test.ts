@@ -2,27 +2,40 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import databaseService from './database';
 import admin from 'firebase-admin';
 
-// Mock firebase-admin
+// Mock firebase-admin with proper state management
 vi.mock('firebase-admin', () => {
   const mockApp = {
-    delete: vi.fn().mockResolvedValue(undefined)
+    delete: vi.fn().mockResolvedValue(undefined),
+    options: {
+      projectId: 'test-project'
+    }
+  };
+
+  const mockFirestore = {
+    collection: vi.fn().mockReturnValue({
+      doc: vi.fn().mockReturnValue({
+        set: vi.fn().mockResolvedValue(undefined),
+        get: vi.fn().mockResolvedValue({
+          exists: true,
+          data: () => ({ status: 'healthy' })
+        })
+      }),
+      limit: vi.fn().mockReturnValue({
+        get: vi.fn().mockResolvedValue({})
+      })
+    })
   };
 
   return {
     default: {
       apps: [],
+      app: vi.fn().mockReturnValue(mockApp),
       initializeApp: vi.fn().mockReturnValue(mockApp),
       credential: {
         cert: vi.fn(),
         applicationDefault: vi.fn()
       },
-      firestore: vi.fn().mockReturnValue({
-        collection: vi.fn().mockReturnValue({
-          limit: vi.fn().mockReturnValue({
-            get: vi.fn()
-          })
-        })
-      }),
+      firestore: vi.fn().mockReturnValue(mockFirestore),
       Timestamp: {
         now: vi.fn().mockReturnValue({ seconds: 1640995200, nanoseconds: 0 })
       }
@@ -38,11 +51,18 @@ describe('DatabaseService', () => {
     vi.clearAllMocks();
     
     // Reset the apps array to simulate no initialized apps
-    (admin as any).apps.length = 0;
+    (admin as any).apps = [];
 
     // Setup mock Firestore
     mockFirestore = {
       collection: vi.fn().mockReturnValue({
+        doc: vi.fn().mockReturnValue({
+          set: vi.fn().mockResolvedValue(undefined),
+          get: vi.fn().mockResolvedValue({
+            exists: true,
+            data: () => ({ status: 'healthy' })
+          })
+        }),
         limit: vi.fn().mockReturnValue({
           get: vi.fn().mockResolvedValue({})
         })
@@ -53,8 +73,11 @@ describe('DatabaseService', () => {
   });
 
   afterEach(async () => {
-    // Clean up any initialized Firebase apps
-    await databaseService.disconnect();
+    // Clean up any initialized Firebase apps using the correct method name
+    await databaseService.close();
+    // Reset singleton state for clean tests
+    (databaseService as any).initialized = false;
+    (databaseService as any).db = undefined;
   });
 
   describe('getInstance', () => {
@@ -231,15 +254,15 @@ describe('DatabaseService', () => {
     });
   });
 
-  describe('disconnect', () => {
-    it('should disconnect all Firebase apps', async () => {
+  describe('close', () => {
+    it('should close all Firebase apps', async () => {
       const mockApp1 = { delete: vi.fn().mockResolvedValue(undefined) };
       const mockApp2 = { delete: vi.fn().mockResolvedValue(undefined) };
       
       // Simulate initialized apps
       (admin as any).apps = [mockApp1, mockApp2];
       
-      await databaseService.disconnect();
+      await databaseService.close();
       
       expect(mockApp1.delete).toHaveBeenCalled();
       expect(mockApp2.delete).toHaveBeenCalled();
@@ -251,7 +274,7 @@ describe('DatabaseService', () => {
       // Simulate apps array with null value
       (admin as any).apps = [mockApp, null];
       
-      await databaseService.disconnect();
+      await databaseService.close();
       
       expect(mockApp.delete).toHaveBeenCalled();
       // Should not throw error for null app
@@ -260,7 +283,7 @@ describe('DatabaseService', () => {
     it('should handle empty apps array', async () => {
       (admin as any).apps = [];
       
-      await expect(databaseService.disconnect()).resolves.toBeUndefined();
+      await expect(databaseService.close()).resolves.toBeUndefined();
     });
 
     it('should handle app deletion errors gracefully', async () => {
@@ -271,7 +294,7 @@ describe('DatabaseService', () => {
       (admin as any).apps = [mockApp];
       
       // Should not throw error even if app deletion fails
-      await expect(databaseService.disconnect()).resolves.toBeUndefined();
+      await expect(databaseService.close()).resolves.toBeUndefined();
     });
   });
 

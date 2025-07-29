@@ -5,18 +5,14 @@ import authRoutes from './authRoutes';
 import userService from './users';
 import { UserRole } from '@pharmarx/shared-types';
 
-// Mock Firebase Admin
-const mockVerifyIdToken = vi.fn();
-const mockSetCustomUserClaims = vi.fn();
-const mockInitializeApp = vi.fn();
-
+// Mock Firebase Admin - hoisted
 vi.mock('firebase-admin', () => ({
   default: {
     apps: [],
-    initializeApp: mockInitializeApp,
+    initializeApp: vi.fn(),
     auth: () => ({
-      verifyIdToken: mockVerifyIdToken,
-      setCustomUserClaims: mockSetCustomUserClaims
+      verifyIdToken: vi.fn(),
+      setCustomUserClaims: vi.fn()
     }),
     credential: {
       applicationDefault: () => ({})
@@ -37,18 +33,27 @@ const mockUserService = userService as any;
 
 describe('Auth Routes', () => {
   let app: express.Application;
+  let mockVerifyIdToken: any;
+  let mockSetCustomUserClaims: any;
+  
   const mockToken = 'mock-firebase-token';
   const mockDecodedToken = {
     uid: 'test-uid-123',
     email: 'test@example.com'
   };
 
-  beforeEach(() => {
+  beforeEach(async () => {
     app = express();
     app.use(express.json());
     app.use('/auth', authRoutes);
 
     vi.clearAllMocks();
+    
+    // Get mock functions from the mocked module
+    const admin = await import('firebase-admin');
+    mockVerifyIdToken = admin.default.auth().verifyIdToken as any;
+    mockSetCustomUserClaims = admin.default.auth().setCustomUserClaims as any;
+    
     mockVerifyIdToken.mockResolvedValue(mockDecodedToken);
   });
 
@@ -160,8 +165,11 @@ describe('Auth Routes', () => {
     });
 
     it('returns 400 without uid', async () => {
-      const invalidData = { ...validRegistrationData };
-      delete invalidData.uid;
+      const invalidData = { 
+        role: validRegistrationData.role,
+        email: validRegistrationData.email,
+        displayName: validRegistrationData.displayName
+      };
 
       const response = await request(app)
         .post('/auth/register')
@@ -407,6 +415,118 @@ describe('Auth Routes', () => {
         .send({ displayName: 'Updated Name' });
 
       expect(response.status).toBe(404);
+    });
+  });
+
+  describe('POST /auth/login', () => {
+    it('successfully returns user profile for authenticated user', async () => {
+      const mockUser = {
+        uid: 'test-uid',
+        role: 'patient',
+        email: 'test@example.com',
+        displayName: 'Test User',
+        createdAt: new Date()
+      };
+
+      mockUserService.getUserById.mockResolvedValue(mockUser);
+
+      const response = await request(app)
+        .post('/auth/login')
+        .set('Authorization', `Bearer ${mockToken}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual({
+        success: true,
+        data: expect.objectContaining({
+          uid: 'test-uid',
+          role: 'patient',
+          email: 'test@example.com',
+          displayName: 'Test User'
+        }),
+        message: 'Login successful'
+      });
+      expect(mockUserService.getUserById).toHaveBeenCalledWith('test-uid');
+    });
+
+    it('returns 401 when no authorization header', async () => {
+      const response = await request(app)
+        .post('/auth/login');
+
+      expect(response.status).toBe(401);
+      expect(response.body).toEqual({
+        error: 'Unauthorized - Missing or invalid authorization header'
+      });
+    });
+
+    it('returns 401 when invalid token', async () => {
+      mockVerifyIdToken.mockRejectedValue(new Error('Invalid token'));
+
+      const response = await request(app)
+        .post('/auth/login')
+        .set('Authorization', 'Bearer invalid-token');
+
+      expect(response.status).toBe(401);
+      expect(response.body).toEqual({
+        error: 'Unauthorized - Invalid token'
+      });
+    });
+
+    it('returns 404 when user profile not found', async () => {
+      mockUserService.getUserById.mockResolvedValue(null);
+
+      const response = await request(app)
+        .post('/auth/login')
+        .set('Authorization', `Bearer ${mockToken}`);
+
+      expect(response.status).toBe(404);
+      expect(response.body).toEqual({
+        error: 'User profile not found. Please contact support.'
+      });
+      expect(mockUserService.getUserById).toHaveBeenCalledWith('test-uid');
+    });
+
+    it('handles database errors gracefully', async () => {
+      mockUserService.getUserById.mockRejectedValue(new Error('Database connection failed'));
+
+      const response = await request(app)
+        .post('/auth/login')
+        .set('Authorization', `Bearer ${mockToken}`);
+
+      expect(response.status).toBe(500);
+      expect(response.body).toEqual({
+        error: 'Database connection failed'
+      });
+    });
+
+    it('handles unexpected errors', async () => {
+      mockUserService.getUserById.mockRejectedValue('Unexpected error');
+
+      const response = await request(app)
+        .post('/auth/login')
+        .set('Authorization', `Bearer ${mockToken}`);
+
+      expect(response.status).toBe(500);
+      expect(response.body).toEqual({
+        error: 'Login failed. Please try again.'
+      });
+    });
+
+    it('verifies Firebase token with correct parameters', async () => {
+      const mockUser = {
+        uid: 'test-uid',
+        role: 'patient',
+        email: 'test@example.com',
+        displayName: 'Test User',
+        createdAt: new Date()
+      };
+
+      mockUserService.getUserById.mockResolvedValue(mockUser);
+
+      await request(app)
+        .post('/auth/login')
+        .set('Authorization', `Bearer ${mockToken}`);
+
+      expect(mockVerifyIdToken).toHaveBeenCalledWith(mockToken);
     });
   });
 }); 
