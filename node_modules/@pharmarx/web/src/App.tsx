@@ -6,6 +6,7 @@ import { UserRole } from '@pharmarx/shared-types';
 import PatientPortal from './components/portals/PatientPortal';
 import CaregiverPortal from './components/portals/CaregiverPortal';
 import VerificationPage from './features/prescriptions/pages/VerificationPage';
+import OrderHistoryPage from './features/prescriptions/pages/OrderHistoryPage';
 
 function App() {
   return (
@@ -25,6 +26,11 @@ function App() {
             <VerificationPage />
           </ProtectedRoute>
         } />
+        <Route path="/portal/patient/orders/history" element={
+          <ProtectedRoute requiredRole={UserRole.Patient}>
+            <OrderHistoryPage />
+          </ProtectedRoute>
+        } />
         <Route path="/portal/caregiver" element={
           <ProtectedRoute requiredRole={UserRole.Caregiver}>
             <CaregiverPortal />
@@ -33,6 +39,11 @@ function App() {
         <Route path="/portal/caregiver/orders/:orderId/verify" element={
           <ProtectedRoute requiredRole={UserRole.Caregiver}>
             <VerificationPage />
+          </ProtectedRoute>
+        } />
+        <Route path="/portal/caregiver/orders/history" element={
+          <ProtectedRoute requiredRole={UserRole.Caregiver}>
+            <OrderHistoryPage />
           </ProtectedRoute>
         } />
         <Route path="/portal/doctor" element={

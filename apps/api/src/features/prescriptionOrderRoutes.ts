@@ -1,7 +1,8 @@
 import { Request, Response, Router } from 'express';
-import { PrescriptionOrder, CreatePrescriptionOrderInput, PrescriptionOrderStatus, ApiResponse } from '@pharmarx/shared-types';
+import { PrescriptionOrder, CreatePrescriptionOrderInput, PrescriptionOrderStatus, ApiResponse, OrderHistoryResponse, OrderHistoryItem } from '@pharmarx/shared-types';
 import { db } from './database';
 import { ocrService } from './ocrService';
+import { receiptService } from './receiptService';
 import admin from 'firebase-admin';
 
 const router = Router();
@@ -345,5 +346,198 @@ async function triggerOCRProcessing(orderId: string, imageUrl: string): Promise<
     console.error(`Unexpected error during OCR processing setup for new order: ${orderId}`, error);
   }
 }
+
+/**
+ * GET /orders/history - Get user's order history with pagination
+ */
+router.get('/orders/history', async (req: Request, res: Response) => {
+  try {
+    const { patientId, page = '1', limit = '10' } = req.query;
+
+    if (!patientId || typeof patientId !== 'string') {
+      return res.status(400).json({
+        success: false,
+        error: 'Patient ID is required'
+      } as ApiResponse<null>);
+    }
+
+    const pageNum = parseInt(page as string) || 1;
+    const limitNum = Math.min(parseInt(limit as string) || 10, 50); // Max 50 per page
+    const offset = (pageNum - 1) * limitNum;
+
+    console.log(`Fetching order history for patient: ${patientId}, page: ${pageNum}, limit: ${limitNum}`);
+
+    // Get total count
+    const countSnapshot = await db
+      .collection('prescriptionOrders')
+      .where('patientProfileId', '==', patientId)
+      .count()
+      .get();
+
+    const total = countSnapshot.data().count;
+
+    // Query orders with pagination
+    const ordersSnapshot = await db
+      .collection('prescriptionOrders')
+      .where('patientProfileId', '==', patientId)
+      .orderBy('createdAt', 'desc')
+      .limit(limitNum)
+      .offset(offset)
+      .get();
+
+    // Get payment information for receipt availability
+    const orderIds = ordersSnapshot.docs.map(doc => doc.id);
+    const paymentsSnapshot = await db
+      .collection('payments')
+      .where('orderId', 'in', orderIds)
+      .get();
+
+    const paymentsMap = new Map();
+    paymentsSnapshot.docs.forEach(doc => {
+      const payment = doc.data();
+      paymentsMap.set(payment.orderId, payment);
+    });
+
+    const orders: OrderHistoryItem[] = ordersSnapshot.docs.map(doc => {
+      const data = doc.data();
+      const payment = paymentsMap.get(doc.id);
+      
+      return {
+        orderId: doc.id,
+        status: data.status,
+        medicationDetails: data.medicationDetails,
+        cost: data.cost || payment?.amount,
+        createdAt: data.createdAt?.toDate() || new Date(),
+        deliveredAt: data.status === 'delivered' ? data.updatedAt?.toDate() : undefined,
+        hasReceipt: !!payment?.receiptId
+      };
+    });
+
+    const response: OrderHistoryResponse = {
+      orders,
+      pagination: {
+        page: pageNum,
+        limit: limitNum,
+        total,
+        hasMore: offset + limitNum < total
+      }
+    };
+
+    res.status(200).json({
+      success: true,
+      data: response
+    } as ApiResponse<OrderHistoryResponse>);
+
+  } catch (error) {
+    console.error('Error fetching order history:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Internal server error while fetching order history'
+    } as ApiResponse<null>);
+  }
+});
+
+/**
+ * GET /orders/:orderId/receipt - Download receipt for a completed order
+ */
+router.get('/orders/:orderId/receipt', async (req: Request, res: Response) => {
+  try {
+    const { orderId } = req.params;
+    const { patientId } = req.query;
+
+    if (!patientId || typeof patientId !== 'string') {
+      return res.status(400).json({
+        success: false,
+        error: 'Patient ID is required'
+      } as ApiResponse<null>);
+    }
+
+    console.log(`Generating receipt for order: ${orderId}`);
+
+    // Verify order exists and belongs to patient
+    const orderDoc = await db.collection('prescriptionOrders').doc(orderId).get();
+    if (!orderDoc.exists) {
+      return res.status(404).json({
+        success: false,
+        error: 'Order not found'
+      } as ApiResponse<null>);
+    }
+
+    const orderData = orderDoc.data();
+    if (orderData?.patientProfileId !== patientId) {
+      return res.status(403).json({
+        success: false,
+        error: 'Access denied: Order does not belong to patient'
+      } as ApiResponse<null>);
+    }
+
+    // Check if order is completed
+    if (orderData?.status !== 'delivered') {
+      return res.status(400).json({
+        success: false,
+        error: 'Receipt can only be generated for delivered orders'
+      } as ApiResponse<null>);
+    }
+
+    // Get payment for this order
+    const paymentsSnapshot = await db
+      .collection('payments')
+      .where('orderId', '==', orderId)
+      .limit(1)
+      .get();
+
+    if (paymentsSnapshot.empty) {
+      return res.status(404).json({
+        success: false,
+        error: 'Payment not found for this order'
+      } as ApiResponse<null>);
+    }
+
+    const payment = paymentsSnapshot.docs[0].data();
+
+    // Check if receipt already exists
+    if (payment.receiptId) {
+      const existingReceipt = await receiptService.getReceipt(payment.receiptId);
+      if (existingReceipt) {
+        const pdfBuffer = await receiptService.getReceiptPDF(payment.receiptId);
+        if (pdfBuffer) {
+          res.setHeader('Content-Type', 'application/pdf');
+          res.setHeader('Content-Disposition', `attachment; filename="receipt-${orderId}.pdf"`);
+          res.setHeader('Content-Length', pdfBuffer.length.toString());
+          return res.send(pdfBuffer);
+        }
+      }
+    }
+
+    // Generate new receipt
+    const pharmacyInfo = {
+      name: 'PharmaRx Benin',
+      address: '123 Avenue de la Santé, Cotonou, Bénin',
+      phone: '+229 21 30 12 34',
+      email: 'contact@pharmarx-benin.bj',
+      licenseNumber: 'PHAR-2024-001',
+      taxId: 'NIF-2024-001'
+    };
+
+    const receiptResult = await receiptService.generateReceiptForPayment(
+      payment.paymentId,
+      pharmacyInfo
+    );
+
+    // Set response headers for PDF download
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename="receipt-${orderId}.pdf"`);
+    res.setHeader('Content-Length', receiptResult.pdfBuffer.length.toString());
+
+    res.send(receiptResult.pdfBuffer);
+
+  } catch (error) {
+    console.error('Error generating receipt:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Internal server error while generating receipt'
+    } as ApiResponse<null>);
+  }
+});
 
 export { router as prescriptionOrderRoutes }; 

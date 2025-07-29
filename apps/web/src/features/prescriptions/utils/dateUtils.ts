@@ -34,6 +34,19 @@ export const formatReviewDate = (date: Date | string): string => {
 };
 
 /**
+ * Format date for order history display
+ * @param date - Date to format
+ * @returns Formatted date string
+ */
+export const formatDate = (date: Date | string): string => {
+  return new Date(date).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  });
+};
+
+/**
  * Calculate urgency level based on submission time
  * @param createdAt - Order creation date
  * @returns Urgency information with level and styling

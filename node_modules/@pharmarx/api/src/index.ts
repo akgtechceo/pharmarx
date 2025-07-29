@@ -10,6 +10,7 @@ import { prescriptionOrderRoutes } from './features/prescriptionOrderRoutes';
 import paymentRoutes from './features/paymentRoutes';
 import webhookRoutes from './features/webhookRoutes';
 import deliveryTrackingRoutes from './features/deliveryTrackingRoutes';
+import profileRoutes from './features/profileRoutes';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -61,6 +62,9 @@ app.use('/api/users', userRoutes);
 
 // Auth routes
 app.use('/api/auth', authRoutes);
+
+// Profile routes
+app.use('/api/profiles', profileRoutes);
 
 // OCR routes
 app.use('/api', ocrRoutes);

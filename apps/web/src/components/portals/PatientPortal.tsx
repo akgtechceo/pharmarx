@@ -131,7 +131,12 @@ export default function PatientPortal() {
           <div className="bg-white rounded-lg shadow-md p-6">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-semibold text-gray-900">Recent Prescription History</h2>
-              <button className="text-blue-600 hover:text-blue-800 text-sm font-medium">View Full History</button>
+              <button 
+                onClick={() => navigate('/portal/patient/orders/history')}
+                className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+              >
+                View Full History
+              </button>
             </div>
             <div className="space-y-3">
               <div className="flex justify-between items-center py-3 border-b border-gray-100">

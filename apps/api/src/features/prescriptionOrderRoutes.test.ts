@@ -1,7 +1,8 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import request from 'supertest';
 import express from 'express';
 import { prescriptionOrderRoutes } from './prescriptionOrderRoutes';
+import { receiptService } from './receiptService';
 import { CreatePrescriptionOrderInput, PrescriptionOrder } from '@pharmarx/shared-types';
 
 // Mock dependencies - hoisted
@@ -516,6 +517,340 @@ describe('Prescription Order Routes', () => {
       expect(vi.mocked(require('./ocrService')).ocrService.validateImageForOCR).toHaveBeenCalledWith(
         mockOrderInput.originalImageUrl
       );
+    });
+  });
+});
+
+describe('Order History Endpoints', () => {
+  const mockPatientId = 'patient-123';
+  const mockOrderId = 'order-123';
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  describe('GET /orders/history', () => {
+    it('should return order history with pagination', async () => {
+      const mockCountData = { count: 2 };
+      const mockCountSnapshot = { data: () => mockCountData };
+      const mockOrdersSnapshot = {
+        docs: [
+          {
+            id: 'order-123',
+            data: () => ({
+              status: 'delivered',
+              medicationDetails: { name: 'Aspirin', dosage: '500mg', quantity: 1 },
+              cost: 1500,
+              createdAt: { toDate: () => new Date('2024-01-01') },
+              updatedAt: { toDate: () => new Date('2024-01-02') }
+            })
+          },
+          {
+            id: 'order-456',
+            data: () => ({
+              status: 'preparing',
+              medicationDetails: { name: 'Ibuprofen', dosage: '400mg', quantity: 2 },
+              cost: 2000,
+              createdAt: { toDate: () => new Date('2024-01-03') },
+              updatedAt: { toDate: () => new Date('2024-01-03') }
+            })
+          }
+        ]
+      };
+      const mockPaymentsSnapshot = {
+        docs: [
+          {
+            data: () => ({
+              orderId: 'order-123',
+              receiptId: 'receipt-123'
+            })
+          }
+        ]
+      };
+
+      const mockCollection = vi.fn();
+      const mockWhere = vi.fn();
+      const mockOrderBy = vi.fn();
+      const mockLimit = vi.fn();
+      const mockOffset = vi.fn();
+      const mockGet = vi.fn();
+      const mockCount = vi.fn();
+
+      vi.mocked(require('./database')).db.collection.mockReturnValue({
+        where: mockWhere,
+        orderBy: mockOrderBy,
+        limit: mockLimit,
+        offset: mockOffset,
+        get: mockGet,
+        count: mockCount
+      });
+
+      mockWhere.mockReturnValue({
+        where: mockWhere,
+        orderBy: mockOrderBy,
+        limit: mockLimit,
+        offset: mockOffset,
+        get: mockGet,
+        count: mockCount
+      });
+
+      mockOrderBy.mockReturnValue({
+        limit: mockLimit,
+        offset: mockOffset,
+        get: mockGet
+      });
+
+      mockLimit.mockReturnValue({
+        offset: mockOffset,
+        get: mockGet
+      });
+
+      mockOffset.mockReturnValue({
+        get: mockGet
+      });
+
+      mockCount.mockResolvedValue(mockCountSnapshot);
+      mockGet
+        .mockResolvedValueOnce(mockOrdersSnapshot) // First call for orders
+        .mockResolvedValueOnce(mockPaymentsSnapshot); // Second call for payments
+
+      const response = await request(app)
+        .get('/orders/history')
+        .query({ patientId: mockPatientId, page: '1', limit: '10' });
+
+      expect(response.status).toBe(200);
+      expect(response.body.success).toBe(true);
+      expect(response.body.data.orders).toHaveLength(2);
+      expect(response.body.data.pagination).toEqual({
+        page: 1,
+        limit: 10,
+        total: 2,
+        hasMore: false
+      });
+      expect(response.body.data.orders[0].hasReceipt).toBe(true);
+      expect(response.body.data.orders[1].hasReceipt).toBe(false);
+    });
+
+    it('should return 400 if patientId is missing', async () => {
+      const response = await request(app)
+        .get('/orders/history')
+        .query({ page: '1', limit: '10' });
+
+      expect(response.status).toBe(400);
+      expect(response.body.success).toBe(false);
+      expect(response.body.error).toBe('Patient ID is required');
+    });
+
+    it('should handle pagination correctly', async () => {
+      const mockCountData = { count: 25 };
+      const mockCountSnapshot = { data: () => mockCountData };
+      const mockOrdersSnapshot = { docs: [] };
+      const mockPaymentsSnapshot = { docs: [] };
+
+      const mockCollection = vi.fn();
+      const mockWhere = vi.fn();
+      const mockOrderBy = vi.fn();
+      const mockLimit = vi.fn();
+      const mockOffset = vi.fn();
+      const mockGet = vi.fn();
+      const mockCount = vi.fn();
+
+      vi.mocked(require('./database')).db.collection.mockReturnValue({
+        where: mockWhere,
+        orderBy: mockOrderBy,
+        limit: mockLimit,
+        offset: mockOffset,
+        get: mockGet,
+        count: mockCount
+      });
+
+      mockWhere.mockReturnValue({
+        where: mockWhere,
+        orderBy: mockOrderBy,
+        limit: mockLimit,
+        offset: mockOffset,
+        get: mockGet,
+        count: mockCount
+      });
+
+      mockOrderBy.mockReturnValue({
+        limit: mockLimit,
+        offset: mockOffset,
+        get: mockGet
+      });
+
+      mockLimit.mockReturnValue({
+        offset: mockOffset,
+        get: mockGet
+      });
+
+      mockOffset.mockReturnValue({
+        get: mockGet
+      });
+
+      mockCount.mockResolvedValue(mockCountSnapshot);
+      mockGet
+        .mockResolvedValueOnce(mockOrdersSnapshot)
+        .mockResolvedValueOnce(mockPaymentsSnapshot);
+
+      const response = await request(app)
+        .get('/orders/history')
+        .query({ patientId: mockPatientId, page: '2', limit: '10' });
+
+      expect(response.status).toBe(200);
+      expect(response.body.data.pagination).toEqual({
+        page: 2,
+        limit: 10,
+        total: 25,
+        hasMore: true
+      });
+    });
+  });
+
+  describe('Receipt Download Endpoints', () => {
+    const mockPatientId = 'patient-123';
+    const mockOrderId = 'order-123';
+
+    it('should download receipt for delivered order', async () => {
+      const mockOrderDoc = {
+        exists: true,
+        data: () => ({
+          patientProfileId: mockPatientId,
+          status: 'delivered',
+          createdAt: { toDate: () => new Date('2024-01-01') },
+          updatedAt: { toDate: () => new Date('2024-01-02') }
+        })
+      };
+
+      const mockPaymentDoc = {
+        data: () => ({
+          paymentId: 'payment-123',
+          orderId: mockOrderId,
+          amount: 1500,
+          status: 'succeeded'
+        })
+      };
+
+      const mockPaymentsSnapshot = {
+        empty: false,
+        docs: [mockPaymentDoc]
+      };
+
+      const mockDocRef = {
+        get: vi.fn().mockResolvedValue(mockOrderDoc)
+      };
+
+      const mockCollection = vi.fn();
+      const mockWhere = vi.fn();
+      const mockLimit = vi.fn();
+
+      vi.mocked(require('./database')).db.collection.mockReturnValue({
+        doc: vi.fn(() => mockDocRef),
+        where: mockWhere,
+        limit: mockLimit
+      });
+
+      mockWhere.mockReturnValue({
+        limit: mockLimit
+      });
+
+      mockLimit.mockReturnValue({
+        get: vi.fn().mockResolvedValue(mockPaymentsSnapshot)
+      });
+
+      // Mock receipt service
+      vi.mocked(require('./receiptService')).receiptService.generateReceiptForPayment.mockResolvedValue({
+        pdfBuffer: Buffer.from('fake-pdf-content'),
+        receiptId: 'receipt-123'
+      });
+
+      const response = await request(app)
+        .get(`/orders/${mockOrderId}/receipt`)
+        .query({ patientId: mockPatientId });
+
+      expect(response.status).toBe(200);
+      expect(response.headers['content-type']).toBe('application/pdf');
+      expect(response.headers['content-disposition']).toBe(`attachment; filename="receipt-${mockOrderId}.pdf"`);
+      expect(response.body).toEqual(Buffer.from('fake-pdf-content'));
+    });
+
+    it('should return 404 if order not found', async () => {
+      const mockDocRef = {
+        get: vi.fn().mockResolvedValue({ exists: false })
+      };
+
+      vi.mocked(require('./database')).db.collection.mockReturnValue({
+        doc: vi.fn(() => mockDocRef)
+      });
+
+      const response = await request(app)
+        .get(`/orders/${mockOrderId}/receipt`)
+        .query({ patientId: mockPatientId });
+
+      expect(response.status).toBe(404);
+      expect(response.body.success).toBe(false);
+      expect(response.body.error).toBe('Order not found');
+    });
+
+    it('should return 403 if order does not belong to patient', async () => {
+      const mockOrderDoc = {
+        exists: true,
+        data: () => ({
+          patientProfileId: 'different-patient',
+          status: 'delivered'
+        })
+      };
+
+      const mockDocRef = {
+        get: vi.fn().mockResolvedValue(mockOrderDoc)
+      };
+
+      vi.mocked(require('./database')).db.collection.mockReturnValue({
+        doc: vi.fn(() => mockDocRef)
+      });
+
+      const response = await request(app)
+        .get(`/orders/${mockOrderId}/receipt`)
+        .query({ patientId: mockPatientId });
+
+      expect(response.status).toBe(403);
+      expect(response.body.success).toBe(false);
+      expect(response.body.error).toBe('Access denied: Order does not belong to patient');
+    });
+
+    it('should return 400 if order is not delivered', async () => {
+      const mockOrderDoc = {
+        exists: true,
+        data: () => ({
+          patientProfileId: mockPatientId,
+          status: 'preparing'
+        })
+      };
+
+      const mockDocRef = {
+        get: vi.fn().mockResolvedValue(mockOrderDoc)
+      };
+
+      vi.mocked(require('./database')).db.collection.mockReturnValue({
+        doc: vi.fn(() => mockDocRef)
+      });
+
+      const response = await request(app)
+        .get(`/orders/${mockOrderId}/receipt`)
+        .query({ patientId: mockPatientId });
+
+      expect(response.status).toBe(400);
+      expect(response.body.success).toBe(false);
+      expect(response.body.error).toBe('Receipt can only be generated for delivered orders');
+    });
+
+    it('should return 400 if patientId is missing', async () => {
+      const response = await request(app)
+        .get(`/orders/${mockOrderId}/receipt`);
+
+      expect(response.status).toBe(400);
+      expect(response.body.success).toBe(false);
+      expect(response.body.error).toBe('Patient ID is required');
     });
   });
 }); 
