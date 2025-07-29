@@ -1,10 +1,12 @@
 import React from 'react';
 import { PrescriptionOrder, PrescriptionOrderStatus } from '@pharmarx/shared-types';
+import { useDeliveryTrackingEligibility } from '../hooks/useDeliveryTracking';
 
 interface OrderStatusDisplayProps {
   order: PrescriptionOrder;
   showFullProgress?: boolean;
   className?: string;
+  onTrackDelivery?: (orderId: string) => void;
 }
 
 interface StatusInfo {
@@ -120,10 +122,12 @@ const getProgressSteps = () => [
 export const OrderStatusDisplay: React.FC<OrderStatusDisplayProps> = ({
   order,
   showFullProgress = false,
-  className = ''
+  className = '',
+  onTrackDelivery
 }) => {
   const statusInfo = getStatusInfo(order.status);
   const progressSteps = getProgressSteps();
+  const { shouldShowTracking } = useDeliveryTrackingEligibility(order.status);
   
   const formatDate = (date?: Date) => {
     if (!date) return '';
@@ -134,6 +138,10 @@ export const OrderStatusDisplay: React.FC<OrderStatusDisplayProps> = ({
       hour: '2-digit',
       minute: '2-digit'
     });
+  };
+
+  const handleTrackDelivery = () => {
+    onTrackDelivery?.(order.orderId);
   };
 
   return (
@@ -148,8 +156,22 @@ export const OrderStatusDisplay: React.FC<OrderStatusDisplayProps> = ({
             <h3 className="text-lg font-medium text-gray-900">{statusInfo.label}</h3>
             <p className="text-sm text-gray-600">{statusInfo.description}</p>
           </div>
-          <div className={`inline-flex px-3 py-1 text-xs font-semibold rounded-full ${statusInfo.bgColor} ${statusInfo.color}`}>
-            {statusInfo.label}
+          <div className="flex items-center space-x-2">
+            <div className={`inline-flex px-3 py-1 text-xs font-semibold rounded-full ${statusInfo.bgColor} ${statusInfo.color}`}>
+              {statusInfo.label}
+            </div>
+            {/* Track Delivery Button */}
+            {shouldShowTracking && (
+              <button
+                onClick={handleTrackDelivery}
+                className="inline-flex items-center px-3 py-1 text-xs font-medium text-blue-700 bg-blue-100 rounded-full hover:bg-blue-200 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1"
+              >
+                <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                </svg>
+                Track Delivery
+              </button>
+            )}
           </div>
         </div>
         
@@ -172,6 +194,33 @@ export const OrderStatusDisplay: React.FC<OrderStatusDisplayProps> = ({
             </>
           )}
         </div>
+
+        {/* Delivery Tracking Status Banner */}
+        {shouldShowTracking && (
+          <div className="mt-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
+            <div className="flex items-center space-x-2">
+              <div className="flex-shrink-0">
+                <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+              </div>
+              <div className="flex-1">
+                <p className="text-sm font-medium text-blue-900">
+                  Your medication is out for delivery
+                </p>
+                <p className="text-xs text-blue-700">
+                  Click "Track Delivery" above to see real-time location and estimated arrival time
+                </p>
+              </div>
+              <div className="flex-shrink-0">
+                <button
+                  onClick={handleTrackDelivery}
+                  className="text-blue-700 hover:text-blue-900 font-medium text-sm"
+                >
+                  View Map →
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Progress Indicator */}

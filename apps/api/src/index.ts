@@ -9,6 +9,7 @@ import { ocrRoutes } from './features/ocrRoutes';
 import { prescriptionOrderRoutes } from './features/prescriptionOrderRoutes';
 import paymentRoutes from './features/paymentRoutes';
 import webhookRoutes from './features/webhookRoutes';
+import deliveryTrackingRoutes from './features/deliveryTrackingRoutes';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -69,6 +70,9 @@ app.use('/api', prescriptionOrderRoutes);
 
 // Payment routes
 app.use('/api', paymentRoutes);
+
+// Delivery tracking routes
+app.use('/api/orders', deliveryTrackingRoutes);
 
 // Webhook routes (no /api prefix for webhooks as they come from external services)
 app.use('/', webhookRoutes);
