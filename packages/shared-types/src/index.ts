@@ -124,6 +124,7 @@ export const validateCreateUserInput = (input: CreateUserInput): UserValidationR
 // Prescription Order types
 export type PrescriptionOrderStatus = 
   | 'pending_verification' 
+  | 'awaiting_verification'
   | 'awaiting_payment' 
   | 'preparing' 
   | 'out_for_delivery' 
@@ -138,6 +139,21 @@ export interface MedicationDetails {
   quantity: number;
 }
 
+// Pharmacist review interface
+export interface PharmacistReview {
+  reviewedBy: string;
+  reviewedAt: Date;
+  approved: boolean;
+  rejectionReason?: string;
+  editedDetails?: {
+    name?: string;
+    dosage?: string;
+    quantity?: number;
+  };
+  pharmacistNotes?: string;
+  calculatedCost?: number;
+}
+
 export interface PrescriptionOrder {
   orderId: string;
   patientProfileId: string;
@@ -146,9 +162,15 @@ export interface PrescriptionOrder {
   // OCR-related fields
   extractedText?: string;
   ocrStatus?: OCRStatus;
+  ocrConfidence?: number;
   ocrProcessedAt?: Date;
   ocrError?: string;
   medicationDetails?: MedicationDetails;
+  // User verification fields
+  userVerified?: boolean;
+  userVerificationNotes?: string;
+  // Pharmacist review fields
+  pharmacistReview?: PharmacistReview;
   cost?: number;
   createdAt: Date;
   updatedAt?: Date;
