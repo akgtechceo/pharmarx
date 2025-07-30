@@ -201,15 +201,23 @@ class RegistrationService {
    */
   private async storeUserProfileInFirestore(uid: string, formData: RegisterFormData): Promise<void> {
     try {
-      const userProfile = {
+      // Build user profile object without undefined values (Firestore doesn't allow them)
+      const userProfile: any = {
         uid: uid,
         role: formData.role,
         displayName: formData.displayName,
-        email: formData.contactType === 'email' ? formData.email : undefined,
-        phoneNumber: formData.contactType === 'phone' ? formData.phoneNumber : undefined,
         createdAt: new Date(),
         updatedAt: new Date()
       };
+
+      // Only add email or phoneNumber if they exist (avoid undefined values)
+      if (formData.contactType === 'email' && formData.email) {
+        userProfile.email = formData.email;
+        userProfile.phoneNumber = null; // Use null instead of undefined
+      } else if (formData.contactType === 'phone' && formData.phoneNumber) {
+        userProfile.phoneNumber = formData.phoneNumber;
+        userProfile.email = null; // Use null instead of undefined
+      }
 
       // Store in Firestore users collection
       await setDoc(doc(db, 'users', uid), userProfile);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PortalLayout from './PortalLayout';
 import { MedicationInfo, AppointmentInfo, HealthMetric } from '../../types/portal';
@@ -68,7 +68,7 @@ export default function PatientPortal() {
   const navigate = useNavigate();
 
   // Profile management hooks
-  const { data: profilesData, isLoading: profilesLoading, error: profilesError } = usePatientProfiles();
+  const { data: profilesData, isLoading: profilesLoading } = usePatientProfiles();
   const createProfileMutation = useCreateProfile();
   const updateProfileMutation = useUpdateProfile();
   const deleteProfileMutation = useDeleteProfile();
@@ -76,27 +76,24 @@ export default function PatientPortal() {
   // Profile context
   const {
     activeProfileId,
-    activeProfile,
     profiles,
     setActiveProfile,
     setProfiles,
-    hasActiveProfile,
-    hasProfiles,
-    isProfileActive
+    hasProfiles
   } = useProfileContext();
 
   // Auto-profile selection - only auto-select if user has exactly one profile
-  const profiles = profilesData?.data?.profiles || [];
   useEffect(() => {
-    if (profiles.length === 1 && !activeProfileId) {
-      setActiveProfile(profiles[0].profileId);
+    const availableProfiles = profilesData?.profiles || [];
+    if (availableProfiles.length === 1 && !activeProfileId) {
+      setActiveProfile(availableProfiles[0].profileId);
     }
-  }, [profiles, activeProfileId, setActiveProfile]);
+  }, [profilesData, activeProfileId, setActiveProfile]);
 
   // Update profiles in context when data changes
   useEffect(() => {
-    if (profilesData?.data?.profiles) {
-      setProfiles(profilesData.data.profiles);
+    if (profilesData?.profiles) {
+      setProfiles(profilesData.profiles);
     }
   }, [profilesData, setProfiles]);
 
@@ -334,6 +331,7 @@ export default function PatientPortal() {
           <div className="max-w-4xl w-full max-h-[90vh] overflow-y-auto">
             <PrescriptionFlow
               onCancel={() => setShowUploadModal(false)}
+              onUploadComplete={handleUploadComplete}
               isModal={true}
             />
           </div>

@@ -238,6 +238,12 @@ export class AuthenticationService {
       });
 
       if (!response.ok) {
+        // Check if this is an HTML response (backend not running)
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('text/html')) {
+          throw new Error('Backend API not available (returned HTML instead of JSON)');
+        }
+        
         const errorData = await response.json().catch(() => ({}));
         const errorMessage = errorData.error || errorData.message || 'Failed to get user profile';
         throw new Error(errorMessage);
@@ -610,14 +616,15 @@ export class AuthenticationService {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // Create user profile in Firestore
+      // Create user profile in Firestore (avoid undefined values)
       const userProfile = {
         uid: user.uid,
         email: user.email,
         displayName: 'Test Patient',
         role: 'patient',
-        phoneNumber: null,
-        createdAt: new Date()
+        phoneNumber: null, // Use null instead of undefined
+        createdAt: new Date(),
+        updatedAt: new Date()
       };
 
       await setDoc(doc(db, 'users', user.uid), userProfile);
