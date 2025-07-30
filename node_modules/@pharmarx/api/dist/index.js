@@ -12,6 +12,8 @@ import webhookRoutes from './features/webhookRoutes';
 import deliveryTrackingRoutes from './features/deliveryTrackingRoutes';
 import profileRoutes from './features/profileRoutes';
 import doctorPrescriptionRoutes from './features/doctorPrescriptionRoutes';
+import notificationRoutes from './features/notificationRoutes';
+import inventoryRoutes from './features/inventoryRoutes';
 const app = express();
 const PORT = process.env.PORT || 3001;
 const NODE_ENV = process.env.NODE_ENV || 'development';
@@ -60,6 +62,10 @@ app.use('/api/auth', authRoutes);
 app.use('/api/profiles', profileRoutes);
 // Doctor prescription routes
 app.use('/api/doctor', doctorPrescriptionRoutes);
+// Notification routes
+app.use('/api/notifications', notificationRoutes);
+// Inventory routes
+app.use('/api/inventory', inventoryRoutes);
 // OCR routes
 app.use('/api', ocrRoutes);
 // Prescription order routes

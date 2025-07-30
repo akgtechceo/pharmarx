@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import mapService, { MapConfig, UserLocation } from '../services/mapService';
 import { MapPharmacyData } from '../../../types/pharmacy.types';
@@ -54,9 +54,14 @@ export const usePharmacyMap = (
   // Debounce viewport bounds to prevent excessive API calls
   const debouncedViewportBounds = useDebounce(viewportBounds, debounceMs);
 
-  // Initialize map service
+  // Initialize map service when Google Maps API is available
   useEffect(() => {
     const initializeMap = async () => {
+      // Wait for Google Maps API to be loaded by @googlemaps/react-wrapper
+      if (!window.google?.maps) {
+        return; // API not loaded yet, wait for it
+      }
+
       try {
         const config: MapConfig = {
           apiKey: options.apiKey,
@@ -72,11 +77,11 @@ export const usePharmacyMap = (
     };
 
     initializeMap();
-  }, [options.apiKey, defaultCenter, defaultZoom]);
+  }, [options.apiKey, defaultCenter, defaultZoom, window.google?.maps]);
 
   // Create map instance
   useEffect(() => {
-    if (!mapRef.current || !mapService) return;
+    if (!mapRef.current || !mapService || !window.google?.maps) return;
 
     try {
       const mapInstance = mapService.createMap(mapRef.current, {

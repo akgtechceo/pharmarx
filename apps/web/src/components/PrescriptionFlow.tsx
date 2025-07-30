@@ -10,6 +10,7 @@ type FlowStep = 'upload' | 'pharmacy-selection' | 'verification';
 
 interface PrescriptionFlowProps {
   onCancel?: () => void;
+  onUploadComplete?: (order: PrescriptionOrder) => void;
   isModal?: boolean;
 }
 

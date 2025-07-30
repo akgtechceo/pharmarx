@@ -48,22 +48,35 @@ export class AuthenticationService {
     } catch (error) {
       console.error('Login failed:', error);
       
-      // Check if this is a Firebase emulator 400 error (Bad Request)
-      const is400Error = error instanceof Error && 
-                        (error.message.includes('400') || 
-                         error.message.includes('Bad Request') ||
-                         error.message.includes('network-request-failed'));
+      // Check if this is a legitimate authentication error that should be shown to user
+      const isAuthError = error instanceof Error && (
+        error.message.includes('Incorrect password') ||
+        error.message.includes('No account found') ||
+        error.message.includes('invalid-email') ||
+        error.message.includes('user-disabled') ||
+        error.message.includes('too-many-requests') ||
+        error.message.includes('user-not-found') ||
+        error.message.includes('wrong-password')
+      );
       
-      // Fallback to mock login if Firebase fails, especially for emulator errors
-      if (import.meta.env.DEV) {
-        if (is400Error) {
-          console.log('🔧 Firebase emulator error detected, falling back to mock login...');
+      // Only fall back to mock login for infrastructure issues, not auth validation errors
+      if (import.meta.env.DEV && !isAuthError) {
+        const isInfrastructureError = error instanceof Error && (
+          error.message.includes('network-request-failed') ||
+          error.message.includes('ECONNREFUSED') ||
+          error.message.includes('Failed to fetch') ||
+          error.message.includes('ERR_CONNECTION_REFUSED')
+        );
+        
+        if (isInfrastructureError) {
+          console.log('🔧 Firebase connectivity issue detected, falling back to mock login...');
         } else {
-          console.log('Falling back to mock login...');
+          console.log('🔧 Firebase infrastructure error detected, falling back to mock login...');
         }
         return await this.mockLogin(formData);
       }
       
+      // For authentication errors or in production, throw the error to the user
       throw this.handleAuthenticationError(error);
     }
   }

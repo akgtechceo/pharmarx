@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
 import RegisterPage from './features/auth/RegisterPage';
 import LoginPage from './features/auth/LoginPage';
 import PatientPortal from './components/portals/PatientPortal';
 import CaregiverPortal from './components/portals/CaregiverPortal';
+import MapDemo from './components/MapDemo';
+import { AuthenticationService } from './services/authenticationService';
+import { logGoogleMapsStatus } from './utils/googleMapsValidator';
 // TODO: Create dedicated DoctorPortal and PharmacistPortal components
 // For now, use the placeholder components defined below
 
@@ -48,6 +51,11 @@ class ErrorBoundary extends React.Component<
 }
 
 function App() {
+  useEffect(() => {
+    // Log Google Maps setup status on app startup
+    logGoogleMapsStatus();
+  }, []);
+
   return (
     <ErrorBoundary>
       <Router>
@@ -59,6 +67,7 @@ function App() {
           <Route path="/portal/caregiver" element={<CaregiverPortal />} />
           <Route path="/portal/doctor" element={<DoctorPortalPlaceholder />} />
           <Route path="/portal/pharmacist" element={<PharmacistPortalPlaceholder />} />
+          <Route path="/map-demo" element={<MapDemo />} />
         </Routes>
       </Router>
     </ErrorBoundary>
@@ -126,6 +135,12 @@ function HomePage() {
                     className="block border border-blue-600 text-blue-600 text-center py-2 px-4 rounded-md hover:bg-blue-50 transition-colors"
                   >
                     Sign In
+                  </Link>
+                  <Link 
+                    to="/map-demo" 
+                    className="block bg-green-600 text-white text-center py-2 px-4 rounded-md hover:bg-green-700 transition-colors"
+                  >
+                    View Interactive Map Demo
                   </Link>
                 </div>
               </div>
@@ -1249,6 +1264,9 @@ function CaregiverPortalPlaceholder() {
 }
 
 function DoctorPortalPlaceholder() {
+  const navigate = useNavigate();
+  const authService = AuthenticationService.getInstance();
+  
   const [patients, setPatients] = React.useState([
     { id: 1, name: 'John Smith', age: 45, lastVisit: '2024-01-10', nextAppointment: '2024-01-15', status: 'Active' },
     { id: 2, name: 'Sarah Wilson', age: 32, lastVisit: '2024-01-08', nextAppointment: '2024-01-22', status: 'Active' },
@@ -1269,8 +1287,15 @@ function DoctorPortalPlaceholder() {
 
   const [activeTab, setActiveTab] = React.useState('dashboard');
 
-  const handleLogout = () => {
-    window.location.href = '/';
+  const handleLogout = async () => {
+    try {
+      await authService.logout();
+      navigate('/');
+    } catch (error) {
+      console.error('Logout failed:', error);
+      // Even if logout fails, redirect to home for security
+      navigate('/');
+    }
   };
 
   const handlePrescriptionApproval = (prescriptionId: number) => {
@@ -1715,6 +1740,9 @@ function DoctorPortalPlaceholder() {
 }
 
 function PharmacistPortalPlaceholder() {
+  const navigate = useNavigate();
+  const authService = AuthenticationService.getInstance();
+  
   const [prescriptions, setPrescriptions] = React.useState([
     { id: 1, patient: 'John Smith', doctor: 'Dr. Sarah Johnson', medication: 'Aspirin', dosage: '100mg', frequency: 'Once daily', status: 'Ready', refills: 2, date: '2024-01-15' },
     { id: 2, patient: 'Sarah Wilson', doctor: 'Dr. Michael Chen', medication: 'Vitamin D', dosage: '1000 IU', frequency: 'Once daily', status: 'In Progress', refills: 1, date: '2024-01-16' },
@@ -1734,8 +1762,15 @@ function PharmacistPortalPlaceholder() {
 
   const [activeTab, setActiveTab] = React.useState('dashboard');
 
-  const handleLogout = () => {
-    window.location.href = '/';
+  const handleLogout = async () => {
+    try {
+      await authService.logout();
+      navigate('/');
+    } catch (error) {
+      console.error('Logout failed:', error);
+      // Even if logout fails, redirect to home for security
+      navigate('/');
+    }
   };
 
   const handlePrescriptionStatus = (prescriptionId: number, newStatus: string) => {

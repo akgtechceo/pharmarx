@@ -66,64 +66,568 @@
 [7m175[27m       (db.collection as any).mockImplementation((collectionName) => {    [14;1H
 [7m   [27m[50X[91m[50C~~~~~~~~~~~~~~[K[m
 
-[96msrc/features/doctorPrescriptionService.ts[m:[93m1[m:[93m10 [m- [91merror [90mTS2614: [mModule '"./dat
-[13;77Htabase"' has no exported member 'db'. Did you mean to use 'import db from "./d
-[13;77Hdatabase"' instead?
+[96msrc/features/inventoryRoutes.test.ts[m:[93m49[m:[93m11 [m- [91merror [90mTS2339: [mProperty 'user' do
+[13;77Hoes not exist on type 'Request<ParamsDictionary, any, any, ParsedQs, Record<st
+[13;77Htring, any>>'.
 
-[7m1[27m import { db } from './database';[K
-[7m [27m[10X[91m[10C~~[K[m
+[7m49[27m       req.user = mockPharmacistUser;[K
+[7m  [27m[11X[91m[11C~~~~[K[m
 
-[96msrc/features/doctorPrescriptionService.ts[m:[93m38[m:[93m52 [m- [91merror [90mTS7006: [mParameter 'do
-[13;77Hoc' implicitly has an 'any' type.
+[96msrc/features/inventoryRoutes.test.ts[m:[93m244[m:[93m13 [m- [91merror [90mTS2339: [mProperty 'user' d
+[13;77Hdoes not exist on type 'Request<ParamsDictionary, any, any, ParsedQs, Record<s
+[13;77Hstring, any>>'.
 
-[7m38[27m           const phoneUserIds = phoneQuery.docs.map(doc => doc.id);        [14;1H
-[7m  [27m[52X[91m[52C~~~[K[m
+[7m244[27m         req.user = mockPatientUser;[K
+[7m   [27m[13X[91m[13C~~~~[K[m
 
-[96msrc/features/doctorPrescriptionService.ts[m:[93m48[m:[93m52 [m- [91merror [90mTS7006: [mParameter 'do
-[13;77Hoc' implicitly has an 'any' type.
+[96msrc/features/inventoryRoutes.test.ts[m:[93m305[m:[93m13 [m- [91merror [90mTS2339: [mProperty 'user' d
+[13;77Hdoes not exist on type 'Request<ParamsDictionary, any, any, ParsedQs, Record<s
+[13;77Hstring, any>>'.
 
-[7m48[27m           const emailUserIds = emailQuery.docs.map(doc => doc.id);        [14;1H
-[7m  [27m[52X[91m[52C~~~[K[m
+[7m305[27m         req.user = mockPatientUser;[K
+[7m   [27m[13X[91m[13C~~~~[K[m
 
-[96msrc/features/doctorPrescriptionService.ts[m:[93m66[m:[93m58 [m- [91merror [90mTS7006: [mParameter 'do
-[13;77Hoc' implicitly has an 'any' type.
+[96msrc/features/inventoryRoutes.ts[m:[93m14[m:[93m20 [m- [91merror [90mTS2339: [mProperty 'user' does no
+[13;77Hot exist on type 'Request<ParamsDictionary, any, any, ParsedQs, Record<string,
+[13;77H, any>>'.
 
-[7m66[27m           const allPhoneUserIds = allPhoneQuery.docs.map(doc => doc.id);  [14;1H
-[7m  [27m[58X[91m[58C~~~[K[m
+[7m14[27m   const user = req.user as any;[K
+[7m  [27m[20X[91m[20C~~~~[K[m
 
-[96msrc/features/doctorPrescriptionService.ts[m:[93m67[m:[93m58 [m- [91merror [90mTS7006: [mParameter 'do
-[13;77Hoc' implicitly has an 'any' type.
+[96msrc/features/notificationRoutes.test.ts[m:[93m8[m:[93m1 [m- [91merror [90mTS2304: [mCannot find name 
+[13;77H 'vi'.
 
-[7m67[27m           const allEmailUserIds = allEmailQuery.docs.map(doc => doc.id);  [14;1H
-[7m  [27m[58X[91m[58C~~~[K[m
+[7m8[27m vi.mock('./prescriptionNotificationService');[K
+[7m [27m [91m~~[K[m
 
-[96msrc/features/doctorPrescriptionService.ts[m:[93m73[m:[93m58 [m- [91merror [90mTS7006: [mParameter 'do
-[13;77Hoc' implicitly has an 'any' type.
+[96msrc/features/notificationRoutes.test.ts[m:[93m9[m:[93m45 [m- [91merror [90mTS2304: [mCannot find name
+[13;77He 'vi'.
 
-[7m73[27m             additionalResults = additionalQuery.docs.map(doc => this.mapPr
-[13;77HrofileToSearchResult(doc));
-[7m  [27m[58X[91m[58C~~~[K[m
+[7m9[27m const MockPrescriptionNotificationService = vi.mocked(PrescriptionNotificat
+[13;77HtionService);
+[7m [27m[45X[91m[45C~~[K[m
 
-[96msrc/features/doctorPrescriptionService.ts[m:[93m76[m:[93m50 [m- [91merror [90mTS7006: [mParameter 'do
-[13;77Hoc' implicitly has an 'any' type.
+[96msrc/features/notificationRoutes.test.ts[m:[93m12[m:[93m1 [m- [91merror [90mTS2304: [mCannot find name
+[13;77He 'vi'.
 
-[7m76[27m           const nameResults = nameQuery.docs.map(doc => this.mapProfileToS
-[13;77HSearchResult(doc));
-[7m  [27m[50X[91m[50C~~~[K[m
+[7m12[27m vi.mock('firebase-admin', () => ({[K
+[7m  [27m [91m~~[K[m
 
-[96msrc/features/doctorPrescriptionService.ts[m:[93m87[m:[93m7 [m- [91merror [90mTS2322: [mType 'Promise<
-[13;77H<PatientSearchResult>[]' is not assignable to type 'PatientSearchResult[]'.   
-  Type 'Promise<PatientSearchResult>' is missing the following properties fro
-[13;77Hom type 'PatientSearchResult': profileId, patientName, dateOfBirth
+[96msrc/features/notificationRoutes.test.ts[m:[93m14[m:[93m16 [m- [91merror [90mTS2304: [mCannot find nam
+[13;77Hme 'vi'.
 
-[7m87[27m       return results;[K
+[7m14[27m     firestore: vi.fn(() => ({[K
+[7m  [27m[16X[91m[16C~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m15[m:[93m19 [m- [91merror [90mTS2304: [mCannot find nam
+[13;77Hme 'vi'.
+
+[7m15[27m       collection: vi.fn(() => ({[K
+[7m  [27m[19X[91m[19C~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m16[m:[93m14 [m- [91merror [90mTS2304: [mCannot find nam
+[13;77Hme 'vi'.
+
+[7m16[27m         doc: vi.fn(() => ({[K
+[7m  [27m[14X[91m[14C~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m17[m:[93m16 [m- [91merror [90mTS2304: [mCannot find nam
+[13;77Hme 'vi'.
+
+[7m17[27m           get: vi.fn()[K
+[7m  [27m[16X[91m[16C~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m25[m:[93m1 [m- [91merror [90mTS2304: [mCannot find name
+[13;77He 'vi'.
+
+[7m25[27m vi.mock('../middleware/auth', () => ({[K
+[7m  [27m [91m~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m26[m:[93m15 [m- [91merror [90mTS2304: [mCannot find nam
+[13;77Hme 'vi'.
+
+[7m26[27m   verifyAuth: vi.fn((req, res, next) => {[K
+[7m  [27m[15X[91m[15C~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m26[m:[93m22 [m- [91merror [90mTS7006: [mParameter 'req'
+[13;77H' implicitly has an 'any' type.
+
+[7m26[27m   verifyAuth: vi.fn((req, res, next) => {[K
+[7m  [27m[22X[91m[22C~~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m26[m:[93m27 [m- [91merror [90mTS7006: [mParameter 'res'
+[13;77H' implicitly has an 'any' type.
+
+[7m26[27m   verifyAuth: vi.fn((req, res, next) => {[K
+[7m  [27m[27X[91m[27C~~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m26[m:[93m32 [m- [91merror [90mTS7006: [mParameter 'next
+[13;77Ht' implicitly has an 'any' type.
+
+[7m26[27m   verifyAuth: vi.fn((req, res, next) => {[K
+[7m  [27m[32X[91m[32C~~~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m32[m:[93m1 [m- [91merror [90mTS2304: [mCannot find name
+[13;77He 'vi'.
+
+[7m32[27m vi.mock('../middleware/roleVerification', () => ({[K
+[7m  [27m [91m~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m33[m:[93m22 [m- [91merror [90mTS2304: [mCannot find nam
+[13;77Hme 'vi'.
+
+[7m33[27m   verifyPatientRole: vi.fn((req, res, next) => {[K
+[7m  [27m[22X[91m[22C~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m33[m:[93m29 [m- [91merror [90mTS7006: [mParameter 'req'
+[13;77H' implicitly has an 'any' type.
+
+[7m33[27m   verifyPatientRole: vi.fn((req, res, next) => {[K
+[7m  [27m[29X[91m[29C~~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m33[m:[93m34 [m- [91merror [90mTS7006: [mParameter 'res'
+[13;77H' implicitly has an 'any' type.
+
+[7m33[27m   verifyPatientRole: vi.fn((req, res, next) => {[K
+[7m  [27m[34X[91m[34C~~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m33[m:[93m39 [m- [91merror [90mTS7006: [mParameter 'next
+[13;77Ht' implicitly has an 'any' type.
+
+[7m33[27m   verifyPatientRole: vi.fn((req, res, next) => {[K
+[7m  [27m[39X[91m[39C~~~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m42[m:[93m1 [m- [91merror [90mTS2593: [mCannot find name
+[13;77He 'describe'. Do you need to install type definitions for a test runner? Try `
+[13;77H`npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha` and then add
+[13;77Hd 'jest' or 'mocha' to the types field in your tsconfig.
+
+[7m42[27m describe('Notification Routes', () => {[K
+[7m  [27m [91m~~~~~~~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m45[m:[93m3 [m- [91merror [90mTS2304: [mCannot find name
+[13;77He 'beforeEach'.
+
+[7m45[27m   beforeEach(() => {[K
+[7m  [27m   [91m~~~~~~~~~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m46[m:[93m5 [m- [91merror [90mTS2304: [mCannot find name
+[13;77He 'vi'.
+
+[7m46[27m     vi.clearAllMocks();[K
+[7m  [27m     [91m~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m50[m:[93m31 [m- [91merror [90mTS2304: [mCannot find nam
+[13;77Hme 'vi'.
+
+[7m50[27m       getNotificationHistory: vi.fn(),[K
+[7m  [27m[31X[91m[31C~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m51[m:[93m38 [m- [91merror [90mTS2304: [mCannot find nam
+[13;77Hme 'vi'.
+
+[7m51[27m       updateNotificationPreferences: vi.fn(),[K
+[7m  [27m[38X[91m[38C~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m52[m:[93m33 [m- [91merror [90mTS2304: [mCannot find nam
+[13;77Hme 'vi'.
+
+[7m52[27m       updateNotificationStatus: vi.fn()[K
+[7m  [27m[33X[91m[33C~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m59[m:[93m3 [m- [91merror [90mTS2593: [mCannot find name
+[13;77He 'describe'. Do you need to install type definitions for a test runner? Try `
+[13;77H`npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha` and then add
+[13;77Hd 'jest' or 'mocha' to the types field in your tsconfig.
+
+[7m59[27m   describe('GET /api/notifications/preferences/:patientProfileId', () => {[14;1H
+[7m  [27m   [91m~~~~~~~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m60[m:[93m5 [m- [91merror [90mTS2593: [mCannot find name
+[13;77He 'it'. Do you need to install type definitions for a test runner? Try `npm i 
+[13;77H --save-dev @types/jest` or `npm i --save-dev @types/mocha` and then add 'jest
+[13;77Ht' or 'mocha' to the types field in your tsconfig.
+
+[7m60[27m     it('should return notification preferences for a patient profile', asy
+[13;77Hync () => {
+[7m  [27m     [91m~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m79[m:[93m7 [m- [91merror [90mTS2304: [mCannot find name
+[13;77He 'expect'.
+
+[7m79[27m       expect(response.body.success).toBe(true);[K
 [7m  [27m       [91m~~~~~~[K[m
 
-[96msrc/features/doctorPrescriptionService.ts[m:[93m182[m:[93m47 [m- [91merror [90mTS7006: [mParameter 'd
-[13;77Hdoc' implicitly has an 'any' type.
+[96msrc/features/notificationRoutes.test.ts[m:[93m80[m:[93m7 [m- [91merror [90mTS2304: [mCannot find name
+[13;77He 'expect'.
 
-[7m182[27m       const prescriptions = snapshot.docs.map(doc => {[K
-[7m   [27m[47X[91m[47C~~~[K[m
+[7m80[27m       expect(response.body.data).toEqual({[K
+[7m  [27m       [91m~~~~~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m87[m:[93m5 [m- [91merror [90mTS2593: [mCannot find name
+[13;77He 'it'. Do you need to install type definitions for a test runner? Try `npm i 
+[13;77H --save-dev @types/jest` or `npm i --save-dev @types/mocha` and then add 'jest
+[13;77Ht' or 'mocha' to the types field in your tsconfig.
+
+[7m87[27m     it('should return default preferences when none exist', async () => { [14;1H
+[7m  [27m     [91m~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m99[m:[93m7 [m- [91merror [90mTS2304: [mCannot find name
+[13;77He 'expect'.
+
+[7m99[27m       expect(response.body.success).toBe(true);[K
+[7m  [27m       [91m~~~~~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m100[m:[93m7 [m- [91merror [90mTS2304: [mCannot find nam
+[13;77Hme 'expect'.
+
+[7m100[27m       expect(response.body.data).toEqual({[K
+[7m   [27m       [91m~~~~~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m106[m:[93m5 [m- [91merror [90mTS2593: [mCannot find nam
+[13;77Hme 'it'. Do you need to install type definitions for a test runner? Try `npm i
+[13;77Hi --save-dev @types/jest` or `npm i --save-dev @types/mocha` and then add 'jes
+[13;77Hst' or 'mocha' to the types field in your tsconfig.
+
+[7m106[27m     it('should return 404 when patient profile not found', async () => { [14;1H
+[7m   [27m     [91m~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m117[m:[93m7 [m- [91merror [90mTS2304: [mCannot find nam
+[13;77Hme 'expect'.
+
+[7m117[27m       expect(response.body.success).toBe(false);[K
+[7m   [27m       [91m~~~~~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m118[m:[93m7 [m- [91merror [90mTS2304: [mCannot find nam
+[13;77Hme 'expect'.
+
+[7m118[27m       expect(response.body.error).toBe('Patient profile not found');     [14;1H
+[7m   [27m       [91m~~~~~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m122[m:[93m3 [m- [91merror [90mTS2593: [mCannot find nam
+[13;77Hme 'describe'. Do you need to install type definitions for a test runner? Try 
+[13;77H `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha` and then ad
+[13;77Hdd 'jest' or 'mocha' to the types field in your tsconfig.
+
+[7m122[27m   describe('PUT /api/notifications/preferences/:patientProfileId', () => 
+[13;77H {
+[7m   [27m   [91m~~~~~~~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m123[m:[93m5 [m- [91merror [90mTS2593: [mCannot find nam
+[13;77Hme 'it'. Do you need to install type definitions for a test runner? Try `npm i
+[13;77Hi --save-dev @types/jest` or `npm i --save-dev @types/mocha` and then add 'jes
+[13;77Hst' or 'mocha' to the types field in your tsconfig.
+
+[7m123[27m     it('should update notification preferences successfully', async () =>
+[13;77H> {
+[7m   [27m     [91m~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m148[m:[93m7 [m- [91merror [90mTS2304: [mCannot find nam
+[13;77Hme 'expect'.
+
+[7m148[27m       expect(response.body.success).toBe(true);[K
+[7m   [27m       [91m~~~~~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m149[m:[93m7 [m- [91merror [90mTS2304: [mCannot find nam
+[13;77Hme 'expect'.
+
+[7m149[27m       expect(response.body.data).toEqual({[K
+[7m   [27m       [91m~~~~~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m154[m:[93m7 [m- [91merror [90mTS2304: [mCannot find nam
+[13;77Hme 'expect'.
+
+[7m154[27m       expect(mockNotificationService.updateNotificationPreferences).toHav
+[13;77HveBeenCalledWith(
+[7m   [27m       [91m~~~~~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m156[m:[93m9 [m- [91merror [90mTS2304: [mCannot find nam
+[13;77Hme 'expect'.
+
+[7m156[27m         expect.objectContaining({[K
+[7m   [27m[9X[91m[9C~~~~~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m164[m:[93m5 [m- [91merror [90mTS2593: [mCannot find nam
+[13;77Hme 'it'. Do you need to install type definitions for a test runner? Try `npm i
+[13;77Hi --save-dev @types/jest` or `npm i --save-dev @types/mocha` and then add 'jes
+[13;77Hst' or 'mocha' to the types field in your tsconfig.
+
+[7m164[27m     it('should validate SMS phone number when SMS is enabled', async () =
+[13;77H=> {
+[7m   [27m     [91m~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m175[m:[93m7 [m- [91merror [90mTS2304: [mCannot find nam
+[13;77Hme 'expect'.
+
+[7m175[27m       expect(response.body.success).toBe(false);[K
+[7m   [27m       [91m~~~~~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m176[m:[93m7 [m- [91merror [90mTS2304: [mCannot find nam
+[13;77Hme 'expect'.
+
+[7m176[27m       expect(response.body.error).toBe('SMS phone number is required when
+[13;77Hn SMS notifications are enabled');
+[7m   [27m       [91m~~~~~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m179[m:[93m5 [m- [91merror [90mTS2593: [mCannot find nam
+[13;77Hme 'it'. Do you need to install type definitions for a test runner? Try `npm i
+[13;77Hi --save-dev @types/jest` or `npm i --save-dev @types/mocha` and then add 'jes
+[13;77Hst' or 'mocha' to the types field in your tsconfig.
+
+[7m179[27m     it('should validate email address when email is enabled', async () =>
+[13;77H> {
+[7m   [27m     [91m~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m190[m:[93m7 [m- [91merror [90mTS2304: [mCannot find nam
+[13;77Hme 'expect'.
+
+[7m190[27m       expect(response.body.success).toBe(false);[K
+[7m   [27m       [91m~~~~~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m191[m:[93m7 [m- [91merror [90mTS2304: [mCannot find nam
+[13;77Hme 'expect'.
+
+[7m191[27m       expect(response.body.error).toBe('Email address is required when em
+[13;77Hmail notifications are enabled');
+[7m   [27m       [91m~~~~~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m194[m:[93m5 [m- [91merror [90mTS2593: [mCannot find nam
+[13;77Hme 'it'. Do you need to install type definitions for a test runner? Try `npm i
+[13;77Hi --save-dev @types/jest` or `npm i --save-dev @types/mocha` and then add 'jes
+[13;77Hst' or 'mocha' to the types field in your tsconfig.
+
+[7m194[27m     it('should handle service errors', async () => {[K
+[7m   [27m     [91m~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m219[m:[93m7 [m- [91merror [90mTS2304: [mCannot find nam
+[13;77Hme 'expect'.
+
+[7m219[27m       expect(response.body.success).toBe(false);[K
+[7m   [27m       [91m~~~~~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m220[m:[93m7 [m- [91merror [90mTS2304: [mCannot find nam
+[13;77Hme 'expect'.
+
+[7m220[27m       expect(response.body.error).toBe('Failed to update notification pre
+[13;77Heferences');
+[7m   [27m       [91m~~~~~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m224[m:[93m3 [m- [91merror [90mTS2593: [mCannot find nam
+[13;77Hme 'describe'. Do you need to install type definitions for a test runner? Try 
+[13;77H `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha` and then ad
+[13;77Hdd 'jest' or 'mocha' to the types field in your tsconfig.
+
+[7m224[27m   describe('GET /api/notifications/history/:patientProfileId', () => {   [14;1H
+[7m   [27m   [91m~~~~~~~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m225[m:[93m5 [m- [91merror [90mTS2593: [mCannot find nam
+[13;77Hme 'it'. Do you need to install type definitions for a test runner? Try `npm i
+[13;77Hi --save-dev @types/jest` or `npm i --save-dev @types/mocha` and then add 'jes
+[13;77Hst' or 'mocha' to the types field in your tsconfig.
+
+[7m225[27m     it('should return notification history', async () => {[K
+[7m   [27m     [91m~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m243[m:[93m7 [m- [91merror [90mTS2304: [mCannot find nam
+[13;77Hme 'expect'.
+
+[7m243[27m       expect(response.body.success).toBe(true);[K
+[7m   [27m       [91m~~~~~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m244[m:[93m7 [m- [91merror [90mTS2304: [mCannot find nam
+[13;77Hme 'expect'.
+
+[7m244[27m       expect(response.body.data).toEqual(mockNotifications);[K
+[7m   [27m       [91m~~~~~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m245[m:[93m7 [m- [91merror [90mTS2304: [mCannot find nam
+[13;77Hme 'expect'.
+
+[7m245[27m       expect(mockNotificationService.getNotificationHistory).toHaveBeenCa
+[13;77HalledWith('patient-123', 10);
+[7m   [27m       [91m~~~~~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m248[m:[93m5 [m- [91merror [90mTS2593: [mCannot find nam
+[13;77Hme 'it'. Do you need to install type definitions for a test runner? Try `npm i
+[13;77Hi --save-dev @types/jest` or `npm i --save-dev @types/mocha` and then add 'jes
+[13;77Hst' or 'mocha' to the types field in your tsconfig.
+
+[7m248[27m     it('should validate limit parameter', async () => {[K
+[7m   [27m     [91m~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m253[m:[93m7 [m- [91merror [90mTS2304: [mCannot find nam
+[13;77Hme 'expect'.
+
+[7m253[27m       expect(response.body.success).toBe(false);[K
+[7m   [27m       [91m~~~~~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m254[m:[93m7 [m- [91merror [90mTS2304: [mCannot find nam
+[13;77Hme 'expect'.
+
+[7m254[27m       expect(response.body.error).toBe('Invalid limit parameter (must be 
+[13;77H between 1 and 100)');
+[7m   [27m       [91m~~~~~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m257[m:[93m5 [m- [91merror [90mTS2593: [mCannot find nam
+[13;77Hme 'it'. Do you need to install type definitions for a test runner? Try `npm i
+[13;77Hi --save-dev @types/jest` or `npm i --save-dev @types/mocha` and then add 'jes
+[13;77Hst' or 'mocha' to the types field in your tsconfig.
+
+[7m257[27m     it('should use default limit when not provided', async () => {       [14;1H
+[7m   [27m     [91m~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m264[m:[93m7 [m- [91merror [90mTS2304: [mCannot find nam
+[13;77Hme 'expect'.
+
+[7m264[27m       expect(mockNotificationService.getNotificationHistory).toHaveBeenCa
+[13;77HalledWith('patient-123', 50);
+[7m   [27m       [91m~~~~~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m268[m:[93m3 [m- [91merror [90mTS2593: [mCannot find nam
+[13;77Hme 'describe'. Do you need to install type definitions for a test runner? Try 
+[13;77H `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha` and then ad
+[13;77Hdd 'jest' or 'mocha' to the types field in your tsconfig.
+
+[7m268[27m   describe('POST /api/notifications/:notificationId/status', () => {     [14;1H
+[7m   [27m   [91m~~~~~~~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m269[m:[93m5 [m- [91merror [90mTS2593: [mCannot find nam
+[13;77Hme 'it'. Do you need to install type definitions for a test runner? Try `npm i
+[13;77Hi --save-dev @types/jest` or `npm i --save-dev @types/mocha` and then add 'jes
+[13;77Hst' or 'mocha' to the types field in your tsconfig.
+
+[7m269[27m     it('should update notification status successfully', async () => {   [14;1H
+[7m   [27m     [91m~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m279[m:[93m7 [m- [91merror [90mTS2304: [mCannot find nam
+[13;77Hme 'expect'.
+
+[7m279[27m       expect(response.body.success).toBe(true);[K
+[7m   [27m       [91m~~~~~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m280[m:[93m7 [m- [91merror [90mTS2304: [mCannot find nam
+[13;77Hme 'expect'.
+
+[7m280[27m       expect(response.body.data).toEqual({[K
+[7m   [27m       [91m~~~~~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m284[m:[93m7 [m- [91merror [90mTS2304: [mCannot find nam
+[13;77Hme 'expect'.
+
+[7m284[27m       expect(mockNotificationService.updateNotificationStatus).toHaveBeen
+[13;77HnCalledWith(
+[7m   [27m       [91m~~~~~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m291[m:[93m5 [m- [91merror [90mTS2593: [mCannot find nam
+[13;77Hme 'it'. Do you need to install type definitions for a test runner? Try `npm i
+[13;77Hi --save-dev @types/jest` or `npm i --save-dev @types/mocha` and then add 'jes
+[13;77Hst' or 'mocha' to the types field in your tsconfig.
+
+[7m291[27m     it('should validate status parameter', async () => {[K
+[7m   [27m     [91m~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m299[m:[93m7 [m- [91merror [90mTS2304: [mCannot find nam
+[13;77Hme 'expect'.
+
+[7m299[27m       expect(response.body.success).toBe(false);[K
+[7m   [27m       [91m~~~~~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m300[m:[93m7 [m- [91merror [90mTS2304: [mCannot find nam
+[13;77Hme 'expect'.
+
+[7m300[27m       expect(response.body.error).toBe('Invalid status. Must be "delivere
+[13;77Hed" or "failed"');
+[7m   [27m       [91m~~~~~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m303[m:[93m5 [m- [91merror [90mTS2593: [mCannot find nam
+[13;77Hme 'it'. Do you need to install type definitions for a test runner? Try `npm i
+[13;77Hi --save-dev @types/jest` or `npm i --save-dev @types/mocha` and then add 'jes
+[13;77Hst' or 'mocha' to the types field in your tsconfig.
+
+[7m303[27m     it('should handle missing status parameter', async () => {[K
+[7m   [27m     [91m~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m309[m:[93m7 [m- [91merror [90mTS2304: [mCannot find nam
+[13;77Hme 'expect'.
+
+[7m309[27m       expect(response.body.success).toBe(false);[K
+[7m   [27m       [91m~~~~~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m310[m:[93m7 [m- [91merror [90mTS2304: [mCannot find nam
+[13;77Hme 'expect'.
+
+[7m310[27m       expect(response.body.error).toBe('Invalid status. Must be "delivere
+[13;77Hed" or "failed"');
+[7m   [27m       [91m~~~~~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m313[m:[93m5 [m- [91merror [90mTS2593: [mCannot find nam
+[13;77Hme 'it'. Do you need to install type definitions for a test runner? Try `npm i
+[13;77Hi --save-dev @types/jest` or `npm i --save-dev @types/mocha` and then add 'jes
+[13;77Hst' or 'mocha' to the types field in your tsconfig.
+
+[7m313[27m     it('should handle service errors', async () => {[K
+[7m   [27m     [91m~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m323[m:[93m7 [m- [91merror [90mTS2304: [mCannot find nam
+[13;77Hme 'expect'.
+
+[7m323[27m       expect(response.body.success).toBe(false);[K
+[7m   [27m       [91m~~~~~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m324[m:[93m7 [m- [91merror [90mTS2304: [mCannot find nam
+[13;77Hme 'expect'.
+
+[7m324[27m       expect(response.body.error).toBe('Failed to update notification sta
+[13;77Hatus');
+[7m   [27m       [91m~~~~~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m327[m:[93m5 [m- [91merror [90mTS2593: [mCannot find nam
+[13;77Hme 'it'. Do you need to install type definitions for a test runner? Try `npm i
+[13;77Hi --save-dev @types/jest` or `npm i --save-dev @types/mocha` and then add 'jes
+[13;77Hst' or 'mocha' to the types field in your tsconfig.
+
+[7m327[27m     it('should include error message when provided', async () => {       [14;1H
+[7m   [27m     [91m~~[K[m
+
+[96msrc/features/notificationRoutes.test.ts[m:[93m338[m:[93m7 [m- [91merror [90mTS2304: [mCannot find nam
+[13;77Hme 'expect'.
+
+[7m338[27m       expect(mockNotificationService.updateNotificationStatus).toHaveBeen
+[13;77HnCalledWith(
+[7m   [27m       [91m~~~~~~[K[m
+
+[96msrc/features/notificationRoutes.ts[m:[93m3[m:[93m28 [m- [91merror [90mTS2307: [mCannot find module '.
+[13;77H../middleware/auth' or its corresponding type declarations.
+
+[7m3[27m import { verifyAuth } from '../middleware/auth';[K
+[7m [27m[28X[91m[28C~~~~~~~~~~~~~~~~~~~~[K[m
+
+[96msrc/features/notificationRoutes.ts[m:[93m4[m:[93m35 [m- [91merror [90mTS2307: [mCannot find module '.
+[13;77H../middleware/roleVerification' or its corresponding type declarations.       
+
+[7m4[27m import { verifyPatientRole } from '../middleware/roleVerification';        [14;1H
+[7m [27m[35X[91m[35C~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+
+[96msrc/features/notificationRoutes.ts[m:[93m22[m:[93m25 [m- [91merror [90mTS2339: [mProperty 'user' does
+[13;77Hs not exist on type 'Request<{ patientProfileId: string; }, any, any, ParsedQs
+[13;77Hs, Record<string, any>>'.
+
+[7m22[27m     const userUid = req.user?.uid;[K
+[7m  [27m[25X[91m[25C~~~~[K[m
+
+[96msrc/features/notificationRoutes.ts[m:[93m76[m:[93m25 [m- [91merror [90mTS2339: [mProperty 'user' does
+[13;77Hs not exist on type 'Request<{ patientProfileId: string; }, any, any, ParsedQs
+[13;77Hs, Record<string, any>>'.
+
+[7m76[27m     const userUid = req.user?.uid;[K
+[7m  [27m[25X[91m[25C~~~~[K[m
+
+[96msrc/features/notificationRoutes.ts[m:[93m161[m:[93m25 [m- [91merror [90mTS2339: [mProperty 'user' doe
+[13;77Hes not exist on type 'Request<{ patientProfileId: string; }, any, any, ParsedQ
+[13;77HQs, Record<string, any>>'.
+
+[7m161[27m     const userUid = req.user?.uid;[K
+[7m   [27m[25X[91m[25C~~~~[K[m
 
 [96msrc/features/ocrRoutes.test.ts[m:[93m35[m:[93m13 [m- [91merror [90mTS2339: [mProperty 'db' does not e
 [13;77Hexist on type 'typeof import("C:/Users/akgte/PharmaRx/apps/api/src/features/da
@@ -146,27 +650,17 @@
 [7m20[27m     this.client = new ImageAnnotatorClient(this.config.gcpConfig);        [14;1H
 [7m  [27m[44X[91m[44C~~~~~~~~~~~~~~~~~~~~~[K[m
 
-[96msrc/features/paymentLinkRoutes.test.ts[m:[93m386[m:[93m17 [m- [91merror [90mTS2552: [mCannot find nam
-[13;77Hme 'validRequest'. Did you mean 'IDBRequest'?
+[96msrc/features/paymentLinkRoutes.test.ts[m:[93m386[m:[93m17 [m- [91merror [90mTS2304: [mCannot find nam
+[13;77Hme 'validRequest'.
 
 [7m386[27m           .send(validRequest)[K
 [7m   [27m[17X[91m[17C~~~~~~~~~~~~[K[m
 
-  [96m../../node_modules/typescript/lib/lib.dom.d.ts[m:[93m14951[m:[93m13[K[m
-    [7m14951[27m declare var IDBRequest: {[K
-    [7m     [27m[13X[96m[13C~~~~~~~~~~[K[m
-    'IDBRequest' is declared here.
-
-[96msrc/features/paymentLinkRoutes.test.ts[m:[93m417[m:[93m15 [m- [91merror [90mTS2552: [mCannot find nam
-[13;77Hme 'validRequest'. Did you mean 'IDBRequest'?
+[96msrc/features/paymentLinkRoutes.test.ts[m:[93m417[m:[93m15 [m- [91merror [90mTS2304: [mCannot find nam
+[13;77Hme 'validRequest'.
 
 [7m417[27m         .send(validRequest)[K
 [7m   [27m[15X[91m[15C~~~~~~~~~~~~[K[m
-
-  [96m../../node_modules/typescript/lib/lib.dom.d.ts[m:[93m14951[m:[93m13[K[m
-    [7m14951[27m declare var IDBRequest: {[K
-    [7m     [27m[13X[96m[13C~~~~~~~~~~[K[m
-    'IDBRequest' is declared here.
 
 [96msrc/features/paymentLinkRoutes.ts[m:[93m2[m:[93m35 [m- [91merror [90mTS2307: [mCannot find module '..
 [13;77H./middleware/auth' or its corresponding type declarations.
@@ -1099,6 +1593,33 @@
 [7m442[27m     return snapshot.docs.map(doc => doc.data() as PaymentAuditLog);      [14;1H
 [7m   [27m[30X[91m[30C~~~[K[m
 
+[96msrc/features/prescriptionNotificationService.ts[m:[93m228[m:[93m27 [m- [91merror [90mTS2339: [mProper
+[13;77Hrty 'Timestamp' does not exist on type 'Firestore'.
+
+[7m228[27m         sentAt: firestore.Timestamp.fromDate(notification.sentAt || new D
+[13;77HDate()),
+[7m   [27m[27X[91m[27C~~~~~~~~~[K[m
+
+[96msrc/features/prescriptionNotificationService.ts[m:[93m229[m:[93m59 [m- [91merror [90mTS2339: [mProper
+[13;77Hrty 'Timestamp' does not exist on type 'Firestore'.
+
+[7m229[27m         deliveredAt: notification.deliveredAt ? firestore.Timestamp.fromD
+[13;77HDate(notification.deliveredAt) : null
+[7m   [27m[59X[91m[59C~~~~~~~~~      [14;1H[m
+
+[96msrc/features/prescriptionNotificationService.ts[m:[93m279[m:[93m57 [m- [91merror [90mTS2339: [mProper
+[13;77Hrty 'Timestamp' does not exist on type 'Firestore'.
+
+[7m279[27m         deliveredAt: status === 'delivered' ? firestore.Timestamp.fromDat
+[13;77Hte(new Date()) : null
+[7m   [27m[57X[91m[57C~~~~~~~~~        [14;1H[m
+
+[96msrc/features/prescriptionNotificationService.ts[m:[93m307[m:[93m30 [m- [91merror [90mTS2339: [mProper
+[13;77Hrty 'Timestamp' does not exist on type 'Firestore'.
+
+[7m307[27m         updatedAt: firestore.Timestamp.fromDate(new Date())[K
+[7m   [27m[30X[91m[30C~~~~~~~~~[K[m
+
 [96msrc/features/prescriptionOrderRoutes.ts[m:[93m3[m:[93m10 [m- [91merror [90mTS2614: [mModule '"./datab
 [13;77Hbase"' has no exported member 'db'. Did you mean to use 'import db from "./dat
 [13;77Htabase"' instead?
@@ -1280,27 +1801,24 @@
 [7m2[27m import { db } from './database';[K
 [7m [27m[10X[91m[10C~~[K[m
 
-[96msrc/features/receiptService.ts[m:[93m241[m:[93m21 [m- [91merror [90mTS2351: [mThis expression is not 
-[13;77H constructable.
-  Type '{ default: PDFDocument; version: number; compress: boolean; info: Doc
-[13;77HcumentInfo; options: PDFDocumentOptions; page: PDFPage; x: number; ... 130 mor
-[13;77Hre ...; endOutline(): void; }' has no construct signatures.
+[96msrc/features/receiptService.ts[m:[93m364[m:[93m18 [m- [91merror [90mTS2769: [mNo overload matches thi
+[13;77His call.
+  Overload 1 of 2, '(text: string, x?: number | undefined, y?: number | undef
+[13;77Hfined, options?: TextOptions | undefined): PDFDocument', gave the following er
+[13;77Hrror.
+    Argument of type 'string | undefined' is not assignable to parameter of t
+[13;77Htype 'string'.
+      Type 'undefined' is not assignable to type 'string'.
+  Overload 2 of 2, '(text: string, options?: TextOptions | undefined): PDFDoc
+[13;77Hcument', gave the following error.
+    Argument of type 'string | undefined' is not assignable to parameter of t
+[13;77Htype 'string'.
+      Type 'undefined' is not assignable to type 'string'.
 
-[7m241[27m     const doc = new PDFDocument({ margin: 50 });[K
-[7m   [27m[21X[91m[21C~~~~~~~~~~~[K[m
+[7m364[27m         doc.text(receiptDetails.legalText.english, { width: 520, align: '
+[13;77H'justify' });
+[7m   [27m[18X[91m[18C~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
 
-  [96msrc/features/receiptService.ts[m:[93m3[m:[93m1[K[m
-    [7m3[27m import * as PDFDocument from 'pdfkit';[K
-    [7m [27m [96m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
-    Type originates at this import. A namespace-style import cannot be called
-[13;77Hd or constructed, and will cause a failure at runtime. Consider using a defaul
-[13;77Hlt import or import require here instead.
-
-[96msrc/features/receiptService.ts[m:[93m245[m:[93m21 [m- [91merror [90mTS7006: [mParameter 'buffer' impl
-[13;77Hlicitly has an 'any' type.
-
-[7m245[27m     doc.on('data', (buffer) => buffers.push(buffer));[K
-[7m   [27m[21X[91m[21C~~~~~~[K[m
 
 [96msrc/features/smsService.test.ts[m:[93m57[m:[93m21 [m- [91merror [90mTS2339: [mProperty 'data' does no
 [13;77Hot exist on type '{ success: boolean; error?: string | undefined; }'.
@@ -1473,6 +1991,20 @@
     Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
 [13;77H/apps/api/src/features/doctorPrescriptionService.ts'
     Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
+[13;77H/apps/api/src/features/prescriptionNotificationService.ts'
+    Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
+[13;77H/apps/api/src/features/notificationRoutes.ts'
+    Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
+[13;77H/apps/api/src/features/inventoryService.ts'
+    Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
+[13;77H/apps/api/src/config/inventoryConfig.ts'
+    Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
+[13;77H/apps/api/src/features/pharmacyAdapters/BasePharmacyAdapter.ts'
+    Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
+[13;77H/apps/api/src/features/pharmacyAdapters/RestApiPharmacyAdapter.ts'
+    Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
+[13;77H/apps/api/src/features/inventoryRoutes.ts'
+    Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
 [13;77H/apps/api/src/features/authRoutes.test.ts'
     Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
 [13;77H/apps/api/src/features/deliveryTrackingRoutes.test.ts'
@@ -1480,6 +2012,12 @@
 [13;77H/apps/api/src/features/doctorPrescriptionRoutes.test.ts'
     Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
 [13;77H/apps/api/src/features/doctorPrescriptionService.test.ts'
+    Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
+[13;77H/apps/api/src/features/inventoryRoutes.test.ts'
+    Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
+[13;77H/apps/api/src/features/inventoryService.test.ts'
+    Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
+[13;77H/apps/api/src/features/notificationRoutes.test.ts'
     Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
 [13;77H/apps/api/src/features/ocrIntegration.test.ts'
     Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
@@ -1490,6 +2028,8 @@
 [13;77H/apps/api/src/features/paymentLinkService.ts'
     Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
 [13;77H/apps/api/src/features/paymentLinkRoutes.ts'
+    Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
+[13;77H/apps/api/src/features/prescriptionNotificationService.test.ts'
     Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
 [13;77H/apps/api/src/features/prescriptionOrderRoutes.test.ts'
     Imported via '@pharmarx/shared-types' from file 'C:/Users/akgte/PharmaRx/
@@ -1574,9 +2114,39 @@
     [7m7[27m } from '@pharmarx/shared-types';[K
     [7m [27m        [96m~~~~~~~~~~~~~~~~~~~~~~~~[K[m
     File is included via import here.
-  [96msrc/features/doctorPrescriptionService.ts[m:[93m10[m:[93m8[K[m
+  [96msrc/features/doctorPrescriptionService.ts[m:[93m11[m:[93m8[K[m
+    [7m11[27m } from '@pharmarx/shared-types';[K
+    [7m  [27m        [96m~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+    File is included via import here.
+  [96msrc/features/prescriptionNotificationService.ts[m:[93m7[m:[93m8[K[m
+    [7m7[27m } from '@pharmarx/shared-types';[K
+    [7m [27m        [96m~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+    File is included via import here.
+  [96msrc/features/notificationRoutes.ts[m:[93m10[m:[93m8[K[m
     [7m10[27m } from '@pharmarx/shared-types';[K
     [7m  [27m        [96m~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+    File is included via import here.
+  [96msrc/features/inventoryService.ts[m:[93m12[m:[93m8[K[m
+    [7m12[27m } from '@pharmarx/shared-types';[K
+    [7m  [27m        [96m~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+    File is included via import here.
+  [96msrc/config/inventoryConfig.ts[m:[93m1[m:[93m57[K[m
+    [7m1[27m import { PharmacyConfig, PharmacyIntegrationType } from '@pharmarx/shar
+[13;77Hred-types';
+    [7m [27m                                                         [K[96m~~~~~~~~~~~~~~~[m
+[96m[13;77H~~~~~~~~~~[m
+    File is included via import here.
+  [96msrc/features/pharmacyAdapters/BasePharmacyAdapter.ts[m:[93m7[m:[93m8[K[m
+    [7m7[27m } from '@pharmarx/shared-types';[K
+    [7m [27m        [96m~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+    File is included via import here.
+  [96msrc/features/pharmacyAdapters/RestApiPharmacyAdapter.ts[m:[93m7[m:[93m8[K[m
+    [7m7[27m } from '@pharmarx/shared-types';[K
+    [7m [27m        [96m~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+    File is included via import here.
+  [96msrc/features/inventoryRoutes.ts[m:[93m7[m:[93m8[K[m
+    [7m7[27m } from '@pharmarx/shared-types';[K
+    [7m [27m        [96m~~~~~~~~~~~~~~~~~~~~~~~~[K[m
     File is included via import here.
   [96msrc/features/authRoutes.test.ts[m:[93m6[m:[93m26[K[m
     [7m6[27m import { UserRole } from '@pharmarx/shared-types';[K
@@ -1595,6 +2165,18 @@
   [96msrc/features/doctorPrescriptionService.test.ts[m:[93m9[m:[93m8[K[m
     [7m9[27m } from '@pharmarx/shared-types';[K
     [7m [27m        [96m~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+    File is included via import here.
+  [96msrc/features/inventoryRoutes.test.ts[m:[93m5[m:[93m26[K[m
+    [7m5[27m import { UserRole } from '@pharmarx/shared-types';[K
+    [7m [27m[26X[96m[26C~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+    File is included via import here.
+  [96msrc/features/inventoryService.test.ts[m:[93m9[m:[93m8[K[m
+    [7m9[27m } from '@pharmarx/shared-types';[K
+    [7m [27m        [96m~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+    File is included via import here.
+  [96msrc/features/notificationRoutes.test.ts[m:[93m5[m:[93m41[K[m
+    [7m5[27m import { NotificationPreferences } from '@pharmarx/shared-types';      [14;1H
+    [7m [27m[41X[96m[41C~~~~~~~~~~~~~~~~~~~~~~~~       [14;1H[m
     File is included via import here.
   [96msrc/features/ocrIntegration.test.ts[m:[93m3[m:[93m38[K[m
     [7m3[27m import { OCRProcessingRequest } from '@pharmarx/shared-types';[K
@@ -1620,6 +2202,10 @@
     [7m [27m                                                                      [K[96m~~[m
 [96m[13;77H~~~~~~~~~~~~~~~~~~~~~~~[m
     File is included via import here.
+  [96msrc/features/prescriptionNotificationService.test.ts[m:[93m8[m:[93m8[K[m
+    [7m8[27m } from '@pharmarx/shared-types';[K
+    [7m [27m        [96m~~~~~~~~~~~~~~~~~~~~~~~~[K[m
+    File is included via import here.
   [96msrc/features/prescriptionOrderRoutes.test.ts[m:[93m6[m:[93m65[K[m
     [7m6[27m import { CreatePrescriptionOrderInput, PrescriptionOrder } from '@pharm
 [13;77Hmarx/shared-types';
@@ -1644,7 +2230,7 @@
     [7m [27m                                                                        [14;150H
 [96m                                     ~~~~~~~~~~~~~~~~~~~~~~~~[m
     File is included via import here.
-  [96msrc/features/receiptService.test.ts[m:[93m3[m:[93m44[K[m
+  [96msrc/features/receiptService.[K[m[96mtest.ts[m:[93m3[m:[93m44[m
     [7m3[27m import { Payment, PrescriptionOrder } from '@pharmarx/shared-types';   [14;1H
     [7m [27m[44X[96m[44C~~~~~~~~~~~~~~~~~~~~~~~~    [14;1H[m
     File is included via import here.
@@ -1665,23 +2251,11 @@
 [7m355[27m       delete eventWithoutSignature.Signature;[K
 [7m   [27m[14X[91m[14C~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
 
-[96msrc/features/whatsappService.test.ts[m:[93m53[m:[93m21 [m- [91merror [90mTS2339: [mProperty 'data' do
-[13;77Hoes not exist on type '{ success: boolean; error?: string | undefined; }'.    
-
-[7m53[27m       expect(result.data).toEqual({[K
-[7m  [27m[21X[91m[21C~~~~[K[m
-
 [96msrc/features/whatsappService.test.ts[m:[93m199[m:[93m9 [m- [91merror [90mTS2554: [mExpected 3 argumen
 [13;77Hnts, but got 4.
 
 [7m199[27m         ['PharmaRx', '$45.50', 'https://pharmarx.com/pay/token123']      [14;1H
 [7m   [27m[9X[91m[9C~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~      [14;1H[m
-
-[96msrc/features/whatsappService.test.ts[m:[93m203[m:[93m21 [m- [91merror [90mTS2339: [mProperty 'data' d
-[13;77Hdoes not exist on type '{ success: boolean; error?: string | undefined; }'.   
-
-[7m203[27m       expect(result.data).toEqual({[K
-[7m   [27m[21X[91m[21C~~~~[K[m
 
 [96msrc/features/whatsappService.test.ts[m:[93m234[m:[93m9 [m- [91merror [90mTS2554: [mExpected 3 argumen
 [13;77Hnts, but got 4.
@@ -1713,28 +2287,6 @@
 [7m382[27m           testCase.amount,[K
 [7m   [27m[11X[91m[11C~~~~~~~~~~~~~~~[K[m
 
-[96msrc/features/whatsappService.test.ts[m:[93m421[m:[93m41 [m- [91merror [90mTS2551: [mProperty 'validat
-[13;77HtePhoneNumber' does not exist on type 'WhatsAppService'. Did you mean 'isValid
-[13;77HdPhoneNumber'?
-
-[7m421[27m         const isValid = whatsappService['validatePhoneNumber'](number);  [14;1H
-[7m   [27m[41X[91m[41C~~~~~~~~~~~~~~~~~~~~~[K[m
-
-[96msrc/features/whatsappService.test.ts[m:[93m462[m:[93m40 [m- [91merror [90mTS2551: [mProperty 'parseEr
-[13;77HrrorMessage' does not exist on type 'WhatsAppService'. Did you mean 'getErrorM
-[13;77HMessage'?
-
-[7m462[27m         const parsed = whatsappService['parseErrorMessage'](testCase.resp
-[13;77Hponse);
-[7m   [27m[40X[91m[40C~~~~~~~~~~~~~~~~~~~[K[m
-
-[96msrc/features/whatsappService.test.ts[m:[93m477[m:[93m40 [m- [91merror [90mTS2551: [mProperty 'parseEr
-[13;77HrrorMessage' does not exist on type 'WhatsAppService'. Did you mean 'getErrorM
-[13;77HMessage'?
-
-[7m477[27m         const parsed = whatsappService['parseErrorMessage'](response);   [14;1H
-[7m   [27m[40X[91m[40C~~~~~~~~~~~~~~~~~~~[K[m
-
 [96m../../packages/shared-types/src/index.ts[m:[93m322[m:[93m15 [m- [91merror [90mTS6059: [mFile 'C:/User
 [13;77Hrs/akgte/PharmaRx/packages/shared-types/src/paymentLink.types.ts' is not under
 [13;77Hr 'rootDir' 'C:/Users/akgte/PharmaRx/apps/api/src'. 'rootDir' is expected to c
@@ -1751,15 +2303,26 @@
 [7m325[27m export * from './deliveryTracking.types';[K
 [7m   [27m[15X[91m[15C~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
 
+[96m../../packages/shared-types/src/index.ts[m:[93m549[m:[93m15 [m- [91merror [90mTS6059: [mFile 'C:/User
+[13;77Hrs/akgte/PharmaRx/packages/shared-types/src/inventory.types.ts' is not under '
+[13;77H'rootDir' 'C:/Users/akgte/PharmaRx/apps/api/src'. 'rootDir' is expected to con
+[13;77Hntain all source files.
 
-Found 132 errors in 28 files.
+[7m549[27m export * from './inventory.types';[K
+[7m   [27m[15X[91m[15C~~~~~~~~~~~~~~~~~~~[K[m
+
+
+Found 205 errors in 32 files.
 
 Errors  Files
      1  src/config/firebase.ts[90m:64[K[m
      2  src/features/doctorPrescriptionRoutes.test.ts[90m:245[K[m
      1  src/features/doctorPrescriptionRoutes.ts[90m:131[K[m
      3  src/features/doctorPrescriptionService.test.ts[90m:3[K[m
-     9  src/features/doctorPrescriptionService.ts[90m:1[K[m
+     3  src/features/inventoryRoutes.test.ts[90m:49[K[m
+     1  src/features/inventoryRoutes.ts[90m:14[K[m
+    74  src/features/notificationRoutes.test.ts[90m:8[K[m
+     5  src/features/notificationRoutes.ts[90m:3[K[m
      1  src/features/ocrRoutes.test.ts[90m:35[K[m
      1  src/features/ocrRoutes.ts[90m:4[K[m
      1  src/features/ocrService.ts[90m:20[K[m
@@ -1771,23 +2334,24 @@ Errors  Files
      2  src/features/paymentRoutes.ts[90m:24[K[m
      1  src/features/paymentService.test.ts[90m:3[K[m
      4  src/features/paymentService.ts[90m:2[K[m
+     4  src/features/prescriptionNotificationService.ts[90m:228[K[m
      6  src/features/prescriptionOrderRoutes.ts[90m:3[K[m
      1  src/features/profileRoutes.integration.test.ts[90m:4[K[m
      1  src/features/profileRoutes.test.ts[90m:4[K[m
      8  src/features/profileRoutes.ts[90m:3[K[m
      4  src/features/publicPaymentRoutes.ts[90m:2[K[m
      3  src/features/receiptService.test.ts[90m:4[K[m
-     3  src/features/receiptService.ts[90m:2[K[m
+     2  src/features/receiptService.ts[90m:2[K[m
     20  src/features/smsService.test.ts[90m:57[K[m
      1  src/features/userRoutes.ts[90m:2[K[m
      1  src/features/webhookRoutes.test.ts[90m:355[K[m
-    11  src/features/whatsappService.test.ts[90m:53[K[m
-     2  ../../packages/shared-types/src/index.ts[90m:322[K[m
-[K⠙[1mnpm[22m [31merror [mLifecycle script `build` failed with error:[K
-⠙[1mnpm[22m [31merror [94mcode [33m2[K[m
-⠙[1mnpm[22m [31merror [94mpath [mC:\Users\akgte\PharmaRx\apps\api[K
-[1mnpm[22m [31merror [94mworkspace [m@pharmarx/api@1.0.0[K
-⠹[K[1mnpm[22m [31merror [94mlocation [mC:\Users\akgte\PharmaRx\apps\api[K
-[1mnpm[22m [31merror [mcommand failed[K
-[1mnpm[22m [31merror [94mcommand [mC:\WINDOWS\system32\cmd.exe /d /s /c tsc[K
-⠸[K[?9001l[?1004l
+     6  src/features/whatsappService.test.ts[90m:199[K[m
+     3  ../../packages/shared-types/src/index.ts[90m:322[K[m
+⠙[K[K[1mnpm[22m [31merror [mLifecycle script `build` failed with error:
+[K⠹[K[1mnpm[22m [31merror [94mcode [33m2[m
+[K⠸[1mnpm[22m [31merror [94mpath [mC:\Users\akgte\PharmaRx\apps\api[K
+[K⠸[K[1mnpm[22m [31merror [94mworkspace [m@pharmarx/api@1.0.0
+[K⠼[K[1mnpm[22m [31merror [94mlocation [mC:\Users\akgte\PharmaRx\apps\api
+[K⠴[1mnpm[22m [31merror [mcommand failed[K
+⠴[K[1mnpm[22m [31merror [94mcommand [mC:\WINDOWS\system32\cmd.exe /d /s /c tsc[K
+⠦[K[K[?9001l[?1004l

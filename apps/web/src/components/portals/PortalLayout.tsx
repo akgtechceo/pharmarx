@@ -13,6 +13,8 @@ interface PortalLayoutProps {
     textColor: string;
   };
   children: React.ReactNode;
+  onProfileClick?: () => void;
+  onLogout?: () => void;
 }
 
 export default function PortalLayout({ 
@@ -20,7 +22,9 @@ export default function PortalLayout({
   brandColor, 
   userInfo, 
   welcomeMessage, 
-  children 
+  children,
+  onProfileClick,
+  onLogout
 }: PortalLayoutProps) {
   return (
     <div className="min-h-screen bg-gray-50">
@@ -37,8 +41,18 @@ export default function PortalLayout({
               <div className="text-sm text-gray-600">
                 {userInfo}
               </div>
-              <button className="text-gray-600 hover:text-gray-800">Profile</button>
-              <button className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700">
+              <button 
+                onClick={onProfileClick}
+                className="text-gray-600 hover:text-gray-800 disabled:opacity-50"
+                disabled={!onProfileClick}
+              >
+                Profile
+              </button>
+              <button 
+                onClick={onLogout}
+                className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 disabled:opacity-50"
+                disabled={!onLogout}
+              >
                 Logout
               </button>
             </div>

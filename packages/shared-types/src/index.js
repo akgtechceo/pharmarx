@@ -164,3 +164,5 @@ export const validateUpdateProfileRequest = (input) => {
         errors
     };
 };
+// Re-export inventory types
+export * from './inventory.types';

@@ -1,4 +1,5 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
+import { Wrapper } from '@googlemaps/react-wrapper';
 import { usePharmacyMap } from '../hooks/usePharmacyMap';
 import { usePharmacyAvailability } from '../hooks/usePharmacyAvailability';
 import PharmacyMarker from './PharmacyMarker';
@@ -55,6 +56,63 @@ class MapErrorBoundary extends React.Component<
   }
 }
 
+// Map component that will be rendered inside the Wrapper
+interface MapComponentProps {
+  mapRef: React.RefObject<HTMLDivElement>;
+  mapLoading: boolean;
+  availabilityLoading: boolean;
+  onMapLoad?: (map: google.maps.Map) => void;
+}
+
+const MapComponent: React.FC<MapComponentProps> = ({ 
+  mapRef, 
+  mapLoading, 
+  availabilityLoading, 
+  onMapLoad 
+}) => {
+  useEffect(() => {
+    if (!mapRef.current || !window.google) return;
+
+    const map = new window.google.maps.Map(mapRef.current, {
+      center: { lat: 40.7128, lng: -74.0060 }, // NYC default
+      zoom: 12,
+      mapTypeId: window.google.maps.MapTypeId.ROADMAP,
+      styles: [
+        {
+          featureType: 'poi',
+          elementType: 'labels',
+          stylers: [{ visibility: 'off' }]
+        }
+      ]
+    });
+
+    onMapLoad?.(map);
+  }, [mapRef, onMapLoad]);
+
+  return (
+    <div 
+      ref={mapRef}
+      data-testid="map-container"
+      className="w-full h-96 bg-gray-100 rounded-lg relative overflow-hidden"
+    >
+      {mapLoading && (
+        <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-10">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-2"></div>
+            <p className="text-sm text-gray-600">Loading map...</p>
+          </div>
+        </div>
+      )}
+      
+      {availabilityLoading && (
+        <div className="absolute top-4 right-4 bg-white bg-opacity-90 px-3 py-1 rounded-full text-xs text-gray-600 z-10">
+          Updating availability...
+        </div>
+      )}
+    </div>
+  );
+};
+
 const PharmacyMapView: React.FC<PharmacyMapViewProps> = ({
   medicationName,
   onPharmacySelect,
@@ -79,10 +137,29 @@ const PharmacyMapView: React.FC<PharmacyMapViewProps> = ({
     setShowSelectionModal(true);
   }, []);
 
-  const handleInfoWindowOpen = useCallback((pharmacyId: string) => {
-    setSelectedPharmacyId(pharmacyId);
-    setShowInfoWindow(true);
-  }, []);
+  // Removed unused handleInfoWindowOpen function
+
+  // Listen for custom events from map markers
+  useEffect(() => {
+    const handleMarkerClick = (event: CustomEvent) => {
+      const { pharmacy } = event.detail;
+      setSelectedPharmacyId(pharmacy.pharmacy.pharmacyId);
+      setShowInfoWindow(true);
+    };
+
+    const handleSelectPharmacy = (event: CustomEvent) => {
+      const pharmacyId = event.detail;
+      handlePharmacySelect(pharmacyId);
+    };
+
+    window.addEventListener('pharmacyMarkerClick', handleMarkerClick as EventListener);
+    window.addEventListener('selectPharmacy', handleSelectPharmacy as EventListener);
+
+    return () => {
+      window.removeEventListener('pharmacyMarkerClick', handleMarkerClick as EventListener);
+      window.removeEventListener('selectPharmacy', handleSelectPharmacy as EventListener);
+    };
+  }, [handlePharmacySelect]);
 
   const handleInfoWindowClose = useCallback(() => {
     setShowInfoWindow(false);
@@ -109,14 +186,79 @@ const PharmacyMapView: React.FC<PharmacyMapViewProps> = ({
 
   if (!apiKey) {
     return (
-      <div className={`bg-yellow-50 border border-yellow-200 rounded-lg p-6 text-center ${className}`}>
-        <div className="text-yellow-800">
-          <svg className="w-12 h-12 mx-auto mb-4" fill="currentColor" viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-          </svg>
-          <h3 className="text-lg font-semibold mb-2">Google Maps API Key Required</h3>
-          <p className="text-sm">
-            Please configure the VITE_GOOGLE_MAPS_API_KEY environment variable to enable map functionality.
+      <div className={`bg-blue-50 border border-blue-200 rounded-lg p-6 ${className}`}>
+        <div className="text-blue-800">
+          <div className="flex items-center mb-4">
+            <svg className="w-8 h-8 mr-3" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+            </svg>
+            <h3 className="text-lg font-semibold">Interactive Pharmacy Map</h3>
+          </div>
+          
+          <div className="bg-white rounded-lg p-4 mb-4">
+            <h4 className="font-medium text-gray-900 mb-3">Demo Mode - Sample Pharmacies</h4>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+                <div className="flex items-center">
+                  <div className="w-4 h-4 bg-green-500 rounded-full mr-3"></div>
+                  <div>
+                    <p className="font-medium text-gray-900">CVS Pharmacy</p>
+                    <p className="text-sm text-gray-600">123 Main St, New York, NY</p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className="text-sm font-medium text-green-600">In Stock (50 tablets)</p>
+                  <p className="text-xs text-gray-500">2.5 km away</p>
+                </div>
+              </div>
+              
+              <div className="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+                <div className="flex items-center">
+                  <div className="w-4 h-4 bg-yellow-500 rounded-full mr-3"></div>
+                  <div>
+                    <p className="font-medium text-gray-900">Walgreens</p>
+                    <p className="text-sm text-gray-600">456 Oak Ave, New York, NY</p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className="text-sm font-medium text-yellow-600">Low Stock (8 tablets)</p>
+                  <p className="text-xs text-gray-500">3.2 km away</p>
+                </div>
+              </div>
+              
+              <div className="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+                <div className="flex items-center">
+                  <div className="w-4 h-4 bg-red-500 rounded-full mr-3"></div>
+                  <div>
+                    <p className="font-medium text-gray-900">Rite Aid</p>
+                    <p className="text-sm text-gray-600">789 Pine St, New York, NY</p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className="text-sm font-medium text-red-600">Out of Stock</p>
+                  <p className="text-xs text-gray-500">1.8 km away</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="flex space-x-3">
+            <button
+              onClick={() => onPharmacySelect?.('pharmacy-1')}
+              className="flex-1 bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 text-sm font-medium"
+            >
+              Select CVS Pharmacy
+            </button>
+            <button
+              onClick={() => onPharmacySelect?.('pharmacy-2')}
+              className="flex-1 bg-yellow-600 text-white py-2 px-4 rounded-md hover:bg-yellow-700 text-sm font-medium"
+            >
+              Select Walgreens
+            </button>
+          </div>
+          
+          <p className="text-xs text-blue-600 mt-3">
+            💡 This is a demo view. In production, you would see an interactive map with real-time pharmacy locations.
           </p>
         </div>
       </div>
@@ -147,39 +289,39 @@ const PharmacyMapView: React.FC<PharmacyMapViewProps> = ({
   return (
     <MapErrorBoundary>
       <div className={`relative ${className}`}>
-        {/* Map Container */}
-        <div 
-          ref={mapRef}
-          data-testid="map-container"
-          className="w-full h-96 bg-gray-100 rounded-lg relative overflow-hidden"
-        >
-          {mapLoading && (
-            <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-10">
-              <div className="text-center">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-2"></div>
-                <p className="text-sm text-gray-600">Loading map...</p>
-              </div>
-            </div>
-          )}
-          
-          {availabilityLoading && (
-            <div className="absolute top-4 right-4 bg-white bg-opacity-90 px-3 py-1 rounded-full text-xs text-gray-600 z-10">
-              Updating availability...
-            </div>
-          )}
-        </div>
-
-        {/* Pharmacy Markers */}
-        {pharmacies.map((pharmacy) => (
-          <PharmacyMarker
-            key={pharmacy.pharmacy.pharmacyId}
-            pharmacy={pharmacy}
-            availability={availabilityData[pharmacy.pharmacy.pharmacyId]}
-            isSelected={selectedPharmacyId === pharmacy.pharmacy.pharmacyId}
-            onSelect={handlePharmacySelect}
-            onInfoWindowOpen={handleInfoWindowOpen}
-          />
-        ))}
+        <Wrapper 
+          apiKey={apiKey}
+          render={(status) => {
+            if (status === 'LOADING') {
+              return (
+                <div className="w-full h-96 bg-gray-100 rounded-lg flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-2"></div>
+                    <p className="text-sm text-gray-600">Loading Google Maps...</p>
+                  </div>
+                </div>
+              );
+            }
+            if (status === 'FAILURE') {
+              return (
+                <div className="w-full h-96 bg-red-50 rounded-lg flex items-center justify-center">
+                  <div className="text-red-600">Failed to load Google Maps. Please check your internet connection.</div>
+                </div>
+              );
+            }
+            return (
+              <MapComponent 
+                mapRef={mapRef}
+                mapLoading={mapLoading}
+                availabilityLoading={availabilityLoading}
+                onMapLoad={() => {
+                  // Initialize map service with the loaded map
+                  console.log('Map loaded successfully');
+                }}
+              />
+            );
+          }}
+        />
 
         {/* Info Window */}
         {showInfoWindow && selectedPharmacyId && (

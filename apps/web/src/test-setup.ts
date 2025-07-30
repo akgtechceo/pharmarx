@@ -119,4 +119,10 @@ Object.defineProperty(navigator, 'geolocation', {
 // Mock environment config
 vi.mock('./config/environment', () => ({
   getGoogleMapsApiKey: vi.fn(() => 'test-api-key')
-})); 
+}));
+
+// Setup MSW for API mocking
+if (process.env.NODE_ENV === 'test') {
+  const { server } = require('./mocks/server');
+  server.listen();
+} 

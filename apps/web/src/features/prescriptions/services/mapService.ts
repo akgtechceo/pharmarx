@@ -47,24 +47,10 @@ class MapService {
   async initialize(config: MapConfig): Promise<void> {
     this.config = config;
     
-    // Load Google Maps API if not already loaded
+    // Wait for Google Maps API to be available (loaded by @googlemaps/react-wrapper)
     if (!window.google?.maps) {
-      await this.loadGoogleMapsAPI(config.apiKey);
+      throw new Error('Google Maps API not loaded. Ensure @googlemaps/react-wrapper is used to load the API.');
     }
-  }
-
-  private async loadGoogleMapsAPI(apiKey: string): Promise<void> {
-    return new Promise((resolve, reject) => {
-      const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
-      script.async = true;
-      script.defer = true;
-      
-      script.onload = () => resolve();
-      script.onerror = () => reject(new Error('Failed to load Google Maps API'));
-      
-      document.head.appendChild(script);
-    });
   }
 
   createMap(container: HTMLElement, options?: Partial<MapConfig>): any {
@@ -173,26 +159,81 @@ class MapService {
       position,
       map: this.mapInstance.map,
       title: pharmacy.pharmacy.name,
-      icon: this.getMarkerIcon(),
+      icon: this.getMarkerIcon(pharmacy),
       animation: window.google.maps.Animation.DROP
+    });
+
+    // Add click event listener
+    window.google.maps.event.addListener(marker, 'click', () => {
+      this.onMarkerClick(pharmacy, marker);
     });
 
     return marker;
   }
 
-  private getMarkerIcon(): any {
+  private onMarkerClick(pharmacy: MapPharmacyData, marker: any): void {
+    // Create info window content
+    const content = this.createInfoWindowContent(pharmacy);
+    const infoWindow = this.createInfoWindow(pharmacy, content);
+    this.showInfoWindow(pharmacy.pharmacy.pharmacyId, marker);
+    
+    // Dispatch custom event for React components
+    const event = new CustomEvent('pharmacyMarkerClick', {
+      detail: { pharmacy, marker }
+    });
+    window.dispatchEvent(event);
+  }
+
+  private createInfoWindowContent(pharmacy: MapPharmacyData): string {
+    const availabilityStatus = this.getAvailabilityStatus(pharmacy);
+    const statusColor = {
+      'in-stock': '#10B981',
+      'low-stock': '#F59E0B', 
+      'out-of-stock': '#EF4444',
+      'unavailable': '#9CA3AF'
+    }[availabilityStatus];
+
+    return `
+      <div style="padding: 10px; max-width: 250px;">
+        <h3 style="margin: 0 0 8px 0; color: #1F2937; font-size: 16px; font-weight: 600;">
+          ${pharmacy.pharmacy.name}
+        </h3>
+        <p style="margin: 0 0 8px 0; color: #6B7280; font-size: 14px;">
+          ${pharmacy.pharmacy.address.street}<br>
+          ${pharmacy.pharmacy.address.city}, ${pharmacy.pharmacy.address.state} ${pharmacy.pharmacy.address.postalCode}
+        </p>
+        <div style="display: flex; align-items: center; margin: 8px 0;">
+          <div style="width: 12px; height: 12px; border-radius: 50%; background-color: ${statusColor}; margin-right: 8px;"></div>
+          <span style="color: #374151; font-size: 14px; text-transform: capitalize;">
+            ${availabilityStatus.replace('-', ' ')}
+          </span>
+        </div>
+        <p style="margin: 0 0 8px 0; color: #6B7280; font-size: 14px;">
+          Distance: ${pharmacy.distance.toFixed(1)} km<br>
+          Est. delivery: ${pharmacy.estimatedDeliveryTime} min
+        </p>
+        <button 
+          onclick="window.dispatchEvent(new CustomEvent('selectPharmacy', {detail: '${pharmacy.pharmacy.pharmacyId}'}))"
+          style="background-color: #3B82F6; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 14px; width: 100%;">
+          Select Pharmacy
+        </button>
+      </div>
+    `;
+  }
+
+  private getMarkerIcon(pharmacy: MapPharmacyData): any {
     // In a real implementation, you'd have different marker images
     // based on availability status. For now, using a simple colored circle
     return {
-      url: this.getMarkerUrl(),
+      url: this.getMarkerUrl(pharmacy),
       scaledSize: new window.google.maps.Size(32, 32),
       origin: new window.google.maps.Point(0, 0),
       anchor: new window.google.maps.Point(16, 32)
     };
   }
 
-  private getMarkerUrl(): string {
-    const status = this.getAvailabilityStatus();
+  private getMarkerUrl(pharmacy: MapPharmacyData): string {
+    const status = this.getAvailabilityStatus(pharmacy);
     
     const colors = {
       'in-stock': '#10B981', // green
@@ -210,10 +251,16 @@ class MapService {
     `)}`;
   }
 
-  private getAvailabilityStatus(): 'in-stock' | 'low-stock' | 'out-of-stock' | 'unavailable' {
+  private getAvailabilityStatus(pharmacy: MapPharmacyData): 'in-stock' | 'low-stock' | 'out-of-stock' | 'unavailable' {
     // This would be determined by inventory data
-    // For now, returning a default status
-    return 'in-stock';
+    // For now, returning a default status based on pharmacy data
+    if (pharmacy.inventoryItems && pharmacy.inventoryItems.length > 0) {
+      const totalQuantity = pharmacy.inventoryItems.reduce((sum, item) => sum + item.quantity, 0);
+      if (totalQuantity > 10) return 'in-stock';
+      if (totalQuantity > 0) return 'low-stock';
+      return 'out-of-stock';
+    }
+    return 'unavailable';
   }
 
   createInfoWindow(pharmacy: MapPharmacyData, content: string): any {

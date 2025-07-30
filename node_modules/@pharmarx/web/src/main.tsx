@@ -4,6 +4,13 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import App from './App.tsx'
 import './index.css'
 
+// Setup MSW for development
+if (import.meta.env.DEV) {
+  import('./mocks/browser').then(({ worker }) => {
+    worker.start();
+  });
+}
+
 const queryClient = new QueryClient()
 
 createRoot(document.getElementById('root')!).render(

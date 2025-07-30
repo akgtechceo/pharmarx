@@ -8,6 +8,7 @@ import { ProfileSelector } from '../../features/profiles/components/ProfileSelec
 import { AddProfileModal, ProfileEditModal } from '../../features/profiles/components';
 import { usePatientProfiles, useCreateProfile, useUpdateProfile, useDeleteProfile } from '../../features/profiles/hooks/usePatientProfiles';
 import { useProfileContext } from '../../features/profiles/hooks';
+import { AuthenticationService } from '../../services/authenticationService';
 
 // Mock data - in a real app, this would come from an API
 const mockMedications: MedicationInfo[] = [
@@ -66,6 +67,25 @@ export default function PatientPortal() {
   const [showEditProfileModal, setShowEditProfileModal] = useState(false);
   const [editingProfile, setEditingProfile] = useState(null);
   const navigate = useNavigate();
+  const authService = AuthenticationService.getInstance();
+
+  // Logout handler
+  const handleLogout = async () => {
+    try {
+      await authService.logout();
+      navigate('/');
+    } catch (error) {
+      console.error('Logout failed:', error);
+      // Even if logout fails, redirect to home for security
+      navigate('/');
+    }
+  };
+
+  // Profile click handler - could open a profile modal or navigate to profile page
+  const handleProfileClick = () => {
+    // For now, just toggle the add profile modal as a placeholder
+    setShowAddProfileModal(true);
+  };
 
   // Profile management hooks
   const { data: profilesData, isLoading: profilesLoading } = usePatientProfiles();
@@ -158,7 +178,42 @@ export default function PatientPortal() {
       brandColor="text-blue-600"
       userInfo=""
       welcomeMessage={welcomeMessage}
+      onLogout={handleLogout}
+      onProfileClick={handleProfileClick}
     >
+      {/* Welcome Message for New Users */}
+      {(!hasProfiles || profiles.length === 0) && (
+        <div className="mb-8">
+          <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+            <div className="flex items-center">
+              <svg className="w-5 h-5 text-green-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <div>
+                <h3 className="text-sm font-medium text-green-800">Welcome to PharmaRx!</h3>
+                <p className="text-sm text-green-700 mt-1">
+                  You can start uploading prescriptions right away. Create a profile later to save your information for future orders.
+                </p>
+                <div className="mt-2 flex space-x-2">
+                  <button
+                    onClick={() => setShowUploadModal(true)}
+                    className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700"
+                  >
+                    Upload Prescription Now
+                  </button>
+                  <button
+                    onClick={() => setShowAddProfileModal(true)}
+                    className="border border-green-600 text-green-600 px-3 py-1 rounded text-sm hover:bg-green-50"
+                  >
+                    Create Profile
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Profile Management - Only show when user has multiple profiles or wants to manage them */}
       {hasProfiles && profiles.length > 1 && (
         <div className="mb-8">
@@ -296,6 +351,7 @@ export default function PatientPortal() {
               <button 
                 onClick={() => setShowUploadModal(true)}
                 className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 flex items-center justify-center"
+                title="Upload prescription and select pharmacy"
               >
                 <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
@@ -310,6 +366,15 @@ export default function PatientPortal() {
               </button>
               <button className="w-full border border-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-50">
                 Update Insurance Info
+              </button>
+              <button 
+                onClick={() => navigate('/map-demo')}
+                className="w-full border border-blue-300 text-blue-700 py-2 px-4 rounded-md hover:bg-blue-50 flex items-center justify-center"
+              >
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                </svg>
+                View Pharmacy Map
               </button>
               <button 
                 onClick={() => setShowAddProfileModal(true)}

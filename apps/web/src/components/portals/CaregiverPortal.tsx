@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import PortalLayout from './PortalLayout';
 import { PatientInfo, CareTask, CommunicationMessage } from '../../types/portal';
 import { PrescriptionUpload } from '../PrescriptionUpload';
 import { PrescriptionOrder } from '@pharmarx/shared-types';
+import { AuthenticationService } from '../../services/authenticationService';
 import { 
   ProfileSelector, 
   AddProfileModal, 
@@ -47,6 +49,27 @@ export default function CaregiverPortal() {
   const [showAddProfileModal, setShowAddProfileModal] = useState(false);
   const [showEditProfileModal, setShowEditProfileModal] = useState(false);
   const [editingProfile, setEditingProfile] = useState(null);
+  
+  const navigate = useNavigate();
+  const authService = AuthenticationService.getInstance();
+
+  // Logout handler
+  const handleLogout = async () => {
+    try {
+      await authService.logout();
+      navigate('/');
+    } catch (error) {
+      console.error('Logout failed:', error);
+      // Even if logout fails, redirect to home for security
+      navigate('/');
+    }
+  };
+
+  // Profile click handler - could open a profile modal or navigate to profile page
+  const handleProfileClick = () => {
+    // For now, just toggle the add profile modal as a placeholder
+    setShowAddProfileModal(true);
+  };
 
   // Profile management hooks
   const { data: profilesData, isLoading: profilesLoading, error: profilesError } = usePatientProfiles();
@@ -148,7 +171,28 @@ export default function CaregiverPortal() {
       brandColor="text-green-600"
       userInfo={`Managing: ${profiles.length} Patients`}
       welcomeMessage={welcomeMessage}
+      onLogout={handleLogout}
+      onProfileClick={handleProfileClick}
     >
+      {/* Profile Selection Reminder */}
+      {!hasActiveProfile() && profiles.length > 0 && (
+        <div className="mb-6">
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+            <div className="flex items-center">
+              <svg className="w-5 h-5 text-yellow-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+              </svg>
+              <div>
+                <h3 className="text-sm font-medium text-yellow-800">Profile Selection Required</h3>
+                <p className="text-sm text-yellow-700 mt-1">
+                  Please select a patient profile to upload prescriptions and access care coordination features.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Profile Selector */}
       <div className="mb-6">
         <div className="bg-white rounded-lg shadow-md p-4">
@@ -320,18 +364,26 @@ export default function CaregiverPortal() {
             <h2 className="text-xl font-semibold text-gray-900 mb-4">Quick Actions</h2>
             <div className="space-y-3">
               <button 
-                onClick={() => setShowUploadModal(true)}
+                onClick={() => {
+                  if (hasActiveProfile()) {
+                    setShowUploadModal(true);
+                  } else {
+                    // Show profile selection prompt
+                    setShowAddProfileModal(true);
+                  }
+                }}
                 disabled={!hasActiveProfile()}
                 className={`w-full py-2 px-4 rounded-md flex items-center justify-center ${
                   hasActiveProfile()
                     ? 'bg-green-600 text-white hover:bg-green-700'
                     : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                 }`}
+                title={!hasActiveProfile() ? "Please select a patient profile first" : "Upload prescription for selected patient"}
               >
                 <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                 </svg>
-                Upload Patient Prescription
+                {hasActiveProfile() ? `Upload for ${activeProfile?.patientName}` : 'Select Patient to Upload'}
               </button>
               <button className="w-full border border-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-50">
                 Emergency Contact List

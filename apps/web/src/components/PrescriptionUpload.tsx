@@ -128,15 +128,7 @@ export const PrescriptionUpload: React.FC<PrescriptionUploadProps> = ({
   const handleUpload = async () => {
     if (!uploadedFile || !user) return;
 
-    // Validate that an active profile is selected
-    if (!hasValidActiveProfile) {
-      setUploadError('Please select a patient profile before uploading a prescription.');
-      return;
-    }
-
     try {
-      const activeProfile = requireActiveProfile();
-      
       setIsUploading(true);
       setUploadError(null);
       setUploadProgress(0);
@@ -144,9 +136,19 @@ export const PrescriptionUpload: React.FC<PrescriptionUploadProps> = ({
       // Create abort controller
       abortControllerRef.current = new AbortController();
 
+      // Use active profile if available, otherwise use a temporary profile ID
+      let profileId: string;
+      if (hasValidActiveProfile) {
+        const activeProfile = requireActiveProfile();
+        profileId = activeProfile.profileId;
+      } else {
+        // Create a temporary profile ID for users without profiles
+        profileId = `temp-${user.uid}-${Date.now()}`;
+      }
+
       const prescriptionOrder = await prescriptionService.uploadPrescription(
         uploadedFile.file,
-        activeProfile.profileId,
+        profileId,
         {
           onProgress: (progress) => {
             setUploadProgress(progress.percentage);
@@ -221,15 +223,15 @@ export const PrescriptionUpload: React.FC<PrescriptionUploadProps> = ({
         )}
       </div>
 
-      {/* Profile Validation Warning */}
+      {/* Welcome Message for New Users */}
       {!hasValidActiveProfile && (
-        <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+        <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
           <div className="flex items-center">
-            <svg className="w-5 h-5 text-yellow-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+            <svg className="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <p className="text-yellow-800 text-sm">
-              Please select a patient profile before uploading a prescription.
+            <p className="text-blue-800 text-sm">
+              You can upload prescriptions without creating a profile. Your information will be saved for this order only.
             </p>
           </div>
         </div>
@@ -242,12 +244,7 @@ export const PrescriptionUpload: React.FC<PrescriptionUploadProps> = ({
             {/* File Browse Button */}
             <button
               onClick={() => fileInputRef.current?.click()}
-              disabled={!hasValidActiveProfile}
-              className={`p-4 border-2 border-dashed rounded-lg text-center transition-colors ${
-                hasValidActiveProfile
-                  ? 'border-gray-300 hover:border-green-500 hover:bg-green-50'
-                  : 'border-gray-200 bg-gray-50 text-gray-400 cursor-not-allowed'
-              }`}
+              className="p-4 border-2 border-dashed border-gray-300 rounded-lg text-center transition-colors hover:border-green-500 hover:bg-green-50"
             >
               <svg className="w-8 h-8 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
@@ -259,12 +256,7 @@ export const PrescriptionUpload: React.FC<PrescriptionUploadProps> = ({
             {/* Camera Capture Button */}
             <button
               onClick={() => cameraInputRef.current?.click()}
-              disabled={!hasValidActiveProfile}
-              className={`p-4 border-2 border-dashed rounded-lg text-center transition-colors ${
-                hasValidActiveProfile
-                  ? 'border-gray-300 hover:border-green-500 hover:bg-green-50'
-                  : 'border-gray-200 bg-gray-50 text-gray-400 cursor-not-allowed'
-              }`}
+              className="p-4 border-2 border-dashed border-gray-300 rounded-lg text-center transition-colors hover:border-green-500 hover:bg-green-50"
             >
               <svg className="w-8 h-8 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
@@ -284,22 +276,17 @@ export const PrescriptionUpload: React.FC<PrescriptionUploadProps> = ({
             className={`p-8 border-2 border-dashed rounded-lg text-center transition-colors ${
               isDragActive
                 ? 'border-green-500 bg-green-50'
-                : hasValidActiveProfile
-                ? 'border-gray-300 hover:border-green-500 hover:bg-green-50'
-                : 'border-gray-200 bg-gray-50'
-            } ${!hasValidActiveProfile ? 'cursor-not-allowed' : ''}`}
+                : 'border-gray-300 hover:border-green-500 hover:bg-green-50'
+            }`}
           >
             <svg className="w-12 h-12 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
             </svg>
             <p className="text-lg font-medium text-gray-900 mb-2">
-              {hasValidActiveProfile ? 'Drop your prescription here' : 'Select a patient profile first'}
+              Drop your prescription here
             </p>
             <p className="text-sm text-gray-500">
-              {hasValidActiveProfile 
-                ? 'Drag and drop your prescription file here, or click to browse'
-                : 'You need to select a patient profile before uploading prescriptions'
-              }
+              Drag and drop your prescription file here, or click to browse
             </p>
           </div>
 
@@ -381,12 +368,7 @@ export const PrescriptionUpload: React.FC<PrescriptionUploadProps> = ({
               <>
                 <button
                   onClick={handleUpload}
-                  disabled={!hasValidActiveProfile}
-                  className={`flex-1 py-2 px-4 rounded-md font-medium transition-colors ${
-                    hasValidActiveProfile
-                      ? 'bg-green-600 text-white hover:bg-green-700'
-                      : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                  }`}
+                  className="flex-1 py-2 px-4 bg-green-600 text-white rounded-md font-medium hover:bg-green-700 transition-colors"
                 >
                   Upload Prescription
                 </button>
