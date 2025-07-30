@@ -115,7 +115,8 @@ export const useProfileContext = () => {
 
 // Hook for profile validation
 export const useProfileValidation = () => {
-  const { activeProfile, hasActiveProfile } = useProfileSelector();
+  const { getActiveProfile, hasActiveProfile } = useProfileSelector();
+  const activeProfile = getActiveProfile();
 
   const validateActiveProfile = () => {
     if (!hasActiveProfile()) {

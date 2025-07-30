@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PortalLayout from './PortalLayout';
 import { MedicationInfo, AppointmentInfo, HealthMetric } from '../../types/portal';
-import { PrescriptionUpload } from '../PrescriptionUpload';
-import { PrescriptionOrder } from '@pharmarx/shared-types';
+import { PrescriptionFlow } from '../PrescriptionFlow';
+import { PrescriptionOrder, CreateProfileRequest, UpdateProfileRequest } from '@pharmarx/shared-types';
+import { ProfileSelector } from '../../features/profiles/components/ProfileSelector';
+import { AddProfileModal, ProfileEditModal } from '../../features/profiles/components';
+import { usePatientProfiles, useCreateProfile, useUpdateProfile, useDeleteProfile } from '../../features/profiles/hooks/usePatientProfiles';
+import { useProfileContext } from '../../features/profiles/hooks';
+import { useAutoProfileSelection } from '../../features/profiles/hooks/useProfileSelector';
 
 // Mock data - in a real app, this would come from an API
 const mockMedications: MedicationInfo[] = [
@@ -58,7 +63,38 @@ const mockHealthMetrics: HealthMetric[] = [
 
 export default function PatientPortal() {
   const [showUploadModal, setShowUploadModal] = useState(false);
+  const [showAddProfileModal, setShowAddProfileModal] = useState(false);
+  const [showEditProfileModal, setShowEditProfileModal] = useState(false);
+  const [editingProfile, setEditingProfile] = useState(null);
   const navigate = useNavigate();
+
+  // Profile management hooks
+  const { data: profilesData, isLoading: profilesLoading, error: profilesError } = usePatientProfiles();
+  const createProfileMutation = useCreateProfile();
+  const updateProfileMutation = useUpdateProfile();
+  const deleteProfileMutation = useDeleteProfile();
+  
+  // Profile context
+  const {
+    activeProfileId,
+    activeProfile,
+    profiles,
+    setActiveProfile,
+    setProfiles,
+    hasActiveProfile,
+    hasProfiles,
+    isProfileActive
+  } = useProfileContext();
+
+  // Auto-profile selection
+  useAutoProfileSelection();
+
+  // Update profiles in context when data changes
+  useEffect(() => {
+    if (profilesData?.data?.profiles) {
+      setProfiles(profilesData.data.profiles);
+    }
+  }, [profilesData, setProfiles]);
 
   const handleUploadComplete = (order: PrescriptionOrder) => {
     setShowUploadModal(false);
@@ -78,6 +114,35 @@ export default function PatientPortal() {
     }
   };
 
+  const handleAddProfile = async (profileData: CreateProfileRequest) => {
+    try {
+      await createProfileMutation.mutateAsync(profileData);
+      setShowAddProfileModal(false);
+    } catch (error) {
+      console.error('Error creating profile:', error);
+    }
+  };
+
+  const handleEditProfile = async (profileId: string, profileData: UpdateProfileRequest) => {
+    try {
+      await updateProfileMutation.mutateAsync({ profileId, profileData });
+      setShowEditProfileModal(false);
+      setEditingProfile(null);
+    } catch (error) {
+      console.error('Error updating profile:', error);
+    }
+  };
+
+  const handleDeleteProfile = async (profileId: string) => {
+    if (window.confirm('Are you sure you want to delete this profile?')) {
+      try {
+        await deleteProfileMutation.mutateAsync(profileId);
+      } catch (error) {
+        console.error('Error deleting profile:', error);
+      }
+    }
+  };
+
   const welcomeMessage = {
     title: 'Welcome back, Patient!',
     description: "Here's your personalized health dashboard. Manage your medications, view appointments, and track your health journey.",
@@ -93,6 +158,17 @@ export default function PatientPortal() {
       userInfo=""
       welcomeMessage={welcomeMessage}
     >
+      {/* Profile Selector */}
+      <div className="mb-8">
+        <ProfileSelector
+          profiles={profiles}
+          activeProfileId={activeProfileId}
+          onProfileSelect={setActiveProfile}
+          onAddProfile={() => setShowAddProfileModal(true)}
+          isLoading={profilesLoading}
+        />
+      </div>
+
       {/* Patient Dashboard Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left Column - Main Dashboard */}
@@ -101,48 +177,41 @@ export default function PatientPortal() {
           <div className="bg-white rounded-lg shadow-md p-6">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-semibold text-gray-900">Current Medications</h2>
-              <button className="text-blue-600 hover:text-blue-800 text-sm font-medium">View All</button>
+              <button className="text-blue-600 hover:text-blue-700 text-sm font-medium">
+                View All
+              </button>
             </div>
             <div className="space-y-4">
               {mockMedications.map((medication, index) => (
                 <div key={index} className="border border-gray-200 rounded-lg p-4">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h3 className="font-medium text-gray-900">{medication.name}</h3>
-                      <p className="text-sm text-gray-600">{medication.instructions}</p>
-                      <p className="text-xs text-gray-500 mt-1">
-                        Prescribed by {medication.prescribedBy} - Refills: {medication.refillsRemaining} remaining
-                      </p>
-                    </div>
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="font-medium text-gray-900">{medication.name}</h3>
                     <span className={`text-xs px-2 py-1 rounded-full ${
                       medication.status === 'Active' 
-                        ? 'bg-green-100 text-green-800'
+                        ? 'bg-green-100 text-green-800' 
                         : 'bg-yellow-100 text-yellow-800'
                     }`}>
                       {medication.status}
                     </span>
+                  </div>
+                  <p className="text-sm text-gray-600 mb-2">{medication.instructions}</p>
+                  <div className="flex items-center justify-between text-xs text-gray-500">
+                    <span>Prescribed by {medication.prescribedBy}</span>
+                    <span>{medication.refillsRemaining} refills remaining</span>
                   </div>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Prescription History */}
+          {/* Recent Orders */}
           <div className="bg-white rounded-lg shadow-md p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold text-gray-900">Recent Prescription History</h2>
-              <button 
-                onClick={() => navigate('/portal/patient/orders/history')}
-                className="text-blue-600 hover:text-blue-800 text-sm font-medium"
-              >
-                View Full History
-              </button>
-            </div>
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">Recent Orders</h2>
             <div className="space-y-3">
               <div className="flex justify-between items-center py-3 border-b border-gray-100">
                 <div>
                   <h4 className="font-medium text-gray-900">Metformin 500mg</h4>
-                  <p className="text-sm text-gray-600">Filled at CVS Pharmacy - Dec 15, 2024</p>
+                  <p className="text-sm text-gray-600">Filled at Walgreens - Dec 10, 2024</p>
                 </div>
                 <span className="text-green-600 text-sm font-medium">Completed</span>
               </div>
@@ -237,14 +306,34 @@ export default function PatientPortal() {
       {showUploadModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-            <PrescriptionUpload
-              onUploadComplete={handleUploadComplete}
+            <PrescriptionFlow
               onCancel={() => setShowUploadModal(false)}
               isModal={true}
             />
           </div>
         </div>
       )}
+
+      {/* Add Profile Modal */}
+      <AddProfileModal
+        isOpen={showAddProfileModal}
+        onClose={() => setShowAddProfileModal(false)}
+        onSubmit={handleAddProfile}
+        isLoading={createProfileMutation.isPending}
+      />
+
+      {/* Edit Profile Modal */}
+      <ProfileEditModal
+        isOpen={showEditProfileModal}
+        profile={editingProfile}
+        onClose={() => {
+          setShowEditProfileModal(false);
+          setEditingProfile(null);
+        }}
+        onSubmit={(profileData) => editingProfile && handleEditProfile(editingProfile.profileId, profileData)}
+        onDelete={(profileId) => handleDeleteProfile(profileId)}
+        isLoading={updateProfileMutation.isPending || deleteProfileMutation.isPending}
+      />
     </PortalLayout>
   );
 } 
