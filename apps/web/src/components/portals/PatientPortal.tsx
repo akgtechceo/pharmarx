@@ -8,7 +8,6 @@ import { ProfileSelector } from '../../features/profiles/components/ProfileSelec
 import { AddProfileModal, ProfileEditModal } from '../../features/profiles/components';
 import { usePatientProfiles, useCreateProfile, useUpdateProfile, useDeleteProfile } from '../../features/profiles/hooks/usePatientProfiles';
 import { useProfileContext } from '../../features/profiles/hooks';
-import { useAutoProfileSelection } from '../../features/profiles/hooks/useProfileSelector';
 
 // Mock data - in a real app, this would come from an API
 const mockMedications: MedicationInfo[] = [
@@ -86,8 +85,13 @@ export default function PatientPortal() {
     isProfileActive
   } = useProfileContext();
 
-  // Auto-profile selection
-  useAutoProfileSelection();
+  // Auto-profile selection - only auto-select if user has exactly one profile
+  const profiles = profilesData?.data?.profiles || [];
+  useEffect(() => {
+    if (profiles.length === 1 && !activeProfileId) {
+      setActiveProfile(profiles[0].profileId);
+    }
+  }, [profiles, activeProfileId, setActiveProfile]);
 
   // Update profiles in context when data changes
   useEffect(() => {
@@ -158,16 +162,29 @@ export default function PatientPortal() {
       userInfo=""
       welcomeMessage={welcomeMessage}
     >
-      {/* Profile Selector */}
-      <div className="mb-8">
-        <ProfileSelector
-          profiles={profiles}
-          activeProfileId={activeProfileId}
-          onProfileSelect={setActiveProfile}
-          onAddProfile={() => setShowAddProfileModal(true)}
-          isLoading={profilesLoading}
-        />
-      </div>
+      {/* Profile Management - Only show when user has multiple profiles or wants to manage them */}
+      {hasProfiles && profiles.length > 1 && (
+        <div className="mb-8">
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold text-gray-900">Profile Management</h2>
+              <button
+                onClick={() => setShowAddProfileModal(true)}
+                className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+              >
+                Add Profile
+              </button>
+            </div>
+            <ProfileSelector
+              profiles={profiles}
+              activeProfileId={activeProfileId}
+              onProfileSelect={setActiveProfile}
+              onAddProfile={() => setShowAddProfileModal(true)}
+              isLoading={profilesLoading}
+            />
+          </div>
+        </div>
+      )}
 
       {/* Patient Dashboard Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -296,6 +313,15 @@ export default function PatientPortal() {
               </button>
               <button className="w-full border border-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-50">
                 Update Insurance Info
+              </button>
+              <button 
+                onClick={() => setShowAddProfileModal(true)}
+                className="w-full border border-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-50 flex items-center justify-center"
+              >
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+                Manage Profiles
               </button>
             </div>
           </div>
