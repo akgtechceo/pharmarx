@@ -47,9 +47,19 @@ export class AuthenticationService {
     } catch (error) {
       console.error('Login failed:', error);
       
-      // Fallback to mock login if Firebase fails
+      // Check if this is a Firebase emulator 400 error (Bad Request)
+      const is400Error = error instanceof Error && 
+                        (error.message.includes('400') || 
+                         error.message.includes('Bad Request') ||
+                         error.message.includes('network-request-failed'));
+      
+      // Fallback to mock login if Firebase fails, especially for emulator errors
       if (import.meta.env.DEV) {
-        console.log('Falling back to mock login...');
+        if (is400Error) {
+          console.log('🔧 Firebase emulator error detected, falling back to mock login...');
+        } else {
+          console.log('Falling back to mock login...');
+        }
         return await this.mockLogin(formData);
       }
       
@@ -84,6 +94,7 @@ export class AuthenticationService {
     }
 
     try {
+      // Try to get token - this might fail with 400 error in emulator
       const token = await currentUser.getIdToken();
       const userProfile = await this.getUserProfile(currentUser);
       
@@ -94,6 +105,23 @@ export class AuthenticationService {
       };
     } catch (error) {
       console.error('Failed to get current auth state:', error);
+      
+      // Check if this is a Firebase emulator error (400 Bad Request or network-request-failed)
+      const isEmulatorError = error instanceof Error && 
+                             (error.message.includes('400') || 
+                              error.message.includes('Bad Request') ||
+                              error.message.includes('network-request-failed') ||
+                              error.message.includes('auth/network-request-failed'));
+      
+      if (isEmulatorError) {
+        console.log('🧹 Clearing stale authentication state due to emulator error');
+        try {
+          await signOut(auth);
+        } catch (signOutError) {
+          console.warn('Failed to sign out during error recovery:', signOutError);
+        }
+      }
+      
       return {
         isAuthenticated: false,
         user: null,
@@ -302,11 +330,13 @@ export class AuthenticationService {
    */
   private isEmulatorRunning(): boolean {
     try {
-      // Since we can see the emulator connection messages in console,
-      // and we're in development mode, assume emulators are running
-      return import.meta.env.DEV && 
-             auth && 
-             !!auth.app;
+      // Check if we're in development and emulators are configured
+      const isDevMode = import.meta.env.DEV;
+      const hasAuthApp = auth && !!auth.app;
+      const isUsingDemoKey = auth?.app?.options?.apiKey === 'demo-api-key';
+      
+      // Only return true if we're in dev mode, have auth app, and using demo key
+      return isDevMode && hasAuthApp && isUsingDemoKey;
     } catch {
       return false;
     }
