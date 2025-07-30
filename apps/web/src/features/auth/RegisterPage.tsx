@@ -6,6 +6,8 @@ import { registrationService } from '../../services/registrationService';
 export const RegisterPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string>('');
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [registeredUser, setRegisteredUser] = useState<any>(null);
   const navigate = useNavigate();
 
   const handleRegister = async (formData: RegisterFormData) => {
@@ -13,13 +15,19 @@ export const RegisterPage: React.FC = () => {
     setError('');
     
     try {
-      await registrationService.register(formData);
+      const result = await registrationService.register(formData);
       
-      // Registration successful - redirect to dashboard or success page
-      navigate('/dashboard', { 
-        replace: true,
-        state: { message: 'Registration successful! Welcome to PharmaRx.' }
-      });
+      // Registration successful
+      setRegisteredUser(result.user);
+      setIsSuccess(true);
+      
+      // Show success message for 3 seconds then redirect
+      setTimeout(() => {
+        navigate('/', { 
+          replace: true,
+          state: { message: 'Registration successful! Welcome to PharmaRx.' }
+        });
+      }, 3000);
     } catch (error) {
       console.error('Registration failed:', error);
       setError(
@@ -31,6 +39,31 @@ export const RegisterPage: React.FC = () => {
       setIsLoading(false);
     }
   };
+
+  if (isSuccess) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+        <div className="sm:mx-auto sm:w-full sm:max-w-md">
+          <div className="text-center">
+            <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+              <svg className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+              Registration Successful!
+            </h2>
+            <p className="mt-2 text-center text-sm text-gray-600">
+              Welcome to PharmaRx, {registeredUser?.displayName}!
+            </p>
+            <p className="mt-2 text-center text-sm text-gray-600">
+              Redirecting to home page...
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">

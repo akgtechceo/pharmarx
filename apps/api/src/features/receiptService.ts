@@ -1,6 +1,6 @@
 import { Payment, PaymentGateway, PrescriptionOrder } from '@pharmarx/shared-types';
 import { db } from './database';
-import * as PDFDocument from 'pdfkit';
+import PDFDocument from 'pdfkit';
 import { Readable } from 'stream';
 
 export interface BeninReceiptDetails {

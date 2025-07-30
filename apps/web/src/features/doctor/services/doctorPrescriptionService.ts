@@ -6,7 +6,7 @@ import {
   DoctorPrescriptionHistoryResponse,
   ApiResponse
 } from '@pharmarx/shared-types';
-import { auth } from '../../auth/firebase';
+import { auth } from '../../../config/firebase';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
 

@@ -17,6 +17,7 @@ yarn-error.log*
 .firebaserc.local
 firebase-debug.log*
 ui-debug.log
+firebase-data/
 
 # Google Cloud
 .gcloud/

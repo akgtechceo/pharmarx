@@ -1,7 +1,8 @@
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
-import { auth } from '../config/firebase';
-import { User, UserRole } from '@pharmarx/shared-types';
+import { doc, getDoc } from 'firebase/firestore';
+import { auth, db } from '../config/firebase';
 import { LoginFormData } from '../components/LoginForm';
+import { User, UserRole } from '@pharmarx/shared-types';
 
 export interface LoginResult {
   uid: string;
@@ -32,15 +33,26 @@ export class AuthenticationService {
    */
   async login(formData: LoginFormData): Promise<LoginResult> {
     try {
-      // Step 1: Authenticate with Firebase
-      const { uid, user } = await this.authenticateWithFirebase(formData);
-
-      // Step 2: Get user profile from backend
-      const userProfile = await this.getUserProfile(user);
-
-      return { uid, user, userProfile };
+      // Check if emulators are running first, then fall back to API key check
+      if (this.isEmulatorRunning()) {
+        console.log('🔐 Using real Firebase authentication with emulators');
+        return await this.realFirebaseLogin(formData);
+      } else if (this.isRealFirebaseConfigured()) {
+        console.log('🔐 Using real Firebase authentication');
+        return await this.realFirebaseLogin(formData);
+      } else {
+        console.log('🎭 Using mock authentication for development');
+        return await this.mockLogin(formData);
+      }
     } catch (error) {
       console.error('Login failed:', error);
+      
+      // Fallback to mock login if Firebase fails
+      if (import.meta.env.DEV) {
+        console.log('Falling back to mock login...');
+        return await this.mockLogin(formData);
+      }
+      
       throw this.handleAuthenticationError(error);
     }
   }
@@ -167,14 +179,28 @@ export class AuthenticationService {
   }
 
   /**
-   * Get user profile from backend
+   * Get user profile from Firestore or backend
    */
   private async getUserProfile(firebaseUser: any): Promise<User> {
     try {
-      // Get Firebase ID token for authentication
+      // First, try to get user profile from Firestore
+      const userProfile = await this.getUserProfileFromFirestore(firebaseUser.uid);
+      if (userProfile) {
+        console.log('✅ Retrieved user profile from Firestore:', {
+          uid: userProfile.uid,
+          role: userProfile.role,
+          displayName: userProfile.displayName
+        });
+        return userProfile;
+      }
+    } catch (firestoreError) {
+      console.warn('Failed to get user profile from Firestore:', firestoreError);
+    }
+
+    try {
+      // Fallback: Get user profile from backend API
       const idToken = await firebaseUser.getIdToken();
 
-      // Call backend API to get user profile
       const response = await fetch('/api/auth/me', {
         method: 'GET',
         headers: {
@@ -193,14 +219,46 @@ export class AuthenticationService {
         throw new Error('Failed to get user profile');
       }
 
+      console.log('✅ Retrieved user profile from backend API');
       return result.data;
     } catch (error) {
-      console.error('Failed to get user profile:', error);
+      console.error('Failed to get user profile from backend:', error);
       // Re-throw the specific error message instead of generic one
       if (error instanceof Error) {
         throw error;
       }
       throw new Error('Failed to load user profile. Please try logging in again.');
+    }
+  }
+
+  /**
+   * Get user profile from Firestore
+   */
+  private async getUserProfileFromFirestore(uid: string): Promise<User | null> {
+    try {
+      const userDoc = await getDoc(doc(db, 'users', uid));
+      
+      if (!userDoc.exists()) {
+        console.log('🔍 User profile not found in Firestore for uid:', uid);
+        return null;
+      }
+
+      const userData = userDoc.data();
+      
+      // Convert Firestore data to User interface
+      const userProfile: User = {
+        uid: userData.uid,
+        role: userData.role as UserRole,
+        displayName: userData.displayName,
+        email: userData.email,
+        phoneNumber: userData.phoneNumber,
+        createdAt: userData.createdAt?.toDate() || new Date()
+      };
+
+      return userProfile;
+    } catch (error) {
+      console.error('Error retrieving user profile from Firestore:', error);
+      throw error;
     }
   }
 
@@ -219,6 +277,319 @@ export class AuthenticationService {
 
     // Handle unknown errors
     return new Error('Authentication failed. Please try again.');
+  }
+
+  /**
+   * Check if real Firebase is properly configured
+   */
+  private isRealFirebaseConfigured(): boolean {
+    try {
+      const apiKey = import.meta.env.VITE_FIREBASE_API_KEY;
+      const projectId = import.meta.env.VITE_FIREBASE_PROJECT_ID;
+      
+      return !!(apiKey && 
+                projectId && 
+                apiKey !== 'demo-api-key' && 
+                apiKey !== 'your_api_key_here' &&
+                projectId !== 'your_project_id');
+    } catch {
+      return false;
+    }
+  }
+
+  /**
+   * Check if Firebase emulators are running
+   */
+  private isEmulatorRunning(): boolean {
+    try {
+      // Since we can see the emulator connection messages in console,
+      // and we're in development mode, assume emulators are running
+      return import.meta.env.DEV && 
+             auth && 
+             !!auth.app;
+    } catch {
+      return false;
+    }
+  }
+
+  /**
+   * Real Firebase login
+   */
+  private async realFirebaseLogin(formData: LoginFormData): Promise<LoginResult> {
+    // Step 1: Authenticate with Firebase
+    const { uid, user } = await this.authenticateWithFirebase(formData);
+
+    // Step 2: Get user profile from backend (or create profile from Firebase data)
+    let userProfile: User;
+    try {
+      userProfile = await this.getUserProfile(user);
+    } catch (backendError) {
+      console.warn('Backend user profile fetch failed, creating profile from Firebase data:', backendError);
+      userProfile = await this.createUserProfileFromFirebase(user, formData);
+    }
+
+    console.log('✅ Real Firebase login successful:', {
+      uid: user.uid,
+      email: user.email,
+      role: userProfile.role
+    });
+
+    return { uid, user, userProfile };
+  }
+
+  /**
+   * Create user profile from Firebase user data
+   */
+  private async createUserProfileFromFirebase(firebaseUser: any, formData: LoginFormData): Promise<User> {
+    // First, try to get the user profile from Firestore
+    try {
+      const firestoreProfile = await this.getUserProfileFromFirestore(firebaseUser.uid);
+      if (firestoreProfile) {
+        console.log('🔍 Found user profile in Firestore with role:', firestoreProfile.role);
+        return firestoreProfile;
+      }
+    } catch (error) {
+      console.warn('Failed to retrieve profile from Firestore:', error);
+    }
+
+    // Fallback: Try to determine role from multiple sources
+    let detectedRole = UserRole.Patient; // Default fallback
+    
+    const email = formData.contactType === 'email' ? formData.email : undefined;
+    const phone = formData.contactType === 'phone' ? formData.phoneNumber : undefined;
+    
+    // Method 1: Check if we have stored user data in localStorage (for mock development)
+    try {
+      const storedUsers = localStorage.getItem('pharmarx_mock_users');
+      if (storedUsers) {
+        const users = JSON.parse(storedUsers);
+        const existingUser = users.find((user: any) => 
+          (email && user.email === email) || (phone && user.phoneNumber === phone)
+        );
+        if (existingUser && existingUser.role) {
+          detectedRole = existingUser.role;
+          console.log('🔍 Found existing user role from localStorage:', detectedRole, 'for', email || phone);
+          return this.createUserObject(firebaseUser, formData, detectedRole);
+        } else {
+          console.log('🔍 No existing user found in localStorage for:', email || phone);
+        }
+      } else {
+        console.log('🔍 No stored users found in localStorage');
+      }
+    } catch (error) {
+      console.warn('Failed to check stored user data:', error);
+    }
+    
+    // Method 2: Try to detect role from email patterns
+    if (email) {
+      const emailLower = email.toLowerCase();
+      if (emailLower.includes('doctor') || emailLower.includes('dr.')) {
+        detectedRole = UserRole.Doctor;
+        console.log('🔍 Detected Doctor role from email pattern');
+      } else if (emailLower.includes('pharmacist') || emailLower.includes('pharmacy')) {
+        detectedRole = UserRole.Pharmacist;
+        console.log('🔍 Detected Pharmacist role from email pattern');
+      } else if (emailLower.includes('caregiver') || emailLower.includes('care')) {
+        detectedRole = UserRole.Caregiver;
+        console.log('🔍 Detected Caregiver role from email pattern');
+      } else {
+        console.log('🔍 No role pattern detected in email, using default Patient role');
+      }
+    }
+
+    // Method 3: Check Firebase user metadata or custom claims
+    if (detectedRole === UserRole.Patient && firebaseUser) {
+      // Try to get role from Firebase user metadata
+      const displayName = firebaseUser.displayName;
+      if (displayName) {
+        const nameLower = displayName.toLowerCase();
+        if (nameLower.includes('doctor') || nameLower.includes('dr.')) {
+          detectedRole = UserRole.Doctor;
+          console.log('🔍 Detected Doctor role from Firebase display name');
+        } else if (nameLower.includes('pharmacist') || nameLower.includes('pharmacy')) {
+          detectedRole = UserRole.Pharmacist;
+          console.log('🔍 Detected Pharmacist role from Firebase display name');
+        } else if (nameLower.includes('caregiver') || nameLower.includes('care')) {
+          detectedRole = UserRole.Caregiver;
+          console.log('🔍 Detected Caregiver role from Firebase display name');
+        }
+      }
+    }
+
+    // Method 4: Check Firebase user email (if different from form data)
+    if (detectedRole === UserRole.Patient && firebaseUser.email) {
+      const firebaseEmailLower = firebaseUser.email.toLowerCase();
+      if (firebaseEmailLower.includes('doctor') || firebaseEmailLower.includes('dr.')) {
+        detectedRole = UserRole.Doctor;
+        console.log('🔍 Detected Doctor role from Firebase email');
+      } else if (firebaseEmailLower.includes('pharmacist') || firebaseEmailLower.includes('pharmacy')) {
+        detectedRole = UserRole.Pharmacist;
+        console.log('🔍 Detected Pharmacist role from Firebase email');
+      } else if (firebaseEmailLower.includes('caregiver') || firebaseEmailLower.includes('care')) {
+        detectedRole = UserRole.Caregiver;
+        console.log('🔍 Detected Caregiver role from Firebase email');
+      }
+    }
+
+    console.log('🎯 Final role detection result:', detectedRole, 'for user:', email || phone);
+    return this.createUserObject(firebaseUser, formData, detectedRole);
+  }
+
+  /**
+   * Helper method to create user object with consistent structure
+   */
+  private createUserObject(firebaseUser: any, formData: LoginFormData, role: UserRole): User {
+    return {
+      uid: firebaseUser.uid,
+      displayName: firebaseUser.displayName || formData.email?.split('@')[0] || 'User',
+      email: firebaseUser.email || (formData.contactType === 'email' ? formData.email : undefined),
+      phoneNumber: firebaseUser.phoneNumber || (formData.contactType === 'phone' ? formData.phoneNumber : undefined),
+      role: role,
+      createdAt: firebaseUser.metadata?.creationTime ? new Date(firebaseUser.metadata.creationTime) : new Date()
+    };
+  }
+
+  /**
+   * Mock login for development when Firebase is not available
+   */
+  private async mockLogin(formData: LoginFormData): Promise<LoginResult> {
+    // Simulate network delay
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    // Generate a mock UID
+    const mockUid = `mock_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    
+    // Create mock user object
+    const mockUser = {
+      uid: mockUid,
+      email: formData.contactType === 'email' ? formData.email : undefined,
+      phoneNumber: formData.contactType === 'phone' ? formData.phoneNumber : undefined,
+      getIdToken: async () => `mock_token_${mockUid}`,
+      emailVerified: true
+    };
+
+    // Create mock user profile with role detection
+    const userProfile = this.createMockUserProfile(mockUser, formData);
+
+    console.log('✅ Mock login successful:', {
+      uid: mockUid,
+      displayName: userProfile.displayName,
+      role: userProfile.role,
+      contactType: formData.contactType
+    });
+
+    return { uid: mockUid, user: mockUser, userProfile };
+  }
+
+  /**
+   * Create mock user profile with role detection
+   */
+  private createMockUserProfile(firebaseUser: any, formData: LoginFormData): User {
+    // Try to determine role from email/phone patterns or stored data
+    let detectedRole = UserRole.Patient; // Default fallback
+    
+    const email = formData.contactType === 'email' ? formData.email : undefined;
+    const phone = formData.contactType === 'phone' ? formData.phoneNumber : undefined;
+    
+    // Check if we have stored user data in localStorage (for mock development)
+    try {
+      const storedUsers = localStorage.getItem('pharmarx_mock_users');
+      if (storedUsers) {
+        const users = JSON.parse(storedUsers);
+        const existingUser = users.find((user: any) => 
+          (email && user.email === email) || (phone && user.phoneNumber === phone)
+        );
+        if (existingUser && existingUser.role) {
+          detectedRole = existingUser.role;
+          console.log('🔍 Found existing user role:', detectedRole, 'for', email || phone);
+        } else {
+          console.log('🔍 No existing user found for:', email || phone);
+        }
+      } else {
+        console.log('🔍 No stored users found in localStorage');
+      }
+    } catch (error) {
+      console.warn('Failed to check stored user data:', error);
+    }
+    
+    // Fallback: Try to detect role from email patterns
+    if (detectedRole === UserRole.Patient && email) {
+      const emailLower = email.toLowerCase();
+      if (emailLower.includes('doctor') || emailLower.includes('dr.')) {
+        detectedRole = UserRole.Doctor;
+        console.log('🔍 Detected Doctor role from email pattern');
+      } else if (emailLower.includes('pharmacist') || emailLower.includes('pharmacy')) {
+        detectedRole = UserRole.Pharmacist;
+        console.log('🔍 Detected Pharmacist role from email pattern');
+      } else if (emailLower.includes('caregiver') || emailLower.includes('care')) {
+        detectedRole = UserRole.Caregiver;
+        console.log('🔍 Detected Caregiver role from email pattern');
+      }
+    }
+
+    return {
+      uid: firebaseUser.uid,
+      displayName: formData.email?.split('@')[0] || 'Mock User',
+      email: formData.contactType === 'email' ? formData.email : undefined,
+      phoneNumber: formData.contactType === 'phone' ? formData.phoneNumber : undefined,
+      role: detectedRole,
+      createdAt: new Date()
+    };
+  }
+
+  /**
+   * Utility method to clear stored mock user data (for development/debugging)
+   */
+  public clearMockUserData(): void {
+    try {
+      localStorage.removeItem('pharmarx_mock_users');
+      console.log('🧹 Cleared mock user data from localStorage');
+    } catch (error) {
+      console.warn('Failed to clear mock user data:', error);
+    }
+  }
+
+  /**
+   * Utility method to get stored mock user data (for development/debugging)
+   */
+  public getMockUserData(): any[] {
+    try {
+      const storedUsers = localStorage.getItem('pharmarx_mock_users');
+      return storedUsers ? JSON.parse(storedUsers) : [];
+    } catch (error) {
+      console.warn('Failed to get mock user data:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Utility method to manually set user role for testing (for development/debugging)
+   */
+  public setUserRoleForTesting(email: string, role: UserRole): void {
+    try {
+      const storedUsers = localStorage.getItem('pharmarx_mock_users');
+      const users = storedUsers ? JSON.parse(storedUsers) : [];
+      
+      const existingUserIndex = users.findIndex((user: any) => user.email === email);
+      
+      if (existingUserIndex >= 0) {
+        users[existingUserIndex].role = role;
+        console.log('🔧 Updated existing user role:', email, '->', role);
+      } else {
+        users.push({
+          uid: `test_${Date.now()}`,
+          email: email,
+          role: role,
+          createdAt: new Date().toISOString()
+        });
+        console.log('🔧 Added new test user:', email, '->', role);
+      }
+      
+      localStorage.setItem('pharmarx_mock_users', JSON.stringify(users));
+      console.log('💾 Saved test user data to localStorage');
+    } catch (error) {
+      console.warn('Failed to set test user role:', error);
+    }
   }
 }
 

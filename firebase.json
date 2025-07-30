@@ -16,7 +16,12 @@
     "hosting": {
       "port": 5000
     },
-    "singleProjectMode": true
+    "singleProjectMode": true,
+    "hub": {
+      "port": 4400
+    },
+    "export": "./firebase-data",
+    "import": "./firebase-data"
   },
   "firestore": {
     "database": "(default)",

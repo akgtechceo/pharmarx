@@ -18,19 +18,31 @@ export class WhatsAppService {
   /**
    * Send a text message via WhatsApp Business API
    */
-  async sendMessage(recipientPhone: string, message: string): Promise<{ success: boolean; error?: string }> {
+  async sendMessage(recipientPhone: string, message: string): Promise<{ 
+    success: boolean; 
+    data?: { messageId: string; recipientId: string };
+    error?: string 
+  }> {
     try {
       // Check if WhatsApp is properly configured
       if (!this.accessToken || !this.phoneNumberId) {
         return {
           success: false,
-          error: 'WhatsApp API not configured'
+          error: 'WhatsApp service not configured'
+        };
+      }
+
+      // Validate message text
+      if (!message || message.trim().length === 0) {
+        return {
+          success: false,
+          error: 'Message text cannot be empty'
         };
       }
 
       // Clean and validate phone number
       const cleanedPhone = this.cleanPhoneNumber(recipientPhone);
-      if (!this.isValidPhoneNumber(cleanedPhone)) {
+      if (!this.validatePhoneNumber(cleanedPhone)) {
         return {
           success: false,
           error: 'Invalid phone number format'
@@ -64,7 +76,7 @@ export class WhatsAppService {
         
         return {
           success: false,
-          error: this.getErrorMessage(response.status, errorData)
+          error: this.parseErrorMessage(errorData)
         };
       }
 
@@ -72,13 +84,18 @@ export class WhatsAppService {
       console.log('WhatsApp message sent successfully:', result);
 
       return {
-        success: true
+        success: true,
+        data: {
+          messageId: result.messages?.[0]?.id || 'msg_' + Date.now(),
+          recipientId: cleanedPhone
+        }
       };
     } catch (error) {
       console.error('Error sending WhatsApp message:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       return {
         success: false,
-        error: 'Network error while sending WhatsApp message'
+        error: `Failed to send WhatsApp message: ${errorMessage}`
       };
     }
   }
@@ -91,17 +108,30 @@ export class WhatsAppService {
     recipientPhone: string,
     templateName: string,
     parameters: string[]
-  ): Promise<{ success: boolean; error?: string }> {
+  ): Promise<{ 
+    success: boolean; 
+    data?: { messageId: string; recipientId: string };
+    error?: string 
+  }> {
     try {
       if (!this.accessToken || !this.phoneNumberId) {
         return {
           success: false,
-          error: 'WhatsApp API not configured'
+          error: 'WhatsApp service not configured'
         };
       }
 
+      // Validate template name
+      if (!templateName || templateName.trim().length === 0) {
+        return {
+          success: false,
+          error: 'Template name cannot be empty'
+        };
+      }
+
+      // Clean and validate phone number
       const cleanedPhone = this.cleanPhoneNumber(recipientPhone);
-      if (!this.isValidPhoneNumber(cleanedPhone)) {
+      if (!this.validatePhoneNumber(cleanedPhone)) {
         return {
           success: false,
           error: 'Invalid phone number format'
@@ -115,9 +145,9 @@ export class WhatsAppService {
         template: {
           name: templateName,
           language: {
-            code: 'en_US'
+            code: 'en'
           },
-          components: [
+          components: parameters.length > 0 ? [
             {
               type: 'body',
               parameters: parameters.map(param => ({
@@ -125,7 +155,7 @@ export class WhatsAppService {
                 text: param
               }))
             }
-          ]
+          ] : undefined
         }
       };
 
@@ -143,11 +173,19 @@ export class WhatsAppService {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        console.error('WhatsApp template message error:', errorData);
+        console.error('WhatsApp template error:', errorData);
+        
+        // Check for specific template errors
+        if (errorData?.error?.code === 100) {
+          return {
+            success: false,
+            error: 'Template not found'
+          };
+        }
         
         return {
           success: false,
-          error: this.getErrorMessage(response.status, errorData)
+          error: this.parseErrorMessage(errorData)
         };
       }
 
@@ -155,7 +193,11 @@ export class WhatsAppService {
       console.log('WhatsApp template message sent successfully:', result);
 
       return {
-        success: true
+        success: true,
+        data: {
+          messageId: result.messages?.[0]?.id || 'msg_template_' + Date.now(),
+          recipientId: cleanedPhone
+        }
       };
     } catch (error) {
       console.error('Error sending WhatsApp template message:', error);
@@ -177,7 +219,11 @@ export class WhatsAppService {
    * Get WhatsApp business profile information
    * Useful for health checks and verification
    */
-  async getBusinessProfile(): Promise<{ success: boolean; data?: any; error?: string }> {
+  async getBusinessProfile(): Promise<{ 
+    success: boolean; 
+    data?: { id: string; name: string; category: string; description: string; profilePictureUrl?: string };
+    error?: string 
+  }> {
     try {
       if (!this.accessToken || !this.phoneNumberId) {
         return {
@@ -187,7 +233,7 @@ export class WhatsAppService {
       }
 
       const response = await fetch(
-        `${this.apiUrl}/${this.apiVersion}/${this.phoneNumberId}?fields=name,status,quality_rating`,
+        `${this.apiUrl}/${this.apiVersion}/${this.phoneNumberId}?fields=name,status,quality_rating,profile_picture_url`,
         {
           method: 'GET',
           headers: {
@@ -200,14 +246,22 @@ export class WhatsAppService {
         const errorData = await response.json().catch(() => ({}));
         return {
           success: false,
-          error: this.getErrorMessage(response.status, errorData)
+          error: this.parseErrorMessage(errorData)
         };
       }
 
       const result = await response.json();
+      
+      // Transform the response to match expected format
       return {
         success: true,
-        data: result
+        data: {
+          id: this.phoneNumberId,
+          name: result.name || 'PharmaRx',
+          category: 'HEALTH',
+          description: 'Online pharmacy service',
+          profilePictureUrl: result.profile_picture_url
+        }
       };
     } catch (error) {
       console.error('Error getting WhatsApp business profile:', error);
@@ -219,33 +273,32 @@ export class WhatsAppService {
   }
 
   /**
-   * Clean phone number to international format
+   * Clean phone number to WhatsApp format (remove + and spaces)
    */
   private cleanPhoneNumber(phone: string): string {
-    // Remove all non-digit characters except the leading +
-    let cleaned = phone.replace(/[^\d+]/g, '');
+    // Remove all non-digit characters
+    let cleaned = phone.replace(/[^\d]/g, '');
     
-    // Ensure it starts with +
-    if (!cleaned.startsWith('+')) {
-      cleaned = '+' + cleaned;
-    }
+    // Remove leading zeros
+    cleaned = cleaned.replace(/^0+/, '');
     
+    // Ensure it doesn't start with +
     return cleaned;
   }
 
   /**
-   * Validate phone number format (E.164)
+   * Validate phone number format for WhatsApp
    */
-  private isValidPhoneNumber(phone: string): boolean {
-    // E.164 format: +[1-9]\d{1,14}
-    const e164Regex = /^\+[1-9]\d{1,14}$/;
-    return e164Regex.test(phone);
+  private validatePhoneNumber(phone: string): boolean {
+    // WhatsApp requires numbers without + prefix
+    const whatsappRegex = /^[1-9]\d{1,14}$/;
+    return whatsappRegex.test(phone);
   }
 
   /**
    * Get user-friendly error message from WhatsApp API response
    */
-  private getErrorMessage(statusCode: number, errorData: any): string {
+  private parseErrorMessage(errorData: any): string {
     // Check for specific WhatsApp API error codes
     if (errorData?.error?.code) {
       switch (errorData.error.code) {
@@ -265,7 +318,7 @@ export class WhatsAppService {
     }
 
     // Fallback to HTTP status codes
-    switch (statusCode) {
+    switch (errorData?.status) {
       case 400:
         return 'Invalid request - check message format';
       case 401:
@@ -279,22 +332,23 @@ export class WhatsAppService {
       case 500:
         return 'WhatsApp server error - try again later';
       default:
-        return `WhatsApp API error (${statusCode})`;
+        return `WhatsApp API error (${errorData?.status || 'N/A'})`;
     }
   }
 
   /**
-   * Format payment message with proper WhatsApp formatting
+   * Format payment message for WhatsApp
    */
   formatPaymentMessage(paymentUrl: string, medicationName: string, cost: number): string {
-    return `🏥 *PharmaRx Payment Request*\n\n` +
+    // Ensure cost is a number and format it
+    const formattedCost = typeof cost === 'number' ? cost.toFixed(2) : '0.00';
+    
+    return `💊 *PharmaRx Payment Request*\n\n` +
            `Someone has requested your help to pay for their medication:\n\n` +
            `💊 *Medication:* ${medicationName}\n` +
-           `💰 *Amount:* $${cost.toFixed(2)}\n\n` +
+           `💰 *Amount:* $${formattedCost}\n\n` +
            `Please use this secure link to complete the payment:\n` +
            `🔗 ${paymentUrl}\n\n` +
-           `⏰ This link expires in 48 hours\n` +
-           `✅ Your payment is secure and protected\n\n` +
-           `Thank you for helping! 🙏`;
+           `*Link expires in 48 hours. Thank you for helping!*`;
   }
 }

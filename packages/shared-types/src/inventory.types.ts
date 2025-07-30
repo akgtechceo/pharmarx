@@ -42,6 +42,14 @@ export interface PharmacyLocation {
   isActive: boolean;
 }
 
+export interface MapPharmacyData {
+  pharmacy: PharmacyLocation;
+  inventoryItems: InventoryItem[];
+  distance: number; // Distance from user location in kilometers
+  estimatedDeliveryTime: number; // Estimated delivery time in minutes
+  isPreferred: boolean; // Based on user preferences or past orders
+}
+
 export interface InventoryQueryRequest {
   medicationName?: string;
   genericName?: string;
