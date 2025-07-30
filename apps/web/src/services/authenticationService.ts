@@ -1,5 +1,5 @@
-import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
+import { signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword } from 'firebase/auth';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { auth, db } from '../config/firebase';
 import { LoginFormData } from '../components/LoginForm';
 import { User, UserRole } from '@pharmarx/shared-types';
@@ -33,12 +33,13 @@ export class AuthenticationService {
    */
   async login(formData: LoginFormData): Promise<LoginResult> {
     try {
-      // Check if emulators are running first, then fall back to API key check
-      if (this.isEmulatorRunning()) {
-        console.log('🔐 Using real Firebase authentication with emulators');
-        return await this.realFirebaseLogin(formData);
-      } else if (this.isRealFirebaseConfigured()) {
-        console.log('🔐 Using real Firebase authentication');
+      // Force Firebase emulator usage in development if emulator is running
+      const emulatorDetected = this.isEmulatorRunning();
+      
+      if (emulatorDetected || this.isRealFirebaseConfigured()) {
+        console.log(emulatorDetected ? 
+          '🔐 Using real Firebase authentication with emulators' : 
+          '🔐 Using real Firebase authentication');
         return await this.realFirebaseLogin(formData);
       } else {
         console.log('🎭 Using mock authentication for development');
@@ -333,11 +334,27 @@ export class AuthenticationService {
       // Check if we're in development and emulators are configured
       const isDevMode = import.meta.env.DEV;
       const hasAuthApp = auth && !!auth.app;
-      const isUsingDemoKey = auth?.app?.options?.apiKey === 'demo-api-key';
+      const currentApiKey = auth?.app?.options?.apiKey;
+      const isUsingDemoKey = currentApiKey === 'demo-api-key';
       
-      // Only return true if we're in dev mode, have auth app, and using demo key
-      return isDevMode && hasAuthApp && isUsingDemoKey;
-    } catch {
+      // Also check if we're on localhost (strong indicator of emulator usage)
+      const isLocalhost = typeof window !== 'undefined' && 
+                         (window.location.hostname === 'localhost' || 
+                          window.location.hostname === '127.0.0.1');
+      
+      console.log('🔍 Emulator detection:', {
+        isDevMode,
+        hasAuthApp,
+        currentApiKey,
+        isUsingDemoKey,
+        isLocalhost,
+        emulatorRunning: isDevMode && hasAuthApp && (isUsingDemoKey || isLocalhost)
+      });
+      
+      // Return true if we're in dev mode, have auth app, and either using demo key OR on localhost
+      return isDevMode && hasAuthApp && (isUsingDemoKey || isLocalhost);
+    } catch (error) {
+      console.warn('Emulator detection failed:', error);
       return false;
     }
   }
@@ -580,6 +597,48 @@ export class AuthenticationService {
   }
 
   /**
+   * Create a test user in Firebase Auth emulator for testing (development only)
+   */
+  public async createTestUser(email: string = 'test@pharmarx.com', password: string = 'test123'): Promise<void> {
+    if (!import.meta.env.DEV) {
+      throw new Error('Test user creation is only available in development mode');
+    }
+
+    try {
+      console.log('🧪 Creating test user in Firebase Auth emulator...');
+      
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Create user profile in Firestore
+      const userProfile = {
+        uid: user.uid,
+        email: user.email,
+        displayName: 'Test Patient',
+        role: 'patient',
+        phoneNumber: null,
+        createdAt: new Date()
+      };
+
+      await setDoc(doc(db, 'users', user.uid), userProfile);
+
+      console.log('✅ Test user created successfully:', {
+        uid: user.uid,
+        email: user.email,
+        message: `You can now login with ${email} / ${password}`
+      });
+
+    } catch (error: any) {
+      if (error.code === 'auth/email-already-in-use') {
+        console.log('ℹ️ Test user already exists:', email);
+      } else {
+        console.error('Failed to create test user:', error);
+        throw error;
+      }
+    }
+  }
+
+  /**
    * Utility method to get stored mock user data (for development/debugging)
    */
   public getMockUserData(): any[] {
@@ -625,4 +684,13 @@ export class AuthenticationService {
 
 // Export singleton instance
 export const authenticationService = AuthenticationService.getInstance();
-export default authenticationService; 
+export default authenticationService;
+
+// Expose test utilities in development mode
+if (import.meta.env.DEV && typeof window !== 'undefined') {
+  (window as any).createTestUser = () => authenticationService.createTestUser();
+  (window as any).clearMockData = () => authenticationService.clearMockUserData();
+  console.log('🛠️ Development utilities available:');
+  console.log('  - window.createTestUser() - Creates test@pharmarx.com / test123');
+  console.log('  - window.clearMockData() - Clears mock user data');
+} 
