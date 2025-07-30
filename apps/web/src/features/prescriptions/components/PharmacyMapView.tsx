@@ -73,20 +73,40 @@ const MapComponent: React.FC<MapComponentProps> = ({
   useEffect(() => {
     if (!mapRef.current || !window.google) return;
 
-    const map = new window.google.maps.Map(mapRef.current, {
-      center: { lat: 40.7128, lng: -74.0060 }, // NYC default
-      zoom: 12,
-      mapTypeId: window.google.maps.MapTypeId.ROADMAP,
-      styles: [
-        {
-          featureType: 'poi',
-          elementType: 'labels',
-          stylers: [{ visibility: 'off' }]
-        }
-      ]
-    });
+    // Ensure the element exists and is valid
+    if (!(mapRef.current instanceof HTMLElement)) {
+      console.warn('Map ref is not a valid HTML element');
+      return;
+    }
 
-    onMapLoad?.(map);
+    let map: google.maps.Map | null = null;
+
+    try {
+      map = new window.google.maps.Map(mapRef.current, {
+        center: { lat: 40.7128, lng: -74.0060 }, // NYC default
+        zoom: 12,
+        mapTypeId: window.google.maps.MapTypeId.ROADMAP,
+        styles: [
+          {
+            featureType: 'poi',
+            elementType: 'labels',
+            stylers: [{ visibility: 'off' }]
+          }
+        ]
+      });
+
+      onMapLoad?.(map);
+    } catch (error) {
+      console.error('Failed to create map:', error);
+    }
+
+    // Cleanup function
+    return () => {
+      if (map) {
+        // Clear any event listeners or cleanup map resources
+        console.log('Cleaning up map instance');
+      }
+    };
   }, [mapRef, onMapLoad]);
 
   return (

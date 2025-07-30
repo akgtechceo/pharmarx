@@ -1,4 +1,4 @@
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 // Mock pharmacy data
 const mockPharmacies = [
@@ -141,35 +141,34 @@ const mockPharmacies = [
 
 export const handlers = [
   // Mock pharmacy API endpoint
-  rest.get('/api/inventory/pharmacies', (req, res, ctx) => {
-    const lat = req.url.searchParams.get('lat');
-    const lng = req.url.searchParams.get('lng');
-    const radius = req.url.searchParams.get('radius');
+  http.get('/api/inventory/pharmacies', async ({ request }) => {
+    const url = new URL(request.url);
+    const lat = url.searchParams.get('lat');
+    const lng = url.searchParams.get('lng');
+    const radius = url.searchParams.get('radius');
 
     // Simulate API delay
-    return res(
-      ctx.delay(500),
-      ctx.status(200),
-      ctx.json(mockPharmacies)
-    );
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    return HttpResponse.json(mockPharmacies);
   }),
 
   // Mock pharmacy selection endpoint
-  rest.post('/api/pharmacy/select', (req, res, ctx) => {
-    return res(
-      ctx.delay(300),
-      ctx.status(200),
-      ctx.json({
-        success: true,
-        message: 'Pharmacy selected successfully'
-      })
-    );
+  http.post('/api/pharmacy/select', async () => {
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 300));
+    
+    return HttpResponse.json({
+      success: true,
+      message: 'Pharmacy selected successfully'
+    });
   }),
 
   // Mock inventory availability endpoint
-  rest.get('/api/inventory/items', (req, res, ctx) => {
-    const medicationName = req.url.searchParams.get('medicationName');
-    const pharmacyIds = req.url.searchParams.get('pharmacyIds');
+  http.get('/api/inventory/items', async ({ request }) => {
+    const url = new URL(request.url);
+    const medicationName = url.searchParams.get('medicationName');
+    const pharmacyIds = url.searchParams.get('pharmacyIds');
 
     const availabilityData: Record<string, any[]> = {};
     
@@ -179,10 +178,9 @@ export const handlers = [
       }
     });
 
-    return res(
-      ctx.delay(200),
-      ctx.status(200),
-      ctx.json(availabilityData)
-    );
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 200));
+    
+    return HttpResponse.json(availabilityData);
   })
 ]; 
