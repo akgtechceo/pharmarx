@@ -22,14 +22,24 @@ export const isTokenExpired = (token: string): boolean => {
  * Get a valid authentication token, refreshing if necessary
  */
 export const getValidAuthToken = async (): Promise<string | null> => {
+  console.log('🔐 getValidAuthToken called');
+  
   // First check if Firebase has a current user
   const currentUser = auth.currentUser;
+  console.log('🔐 Firebase currentUser:', currentUser ? `User ID: ${currentUser.uid}` : 'null');
+  
   if (!currentUser) {
     console.log('🔐 No Firebase current user found');
     return null;
   }
 
   const authState = useAuthStore.getState();
+  console.log('🔐 Auth store state:', {
+    isAuthenticated: authState.isAuthenticated,
+    hasUser: !!authState.user,
+    hasToken: !!authState.token,
+    userId: authState.user?.uid
+  });
   
   // Check if our auth store thinks we're authenticated
   if (!authState.isAuthenticated || !authState.user) {
@@ -73,6 +83,7 @@ export const getValidAuthToken = async (): Promise<string | null> => {
     }
   }
   
+  console.log('✅ Returning valid token');
   return token;
 };
 

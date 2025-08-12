@@ -15,11 +15,24 @@ const API_BASE_URL = `${import.meta.env.VITE_API_URL || 'http://localhost:5001'}
 // Helper function to get authentication headers
 const getAuthHeaders = async () => {
   try {
+    console.log('🔐 getAuthHeaders called');
+    
+    // Check auth store state first
+    const authState = useAuthStore.getState();
+    console.log('🔐 Current auth state:', {
+      isAuthenticated: authState.isAuthenticated,
+      hasUser: !!authState.user,
+      hasToken: !!authState.token,
+      userId: authState.user?.uid
+    });
+    
     const token = await getValidAuthToken();
     if (!token) {
+      console.log('🔐 No valid token found, user needs to authenticate');
       throw new Error('User not authenticated. Please log in to access profiles.');
     }
     
+    console.log('✅ Got valid token for profiles request');
     return {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`,

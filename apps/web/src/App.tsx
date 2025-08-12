@@ -54,7 +54,8 @@ class ErrorBoundary extends React.Component<
 
 // Authentication initialization component
 function AuthInitializer({ children }: { children: React.ReactNode }) {
-  const { initializeAuth, isLoading, cleanup } = useAuthStore();
+  const { initializeAuth, isLoading, cleanup, isAuthenticated, user } = useAuthStore();
+  const navigate = useNavigate();
 
   useEffect(() => {
     initializeAuth();
@@ -65,12 +66,40 @@ function AuthInitializer({ children }: { children: React.ReactNode }) {
     };
   }, [initializeAuth, cleanup]);
 
+  // Debug authentication status
+  useEffect(() => {
+    console.log('🔐 AuthInitializer - Auth state changed:', {
+      isAuthenticated,
+      hasUser: !!user,
+      userId: user?.uid,
+      isLoading
+    });
+    
+    // If not loading and not authenticated, redirect to login
+    if (!isLoading && !isAuthenticated) {
+      console.log('🔐 User not authenticated, redirecting to login');
+      navigate('/login', { replace: true });
+    }
+  }, [isAuthenticated, user, isLoading, navigate]);
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-100 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
           <p className="text-gray-600">Initializing application...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // If not authenticated, show loading while redirecting
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Redirecting to login...</p>
         </div>
       </div>
     );
