@@ -20,8 +20,8 @@ export interface PrescriptionUploadOptions {
 }
 
 class PrescriptionService {
-  private readonly baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:5001';
-  private readonly ocrUrl = import.meta.env.VITE_OCR_URL || 'http://localhost:5002';
+  private readonly baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+  private readonly ocrUrl = import.meta.env.VITE_OCR_URL || 'http://localhost:3002';
   private readonly useMockMode = import.meta.env.DEV && !import.meta.env.VITE_API_URL;
 
   /**
