@@ -21,7 +21,6 @@ export interface PrescriptionUploadOptions {
 
 class PrescriptionService {
   private readonly baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
-  private readonly ocrUrl = import.meta.env.VITE_OCR_URL || 'http://localhost:3002';
   private readonly useMockMode = import.meta.env.DEV && !import.meta.env.VITE_API_URL;
 
   /**
@@ -265,7 +264,7 @@ class PrescriptionService {
     try {
       const token = await this.getAuthTokenOrThrow();
 
-      const response = await fetch(`${this.ocrUrl}/orders/${orderId}`, {
+      const response = await fetch(`${this.baseUrl}/api/orders/${orderId}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
