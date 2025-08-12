@@ -154,8 +154,8 @@ export const useAuthStore = create<AuthStore>()(
 
       initializeAuth: async () => {
         const currentState = get();
-        // Don't re-initialize if already authenticated with token
-        if (currentState.isAuthenticated && currentState.token) {
+        // Don't re-initialize if already authenticated with valid token
+        if (currentState.isAuthenticated && currentState.token && !currentState.isLoading) {
           console.log('✅ Auth already initialized with token');
           return;
         }
@@ -288,6 +288,11 @@ export const useAuthStore = create<AuthStore>()(
         if (state) {
           // Clear token on hydration - it will be refreshed when needed
           state.token = null;
+          // If we have persisted auth state, we need to verify it's still valid
+          // by checking Firebase auth state, so mark as loading
+          if (state.isAuthenticated && state.user) {
+            state.isLoading = true;
+          }
           // Don't automatically call initializeAuth here - let the app handle it
           // This prevents issues with Firebase emulator errors during app load
         }
