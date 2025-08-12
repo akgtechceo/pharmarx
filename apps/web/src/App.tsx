@@ -5,8 +5,10 @@ import LoginPage from './features/auth/LoginPage';
 import PatientPortal from './components/portals/PatientPortal';
 import CaregiverPortal from './components/portals/CaregiverPortal';
 import MapDemo from './components/MapDemo';
+import SimpleMapTest from './components/SimpleMapTest';
 import { AuthenticationService } from './services/authenticationService';
 import { logGoogleMapsStatus } from './utils/googleMapsValidator';
+import { useAuthStore } from './stores/authStore';
 // TODO: Create dedicated DoctorPortal and PharmacistPortal components
 // For now, use the placeholder components defined below
 
@@ -50,6 +52,33 @@ class ErrorBoundary extends React.Component<
   }
 }
 
+// Authentication initialization component
+function AuthInitializer({ children }: { children: React.ReactNode }) {
+  const { initializeAuth, isLoading, cleanup } = useAuthStore();
+
+  useEffect(() => {
+    initializeAuth();
+    
+    // Cleanup function to remove Firebase auth listener
+    return () => {
+      cleanup();
+    };
+  }, [initializeAuth, cleanup]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Initializing application...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return <>{children}</>;
+}
+
 function App() {
   useEffect(() => {
     // Log Google Maps setup status on app startup
@@ -58,18 +87,21 @@ function App() {
 
   return (
     <ErrorBoundary>
-      <Router>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/portal/patient" element={<PatientPortal />} />
-          <Route path="/portal/caregiver" element={<CaregiverPortal />} />
-          <Route path="/portal/doctor" element={<DoctorPortalPlaceholder />} />
-          <Route path="/portal/pharmacist" element={<PharmacistPortalPlaceholder />} />
-          <Route path="/map-demo" element={<MapDemo />} />
-        </Routes>
-      </Router>
+      <AuthInitializer>
+        <Router>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/portal/patient" element={<PatientPortal />} />
+            <Route path="/portal/caregiver" element={<CaregiverPortal />} />
+            <Route path="/portal/doctor" element={<DoctorPortalPlaceholder />} />
+            <Route path="/portal/pharmacist" element={<PharmacistPortalPlaceholder />} />
+            <Route path="/map-demo" element={<MapDemo />} />
+            <Route path="/simple-map-test" element={<SimpleMapTest />} />
+          </Routes>
+        </Router>
+      </AuthInitializer>
     </ErrorBoundary>
   );
 }
@@ -154,13 +186,13 @@ function HomePage() {
 
 // Placeholder components for now - DEPRECATED: Use imported PatientPortal instead
 function PatientPortalPlaceholder() {
-  const [prescriptions, setPrescriptions] = React.useState([
+  const [prescriptions] = React.useState([
     { id: 1, medication: 'Aspirin', dosage: '100mg', frequency: 'Once daily', status: 'Active', refills: 2, nextRefill: '2024-01-15' },
     { id: 2, medication: 'Vitamin D', dosage: '1000 IU', frequency: 'Once daily', status: 'Active', refills: 1, nextRefill: '2024-01-20' },
     { id: 3, medication: 'Metformin', dosage: '500mg', frequency: 'Twice daily', status: 'Active', refills: 0, nextRefill: '2024-01-10' }
   ]);
 
-  const [appointments, setAppointments] = React.useState([
+  const [appointments] = React.useState([
     { id: 1, doctor: 'Dr. Sarah Johnson', date: '2024-01-15', time: '10:00 AM', type: 'Check-up', status: 'Confirmed' },
     { id: 2, doctor: 'Dr. Michael Chen', date: '2024-01-22', time: '2:30 PM', type: 'Follow-up', status: 'Pending' }
   ]);
@@ -191,7 +223,7 @@ function PatientPortalPlaceholder() {
 
   // State for tracking modal
   const [showTrackingModal, setShowTrackingModal] = useState(false);
-  const [selectedPrescription, setSelectedPrescription] = useState<any>(null);
+  const [selectedPrescription] = useState<any>(null);
 
   const handleTrackPrescription = () => {
     // Get active prescriptions for tracking

@@ -2,6 +2,8 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { User, UserRole } from '@pharmarx/shared-types';
 import { authenticationService } from '../services/authenticationService';
+import { auth } from '../config/firebase';
+import { onAuthStateChanged } from 'firebase/auth';
 
 export interface AuthState {
   isAuthenticated: boolean;
@@ -9,6 +11,7 @@ export interface AuthState {
   token: string | null;
   isLoading: boolean;
   error: string | null;
+  unsubscribe?: () => void; // Add unsubscribe function to state
 }
 
 export interface AuthActions {
@@ -20,6 +23,7 @@ export interface AuthActions {
   initializeAuth: () => Promise<void>;
   hasRole: (role: UserRole) => boolean;
   updateAuthState: (user: User, token: string) => void;
+  cleanup: () => void; // Add cleanup action
 }
 
 export interface AuthStore extends AuthState, AuthActions {}
@@ -72,13 +76,20 @@ export const useAuthStore = create<AuthStore>()(
         set({ isLoading: true });
         
         try {
+          // Clean up Firebase auth listener
+          const currentState = get();
+          if (currentState.unsubscribe) {
+            currentState.unsubscribe();
+          }
+          
           await authenticationService.logout();
           set({
             isAuthenticated: false,
             user: null,
             token: null,
             isLoading: false,
-            error: null
+            error: null,
+            unsubscribe: undefined
           });
         } catch (error) {
           console.error('Logout failed:', error);
@@ -88,7 +99,8 @@ export const useAuthStore = create<AuthStore>()(
             user: null,
             token: null,
             isLoading: false,
-            error: error instanceof Error ? error.message : 'Logout failed'
+            error: error instanceof Error ? error.message : 'Logout failed',
+            unsubscribe: undefined
           });
         }
       },
@@ -151,53 +163,68 @@ export const useAuthStore = create<AuthStore>()(
         set({ isLoading: true });
         
         try {
-          const authState = await authenticationService.getCurrentAuthState();
-          
-          if (authState.isAuthenticated && authState.user && authState.token) {
-            // Full authentication state available
-            set({
-              isAuthenticated: true,
-              user: authState.user,
-              token: authState.token,
-              isLoading: false,
-              error: null
-            });
-            console.log('✅ Auth initialized with token');
-          } else if (authState.isAuthenticated && authState.user && !authState.token) {
-            // User is authenticated but token is missing - try to refresh
-            console.log('🔄 User authenticated but token missing, attempting refresh...');
-            try {
-              const newToken = await authenticationService.refreshToken();
+          // Set up Firebase auth state listener
+          const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+            console.log('🔍 Firebase auth state changed:', firebaseUser ? firebaseUser.uid : 'none');
+            
+            if (firebaseUser) {
+              // Firebase has a user, try to get their token
+              try {
+                const firebaseToken = await firebaseUser.getIdToken();
+                console.log('✅ Got Firebase token:', !!firebaseToken);
+                
+                // Get user profile from authentication service
+                const authState = await authenticationService.getCurrentAuthState();
+                
+                if (authState.user) {
+                  // Full authentication state available
+                  set({
+                    isAuthenticated: true,
+                    user: authState.user,
+                    token: firebaseToken,
+                    isLoading: false,
+                    error: null,
+                    unsubscribe // Store the unsubscribe function
+                  });
+                  console.log('✅ Auth initialized with Firebase user and token');
+                } else {
+                  // User in Firebase but no profile - this shouldn't happen
+                  console.warn('⚠️ Firebase user exists but no profile found');
+                  set({
+                    isAuthenticated: false,
+                    user: null,
+                    token: null,
+                    isLoading: false,
+                    error: 'User profile not found',
+                    unsubscribe
+                  });
+                }
+              } catch (tokenError) {
+                console.error('❌ Failed to get Firebase token:', tokenError);
+                // Clear auth state if we can't get a token
+                set({
+                  isAuthenticated: false,
+                  user: null,
+                  token: null,
+                  isLoading: false,
+                  error: 'Failed to get authentication token',
+                  unsubscribe
+                });
+              }
+            } else {
+              // No Firebase user, clear auth state
               set({
-                isAuthenticated: true,
-                user: authState.user,
-                token: newToken,
-                isLoading: false,
-                error: null
-              });
-              console.log('✅ Token refreshed during initialization');
-            } catch (refreshError) {
-              console.error('❌ Token refresh failed during initialization:', refreshError);
-              // Keep the user authenticated but without token - it will be refreshed when needed
-              set({
-                isAuthenticated: true,
-                user: authState.user,
+                isAuthenticated: false,
+                user: null,
                 token: null,
                 isLoading: false,
-                error: null
+                error: null,
+                unsubscribe
               });
+              console.log('ℹ️ Firebase user signed out, cleared auth state');
             }
-          } else {
-            // No authentication state
-            set({
-              isAuthenticated: false,
-              user: null,
-              token: null,
-              isLoading: false,
-              error: null
-            });
-            console.log('ℹ️ No authentication state found');
-          }
+          });
+          
         } catch (error) {
           console.error('Auth initialization failed:', error);
           
@@ -238,6 +265,14 @@ export const useAuthStore = create<AuthStore>()(
           token,
           error: null 
         });
+      },
+
+      cleanup: () => {
+        const currentState = get();
+        if (currentState.unsubscribe) {
+          currentState.unsubscribe();
+          set({ unsubscribe: undefined });
+        }
       }
     }),
     {
