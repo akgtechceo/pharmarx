@@ -5,44 +5,90 @@ import {
   UpdateProfileRequest,
   ProfileManagementResponse 
 } from '@pharmarx/shared-types';
+import { auth } from '../../../config/firebase';
+import { useAuthStore } from '../../../stores/authStore';
+import { getValidAuthToken, handleAuthError } from '../../../utils/authUtils';
 
 // API functions
-const API_BASE_URL = '/api/profiles';
+const API_BASE_URL = `${import.meta.env.VITE_API_URL || 'http://localhost:5001'}/api/profiles`;
+
+// Helper function to get authentication headers
+const getAuthHeaders = async () => {
+  try {
+    const token = await getValidAuthToken();
+    if (!token) {
+      throw new Error('User not authenticated. Please log in to access profiles.');
+    }
+    
+    return {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    };
+  } catch (error) {
+    console.error('Failed to get authentication token:', error);
+    if (error instanceof Error) {
+      handleAuthError(error);
+    }
+    throw new Error('Authentication failed. Please log in again.');
+  }
+};
 
 const fetchProfiles = async (): Promise<ProfileManagementResponse> => {
-  const response = await fetch(API_BASE_URL, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include',
-  });
+  const headers = await getAuthHeaders();
+  
+  try {
+    const response = await fetch(API_BASE_URL, {
+      method: 'GET',
+      headers,
+    });
 
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.error || 'Failed to fetch profiles');
+    if (!response.ok) {
+      // Try to parse error response, but don't fail if it's not JSON
+      let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
+      try {
+        const errorData = await response.json();
+        errorMessage = errorData.error || errorData.message || errorMessage;
+      } catch {
+        // If response is not JSON, use the status text
+      }
+      throw new Error(errorMessage);
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error('Failed to fetch profiles:', error);
+    throw new Error('Failed to fetch profiles. Please try again later.');
   }
-
-  return response.json();
 };
 
 const createProfile = async (profileData: CreateProfileRequest): Promise<PatientProfile> => {
-  const response = await fetch(API_BASE_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include',
-    body: JSON.stringify(profileData),
-  });
+  const headers = await getAuthHeaders();
+  
+  try {
+    const response = await fetch(API_BASE_URL, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(profileData),
+    });
 
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.error || 'Failed to create profile');
+    if (!response.ok) {
+      // Try to parse error response, but don't fail if it's not JSON
+      let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
+      try {
+        const errorData = await response.json();
+        errorMessage = errorData.error || errorData.message || errorMessage;
+      } catch {
+        // If response is not JSON, use the status text
+      }
+      throw new Error(errorMessage);
+    }
+
+    const result = await response.json();
+    return result.data;
+  } catch (error) {
+    console.error('Failed to create profile:', error);
+    throw new Error('Failed to create profile. Please try again later.');
   }
-
-  const result = await response.json();
-  return result.data;
 };
 
 const updateProfile = async ({ 
@@ -52,36 +98,58 @@ const updateProfile = async ({
   profileId: string; 
   profileData: UpdateProfileRequest 
 }): Promise<PatientProfile> => {
-  const response = await fetch(`${API_BASE_URL}/${profileId}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include',
-    body: JSON.stringify(profileData),
-  });
+  const headers = await getAuthHeaders();
+  
+  try {
+    const response = await fetch(`${API_BASE_URL}/${profileId}`, {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify(profileData),
+    });
 
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.error || 'Failed to update profile');
+    if (!response.ok) {
+      // Try to parse error response, but don't fail if it's not JSON
+      let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
+      try {
+        const errorData = await response.json();
+        errorMessage = errorData.error || errorData.message || errorMessage;
+      } catch {
+        // If response is not JSON, use the status text
+      }
+      throw new Error(errorMessage);
+    }
+
+    const result = await response.json();
+    return result.data;
+  } catch (error) {
+    console.error('Failed to update profile:', error);
+    throw new Error('Failed to update profile. Please try again later.');
   }
-
-  const result = await response.json();
-  return result.data;
 };
 
 const deleteProfile = async (profileId: string): Promise<void> => {
-  const response = await fetch(`${API_BASE_URL}/${profileId}`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include',
-  });
+  const headers = await getAuthHeaders();
+  
+  try {
+    const response = await fetch(`${API_BASE_URL}/${profileId}`, {
+      method: 'DELETE',
+      headers,
+    });
 
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.error || 'Failed to delete profile');
+    if (!response.ok) {
+      // Try to parse error response, but don't fail if it's not JSON
+      let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
+      try {
+        const errorData = await response.json();
+        errorMessage = errorData.error || errorData.message || errorMessage;
+      } catch {
+        // If response is not JSON, use the status text
+      }
+      throw new Error(errorMessage);
+    }
+  } catch (error) {
+    console.error('Failed to delete profile:', error);
+    throw new Error('Failed to delete profile. Please try again later.');
   }
 };
 
@@ -96,9 +164,12 @@ export const profileKeys = {
 
 // Main hook for fetching profiles
 export const usePatientProfiles = () => {
+  const { isAuthenticated, isLoading: authLoading } = useAuthStore();
+  
   return useQuery({
     queryKey: profileKeys.lists(),
     queryFn: fetchProfiles,
+    enabled: isAuthenticated && !authLoading, // Only fetch if authenticated and auth is not loading
     staleTime: 5 * 60 * 1000, // 5 minutes
     refetchInterval: 30 * 1000, // 30 seconds
     refetchIntervalInBackground: true,
@@ -110,6 +181,7 @@ export const usePatientProfiles = () => {
 // Hook for creating a profile
 export const useCreateProfile = () => {
   const queryClient = useQueryClient();
+  const { isAuthenticated } = useAuthStore();
 
   return useMutation({
     mutationFn: createProfile,
@@ -120,12 +192,18 @@ export const useCreateProfile = () => {
     onError: (error) => {
       console.error('Error creating profile:', error);
     },
+    onMutate: () => {
+      if (!isAuthenticated) {
+        throw new Error('User not authenticated');
+      }
+    },
   });
 };
 
 // Hook for updating a profile
 export const useUpdateProfile = () => {
   const queryClient = useQueryClient();
+  const { isAuthenticated } = useAuthStore();
 
   return useMutation({
     mutationFn: updateProfile,
@@ -142,12 +220,18 @@ export const useUpdateProfile = () => {
     onError: (error) => {
       console.error('Error updating profile:', error);
     },
+    onMutate: () => {
+      if (!isAuthenticated) {
+        throw new Error('User not authenticated');
+      }
+    },
   });
 };
 
 // Hook for deleting a profile
 export const useDeleteProfile = () => {
   const queryClient = useQueryClient();
+  const { isAuthenticated } = useAuthStore();
 
   return useMutation({
     mutationFn: deleteProfile,
@@ -161,20 +245,26 @@ export const useDeleteProfile = () => {
     onError: (error) => {
       console.error('Error deleting profile:', error);
     },
+    onMutate: () => {
+      if (!isAuthenticated) {
+        throw new Error('User not authenticated');
+      }
+    },
   });
 };
 
 // Hook for checking if a profile exists
 export const useProfileExists = (profileId: string) => {
+  const { isAuthenticated, isLoading: authLoading } = useAuthStore();
+  
   return useQuery({
     queryKey: profileKeys.detail(profileId),
     queryFn: async () => {
+      const headers = await getAuthHeaders();
+      
       const response = await fetch(`${API_BASE_URL}/${profileId}/exists`, {
         method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
+        headers,
       });
 
       if (!response.ok) {
@@ -185,7 +275,7 @@ export const useProfileExists = (profileId: string) => {
       const result = await response.json();
       return result.data.exists;
     },
-    enabled: !!profileId,
+    enabled: !!profileId && isAuthenticated && !authLoading,
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 };

@@ -1,9 +1,13 @@
 import { Request, Response, Router } from 'express';
-import { PrescriptionOrder, CreatePrescriptionOrderInput, PrescriptionOrderStatus, ApiResponse, OrderHistoryResponse, OrderHistoryItem } from '@pharmarx/shared-types';
+import { CreatePrescriptionOrderInput, PrescriptionOrder, PrescriptionOrderStatus, ApiResponse, OrderHistoryResponse, OrderHistoryItem } from '@pharmarx/shared-types';
+import { OCRService } from './ocrService';
 import { db } from './database';
-import { ocrService } from './ocrService';
 import { receiptService } from './receiptService';
+import { verifyAuth } from '../middleware/auth';
 import admin from 'firebase-admin';
+
+// Create a singleton instance for the routes
+const ocrService = new OCRService();
 
 const router = Router();
 
@@ -11,7 +15,7 @@ const router = Router();
  * POST /orders - Create a new prescription order
  * Automatically triggers OCR processing if image URL is provided
  */
-router.post('/orders', async (req: Request, res: Response) => {
+router.post('/orders', verifyAuth, async (req: Request, res: Response) => {
   try {
     const orderData: CreatePrescriptionOrderInput = req.body;
 
@@ -86,7 +90,7 @@ router.post('/orders', async (req: Request, res: Response) => {
 /**
  * GET /orders - Get prescription orders for a patient
  */
-router.get('/orders', async (req: Request, res: Response) => {
+router.get('/orders', verifyAuth, async (req: Request, res: Response) => {
   try {
     const { patientId } = req.query;
 
@@ -247,6 +251,98 @@ router.put('/orders/:orderId/status', async (req: Request, res: Response) => {
 });
 
 /**
+ * PUT /orders/:orderId/ocr-review - Handle OCR review decision
+ */
+router.put('/orders/:orderId/ocr-review', async (req: Request, res: Response) => {
+  try {
+    const { orderId } = req.params;
+    const { useOCR, extractedText, medicationDetails }: { 
+      useOCR: boolean; 
+      extractedText?: string; 
+      medicationDetails?: any; 
+    } = req.body;
+
+    console.log(`OCR review for order: ${orderId}, useOCR: ${useOCR}`);
+
+    // Check if order exists
+    const orderRef = db.collection('prescriptionOrders').doc(orderId);
+    const orderDoc = await orderRef.get();
+
+    if (!orderDoc.exists) {
+      return res.status(404).json({
+        success: false,
+        error: 'Order not found'
+      } as ApiResponse<null>);
+    }
+
+    const now = new Date();
+
+    // Update order based on user's OCR decision
+    if (useOCR) {
+      // User chose to use OCR results
+      if (!extractedText) {
+        return res.status(400).json({
+          success: false,
+          error: 'Extracted text is required when using OCR results'
+        } as ApiResponse<null>);
+      }
+
+      await orderRef.update({
+        extractedText: extractedText.trim(),
+        medicationDetails: medicationDetails || null,
+        userVerified: true,
+        userVerificationNotes: 'User confirmed OCR results',
+        status: 'awaiting_payment',
+        updatedAt: admin.firestore.Timestamp.fromDate(now)
+      });
+
+      console.log(`User confirmed OCR results for order: ${orderId}`);
+    } else {
+      // User chose to skip OCR and enter manually
+      if (!medicationDetails || !medicationDetails.name || !medicationDetails.dosage || !medicationDetails.quantity) {
+        return res.status(400).json({
+          success: false,
+          error: 'Medication details (name, dosage, quantity) are required when skipping OCR'
+        } as ApiResponse<null>);
+      }
+
+      await orderRef.update({
+        medicationDetails: medicationDetails,
+        userVerified: true,
+        userVerificationNotes: 'User entered details manually, skipped OCR',
+        status: 'awaiting_payment',
+        updatedAt: admin.firestore.Timestamp.fromDate(now)
+      });
+
+      console.log(`User skipped OCR and entered details manually for order: ${orderId}`);
+    }
+
+    // Fetch updated order
+    const updatedDoc = await orderRef.get();
+    const data = updatedDoc.data();
+    const updatedOrder: PrescriptionOrder = {
+      ...data,
+      createdAt: data?.createdAt?.toDate() || new Date(),
+      updatedAt: data?.updatedAt?.toDate() || new Date(),
+      ocrProcessedAt: data?.ocrProcessedAt?.toDate()
+    } as PrescriptionOrder;
+
+    res.status(200).json({
+      success: true,
+      data: updatedOrder,
+      message: useOCR ? 'OCR results confirmed successfully' : 'Manual entry completed successfully'
+    } as ApiResponse<PrescriptionOrder>);
+
+  } catch (error) {
+    console.error('Error during OCR review:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Internal server error during OCR review'
+    } as ApiResponse<null>);
+  }
+});
+
+/**
  * PUT /orders/:orderId/manual-text - Manually enter text as fallback when OCR fails
  */
 router.put('/orders/:orderId/manual-text', async (req: Request, res: Response) => {
@@ -285,7 +381,7 @@ router.put('/orders/:orderId/manual-text', async (req: Request, res: Response) =
           currentText: orderData.extractedText,
           ocrStatus: orderData.ocrStatus
         }
-      } as ApiResponse<null>);
+      });
     }
 
     // Update order with manually entered text

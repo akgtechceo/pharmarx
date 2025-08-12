@@ -1,13 +1,14 @@
 import { Router, Request, Response } from 'express';
 import { CreateProfileRequest, UpdateProfileRequest } from '@pharmarx/shared-types';
 import profileService from './profiles';
+import { verifyAuth } from '../middleware/auth';
 
 const router = Router();
 
 /**
  * POST /profiles - Create a new patient profile for caregiver
  */
-router.post('/', async (req: Request, res: Response) => {
+router.post('/', verifyAuth, async (req: Request, res: Response) => {
   try {
     const profileData: CreateProfileRequest = req.body;
     const managedByUid = req.user?.uid;
@@ -35,12 +36,13 @@ router.post('/', async (req: Request, res: Response) => {
 /**
  * GET /profiles - Get all profiles managed by authenticated caregiver
  */
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', verifyAuth, async (req: Request, res: Response) => {
   try {
     const managedByUid = req.user?.uid;
 
     if (!managedByUid) {
       return res.status(401).json({
+        success: false,
         error: 'Authentication required'
       });
     }
@@ -50,13 +52,31 @@ router.get('/', async (req: Request, res: Response) => {
       success: true,
       data: {
         profiles,
-        activeProfileId: req.session?.activeProfileId
+        activeProfileId: undefined
       }
     });
   } catch (error) {
     console.error('Error in GET /profiles:', error);
-    res.status(500).json({
-      error: error instanceof Error ? error.message : 'Failed to get profiles'
+    
+    // Provide more specific error messages
+    let errorMessage = 'Failed to get profiles';
+    let statusCode = 500;
+    
+    if (error instanceof Error) {
+      if (error.message.includes('not found')) {
+        statusCode = 404;
+        errorMessage = 'Profiles not found';
+      } else if (error.message.includes('permission') || error.message.includes('unauthorized')) {
+        statusCode = 403;
+        errorMessage = 'Access denied';
+      } else {
+        errorMessage = error.message;
+      }
+    }
+    
+    res.status(statusCode).json({
+      success: false,
+      error: errorMessage
     });
   }
 });
@@ -64,7 +84,7 @@ router.get('/', async (req: Request, res: Response) => {
 /**
  * GET /profiles/:profileId - Get specific profile by ID
  */
-router.get('/:profileId', async (req: Request, res: Response) => {
+router.get('/:profileId', verifyAuth, async (req: Request, res: Response) => {
   try {
     const { profileId } = req.params;
     const managedByUid = req.user?.uid;
@@ -104,7 +124,7 @@ router.get('/:profileId', async (req: Request, res: Response) => {
 /**
  * PUT /profiles/:profileId - Update profile details
  */
-router.put('/:profileId', async (req: Request, res: Response) => {
+router.put('/:profileId', verifyAuth, async (req: Request, res: Response) => {
   try {
     const { profileId } = req.params;
     const updateData: UpdateProfileRequest = req.body;
@@ -116,7 +136,7 @@ router.put('/:profileId', async (req: Request, res: Response) => {
       });
     }
 
-    const profile = await profileService.updateProfile(profileId, managedByUid, updateData);
+    const profile = await profileService.updateProfile(profileId, updateData);
     res.json({
       success: true,
       data: profile
@@ -133,7 +153,7 @@ router.put('/:profileId', async (req: Request, res: Response) => {
 /**
  * DELETE /profiles/:profileId - Remove profile
  */
-router.delete('/:profileId', async (req: Request, res: Response) => {
+router.delete('/:profileId', verifyAuth, async (req: Request, res: Response) => {
   try {
     const { profileId } = req.params;
     const managedByUid = req.user?.uid;
@@ -144,13 +164,7 @@ router.delete('/:profileId', async (req: Request, res: Response) => {
       });
     }
 
-    const deleted = await profileService.deleteProfile(profileId, managedByUid);
-    if (!deleted) {
-      return res.status(404).json({
-        error: 'Profile not found'
-      });
-    }
-
+    await profileService.deleteProfile(profileId);
     res.json({
       success: true,
       message: 'Profile deleted successfully'
@@ -164,33 +178,6 @@ router.delete('/:profileId', async (req: Request, res: Response) => {
   }
 });
 
-/**
- * GET /profiles/:profileId/exists - Check if profile exists and belongs to caregiver
- */
-router.get('/:profileId/exists', async (req: Request, res: Response) => {
-  try {
-    const { profileId } = req.params;
-    const managedByUid = req.user?.uid;
 
-    if (!managedByUid) {
-      return res.status(401).json({
-        error: 'Authentication required'
-      });
-    }
-
-    const exists = await profileService.profileExists(profileId, managedByUid);
-    res.json({
-      success: true,
-      data: {
-        exists
-      }
-    });
-  } catch (error) {
-    console.error('Error in GET /profiles/:profileId/exists:', error);
-    res.status(500).json({
-      error: error instanceof Error ? error.message : 'Failed to check profile existence'
-    });
-  }
-});
 
 export default router;

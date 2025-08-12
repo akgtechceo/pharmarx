@@ -5,6 +5,8 @@ import {
   ApiResponse,
   PrescriptionOrderStatus
 } from '@pharmarx/shared-types';
+import { useAuthStore } from '../stores/authStore';
+import { getValidAuthToken, handleAuthError } from '../utils/authUtils';
 
 interface UploadProgress {
   loaded: number;
@@ -18,7 +20,41 @@ export interface PrescriptionUploadOptions {
 }
 
 class PrescriptionService {
-  private readonly baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+  private readonly baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:5001';
+  private readonly ocrUrl = import.meta.env.VITE_OCR_URL || 'http://localhost:5002';
+  private readonly useMockMode = import.meta.env.DEV && !import.meta.env.VITE_API_URL;
+
+  /**
+   * Get authentication token from auth store
+   */
+  private async getAuthToken(): Promise<string | null> {
+    try {
+      return await getValidAuthToken();
+    } catch (error) {
+      console.error('Failed to get valid auth token:', error);
+      if (error instanceof Error) {
+        handleAuthError(error);
+      }
+      return null;
+    }
+  }
+
+  /**
+   * Get authentication token with error handling
+   */
+  private async getAuthTokenOrThrow(): Promise<string> {
+    const token = await this.getAuthToken();
+    if (!token) {
+      // Check if user is authenticated but token is missing
+      const authState = useAuthStore.getState();
+      if (authState.isAuthenticated && authState.user) {
+        throw new Error('Authentication token expired. Please refresh the page and try again.');
+      } else {
+        throw new Error('Authentication token not found. Please log in again.');
+      }
+    }
+    return token;
+  }
 
   /**
    * Upload file to Google Cloud Storage
@@ -27,6 +63,11 @@ class PrescriptionService {
     file: File, 
     options?: PrescriptionUploadOptions
   ): Promise<FileUploadResult> {
+    // Use mock mode if API is not available
+    if (this.useMockMode) {
+      return this.mockFileUpload(file, options);
+    }
+
     try {
       // Create form data
       const formData = new FormData();
@@ -89,12 +130,15 @@ class PrescriptionService {
         xhr.open('POST', `${this.baseUrl}/uploads/prescription`);
         
         // Add authorization header if available
-        const token = localStorage.getItem('firebase_token');
-        if (token) {
-          xhr.setRequestHeader('Authorization', `Bearer ${token}`);
-        }
-
-        xhr.send(formData);
+        this.getAuthToken().then(token => {
+          if (token) {
+            xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+          }
+          xhr.send(formData);
+        }).catch(error => {
+          console.warn('Failed to get auth token for upload:', error);
+          xhr.send(formData);
+        });
       });
     } catch (error) {
       console.error('File upload error:', error);
@@ -109,13 +153,15 @@ class PrescriptionService {
    * Create a new prescription order
    */
   async createPrescriptionOrder(orderData: CreatePrescriptionOrderInput): Promise<PrescriptionOrder> {
-    try {
-      const token = localStorage.getItem('firebase_token');
-      if (!token) {
-        throw new Error('Authentication token not found');
-      }
+    // Use mock mode if API is not available
+    if (this.useMockMode) {
+      return this.mockCreatePrescriptionOrder(orderData);
+    }
 
-      const response = await fetch(`${this.baseUrl}/orders`, {
+    try {
+      const token = await this.getAuthTokenOrThrow();
+
+      const response = await fetch(`${this.baseUrl}/api/orders`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -180,10 +226,7 @@ class PrescriptionService {
    */
   async getPrescriptionOrders(patientId: string): Promise<PrescriptionOrder[]> {
     try {
-      const token = localStorage.getItem('firebase_token');
-      if (!token) {
-        throw new Error('Authentication token not found');
-      }
+      const token = await this.getAuthTokenOrThrow();
 
       const response = await fetch(`${this.baseUrl}/orders?patientId=${patientId}`, {
         headers: {
@@ -214,13 +257,15 @@ class PrescriptionService {
    * Get prescription order by ID
    */
   async getPrescriptionOrder(orderId: string): Promise<PrescriptionOrder> {
-    try {
-      const token = localStorage.getItem('firebase_token');
-      if (!token) {
-        throw new Error('Authentication token not found');
-      }
+    // Use mock mode if API is not available
+    if (this.useMockMode) {
+      return this.mockGetPrescriptionOrder(orderId);
+    }
 
-      const response = await fetch(`${this.baseUrl}/orders/${orderId}`, {
+    try {
+      const token = await this.getAuthTokenOrThrow();
+
+      const response = await fetch(`${this.ocrUrl}/orders/${orderId}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -246,14 +291,74 @@ class PrescriptionService {
   }
 
   /**
+   * Get prescription order by ID (alias for getPrescriptionOrder)
+   */
+  async getOrder(orderId: string): Promise<ApiResponse<PrescriptionOrder>> {
+    try {
+      const order = await this.getPrescriptionOrder(orderId);
+      return {
+        success: true,
+        data: order
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Failed to fetch order'
+      };
+    }
+  }
+
+  /**
+   * Update order with OCR results
+   */
+  async updateOrderWithOCRResults(
+    orderId: string, 
+    data: {
+      useOCR: boolean;
+      extractedText?: string;
+      medicationDetails?: any;
+    }
+  ): Promise<ApiResponse<PrescriptionOrder>> {
+    try {
+      const token = await this.getAuthTokenOrThrow();
+
+      const response = await fetch(`${this.baseUrl}/orders/${orderId}/ocr-review`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(data)
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        const errorMessage = errorData.error || errorData.message || this.getStatusErrorMessage(response.status);
+        throw new Error(errorMessage);
+      }
+
+      const result: ApiResponse<PrescriptionOrder> = await response.json();
+      
+      if (!result.success || !result.data) {
+        throw new Error(result.error || 'Failed to update order with OCR results');
+      }
+
+      return result;
+    } catch (error) {
+      console.error('Update order with OCR results error:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Failed to update order with OCR results'
+      };
+    }
+  }
+
+  /**
    * Enter manual text for OCR fallback
    */
   async enterManualText(orderId: string, extractedText: string): Promise<PrescriptionOrder> {
     try {
-      const token = localStorage.getItem('firebase_token');
-      if (!token) {
-        throw new Error('Authentication token not found');
-      }
+      const token = await this.getAuthTokenOrThrow();
 
       if (!extractedText || !extractedText.trim()) {
         throw new Error('Extracted text is required');
@@ -297,10 +402,7 @@ class PrescriptionService {
     status: PrescriptionOrderStatus
   ): Promise<PrescriptionOrder> {
     try {
-      const token = localStorage.getItem('authToken') || localStorage.getItem('firebase_token');
-      if (!token) {
-        throw new Error('Authentication token not found');
-      }
+      const token = await this.getAuthTokenOrThrow();
 
       const response = await fetch(`${this.baseUrl}/orders/${orderId}/status`, {
         method: 'PUT',
@@ -338,10 +440,7 @@ class PrescriptionService {
     status: string
   ): Promise<PrescriptionOrder> {
     try {
-      const token = localStorage.getItem('firebase_token');
-      if (!token) {
-        throw new Error('Authentication token not found');
-      }
+      const token = await this.getAuthTokenOrThrow();
 
       const response = await fetch(`${this.baseUrl}/orders/${orderId}`, {
         method: 'PATCH',
@@ -400,6 +499,141 @@ class PrescriptionService {
         return `Request failed with status ${status}`;
     }
   }
+
+  /**
+   * Mock file upload for development
+   */
+  private async mockFileUpload(file: File, options?: PrescriptionUploadOptions): Promise<FileUploadResult> {
+    // Simulate upload progress
+    if (options?.onProgress) {
+      const total = file.size;
+      let loaded = 0;
+      const interval = setInterval(() => {
+        loaded += total / 10;
+        if (loaded >= total) {
+          loaded = total;
+          clearInterval(interval);
+        }
+        options.onProgress!({
+          loaded: Math.floor(loaded),
+          total,
+          percentage: Math.round((loaded / total) * 100)
+        });
+      }, 100);
+    }
+
+    // Simulate network delay
+    await new Promise(resolve => setTimeout(resolve, 2000));
+
+    // Convert file to data URL for mock mode
+    const dataUrl = await new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+
+    return {
+      success: true,
+      url: dataUrl
+    };
+  }
+
+  /**
+   * Mock create prescription order for development
+   */
+  private async mockCreatePrescriptionOrder(orderData: CreatePrescriptionOrderInput): Promise<PrescriptionOrder> {
+    // Simulate network delay
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    const mockOrder: PrescriptionOrder = {
+      orderId: `mock-order-${Date.now()}`,
+      patientProfileId: orderData.patientProfileId,
+      status: 'pending_verification',
+      originalImageUrl: orderData.originalImageUrl,
+      ocrStatus: 'pending',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      extractedText: undefined,
+      ocrConfidence: undefined,
+      ocrProcessedAt: undefined,
+      ocrError: undefined,
+      medicationDetails: undefined,
+      userVerified: undefined,
+      userVerificationNotes: undefined,
+      pharmacistReview: undefined,
+      cost: undefined
+    };
+
+    return mockOrder;
+  }
+
+  /**
+   * Mock get prescription order for development
+   */
+  private async mockGetPrescriptionOrder(orderId: string): Promise<PrescriptionOrder> {
+    // Simulate network delay
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    // Store mock orders in memory for consistency
+    if (!this.mockOrders) {
+      this.mockOrders = new Map<string, PrescriptionOrder>();
+    }
+
+    // Return existing mock order or create a new one
+    let mockOrder = this.mockOrders.get(orderId);
+    
+    if (!mockOrder) {
+      // Create a mock order with simulated OCR progress
+      const ocrStatuses = ['pending', 'processing', 'completed'];
+      const randomStatus = ocrStatuses[Math.floor(Math.random() * ocrStatuses.length)];
+      
+      mockOrder = {
+        orderId,
+        patientProfileId: `mock-patient-${Date.now()}`,
+        status: 'pending_verification',
+        originalImageUrl: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==',
+        ocrStatus: randomStatus as 'pending' | 'processing' | 'completed' | 'failed',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        extractedText: randomStatus === 'completed' ? 'Mock prescription text\nMedication: Test Medicine\nDosage: 100mg\nQuantity: 30' : undefined,
+        ocrConfidence: randomStatus === 'completed' ? 0.95 : undefined,
+        ocrProcessedAt: randomStatus === 'completed' ? new Date() : undefined,
+        medicationDetails: randomStatus === 'completed' ? {
+          name: 'Test Medicine',
+          dosage: '100mg',
+          quantity: 30
+        } : undefined,
+        userVerified: undefined,
+        userVerificationNotes: undefined,
+        pharmacistReview: undefined,
+        cost: undefined
+      };
+      
+      this.mockOrders.set(orderId, mockOrder);
+    }
+
+    // Simulate OCR progress
+    if (mockOrder.ocrStatus === 'pending') {
+      mockOrder.ocrStatus = 'processing';
+      mockOrder.updatedAt = new Date();
+    } else if (mockOrder.ocrStatus === 'processing' && Math.random() > 0.3) {
+      mockOrder.ocrStatus = 'completed';
+      mockOrder.extractedText = 'Mock prescription text\nMedication: Test Medicine\nDosage: 100mg\nQuantity: 30';
+      mockOrder.ocrConfidence = 0.95;
+      mockOrder.ocrProcessedAt = new Date();
+      mockOrder.medicationDetails = {
+        name: 'Test Medicine',
+        dosage: '100mg',
+        quantity: 30
+      };
+      mockOrder.updatedAt = new Date();
+    }
+
+    return mockOrder;
+  }
+
+  private mockOrders?: Map<string, PrescriptionOrder>;
 }
 
 export const prescriptionService = new PrescriptionService(); 
