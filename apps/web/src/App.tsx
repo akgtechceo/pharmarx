@@ -56,6 +56,7 @@ class ErrorBoundary extends React.Component<
 function AuthInitializer({ children }: { children: React.ReactNode }) {
   const { initializeAuth, isLoading, cleanup, isAuthenticated, user } = useAuthStore();
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     initializeAuth();
@@ -72,15 +73,18 @@ function AuthInitializer({ children }: { children: React.ReactNode }) {
       isAuthenticated,
       hasUser: !!user,
       userId: user?.uid,
-      isLoading
+      isLoading,
+      currentPath: location.pathname
     });
     
-    // If not loading and not authenticated, redirect to login
-    if (!isLoading && !isAuthenticated) {
+    // Only redirect to login if we're not already on login/register pages and not authenticated
+    if (!isLoading && !isAuthenticated && 
+        !location.pathname.includes('/login') && 
+        !location.pathname.includes('/register')) {
       console.log('🔐 User not authenticated, redirecting to login');
       navigate('/login', { replace: true });
     }
-  }, [isAuthenticated, user, isLoading, navigate]);
+  }, [isAuthenticated, user, isLoading, navigate, location.pathname]);
 
   if (isLoading) {
     return (
@@ -93,8 +97,10 @@ function AuthInitializer({ children }: { children: React.ReactNode }) {
     );
   }
 
-  // If not authenticated, show loading while redirecting
-  if (!isAuthenticated) {
+  // If not authenticated and not on auth pages, show loading while redirecting
+  if (!isAuthenticated && 
+      !location.pathname.includes('/login') && 
+      !location.pathname.includes('/register')) {
     return (
       <div className="min-h-screen bg-gray-100 flex items-center justify-center">
         <div className="text-center">
@@ -116,8 +122,8 @@ function App() {
 
   return (
     <ErrorBoundary>
-      <AuthInitializer>
-        <Router>
+      <Router>
+        <AuthInitializer>
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
@@ -129,8 +135,8 @@ function App() {
             <Route path="/map-demo" element={<MapDemo />} />
             <Route path="/simple-map-test" element={<SimpleMapTest />} />
           </Routes>
-        </Router>
-      </AuthInitializer>
+        </AuthInitializer>
+      </Router>
     </ErrorBoundary>
   );
 }
